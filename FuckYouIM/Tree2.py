@@ -3,7 +3,30 @@ class Software:
         self.id = None
         self.name = None
         self.Pagesize = None
-        self.informationID = []
+        self.informationlistID = []
+        self.informationlist = []
+
+    def setAttributions(self, SID, SName, Pagesize, *LIDS):
+        self.id = SID
+        self.name = SName
+        self.Pagesize = Pagesize
+        self.informationlistID = [LID for LID in LIDS]
+
+
+class InformationList:
+    def __init__(self):
+        self.id = None
+        self.SoftwareID = None
+        self.ListType = None
+        self.RootNodeID = None
+        self.RootNode = None
+
+    def setAttributions(self, LID, SID, Listtype, NID):
+        self.id = LID
+        self.SoftwareID = SID
+        self.ListType = Listtype
+        self.RootNodeID = NID
+
 
 
 class Node:
@@ -42,9 +65,6 @@ class NTree:
 
     def getRootVal(self):
         return self.key
-
-
-
 
 
 res = ''
