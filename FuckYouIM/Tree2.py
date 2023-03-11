@@ -51,13 +51,13 @@ class NTree:
         self.child = []
 
     def appendChild(self, newNode):
-        """参数：一个节点对象
-            插入以节点对象为根的N叉树"""
+        """鍙傛暟锛氫竴涓妭鐐瑰璞�
+            鎻掑叆浠ヨ妭鐐瑰璞′负鏍圭殑N鍙夋爲"""
         self.child.append(NTree(newNode))
 
     def getChild(self, n):
-        """N：表示想要第N+1个child节点
-            返回第N+1个child树"""
+        """N锛氳〃绀烘兂瑕佺N+1涓猚hild鑺傜偣
+            杩斿洖绗琋+1涓猚hild鏍�"""
         return self.child[n]
 
     def setRootVal(self, obj):

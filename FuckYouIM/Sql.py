@@ -42,13 +42,35 @@ class DataBase:
         """返回二维列表[[NID, Nrank, Depth, NName, NText]]"""
         self.cursor.execute("select * from node")
         return self.query_strip()
+    
+    def get_node_by_depth(self,depth): # 根据depth返回节点信息，用于画图
+        sql = "select NName from node where Depth = {}".format(depth)
+        self.cursor.execute(sql)
+        return self.query_strip()
+    
+    def get_software_node(self,Sname):
+        sql = f"select node.NID,node.NName from node where NID in (select NID from informationlist iml,software s where s.SID = iml.SID and s.Sname = '{Sname}')"
+        self.cursor.execute(sql)
+        NodeDict = {}
+        nodeList = self.query_strip()
+        for i in nodeList:
+            i.insert(0,0)
+        i = 0
+        while(len(nodeList)>0):
+            NodeDict[i] = nodeList
+            sql = f"select nr.FatherID,n.NID,n.NName from node n left join noderelation nr on nr.ChildID = n.NID where nr.FatherID in ({','.join([str(i[1]) for i in NodeDict[i]])}) order by n.nrank"
+            i+=1
+            self.cursor.execute(sql)
+            nodeList = self.query_strip()
+        return NodeDict
+
 
     def get_ChildNode(self, FatherID):
         """根据给出FatherID返回直接ChildID(根据rank排序)
             参数：FatherID
             返回列表[ChildID1, ChildID2...]"""
         self.cursor.execute(
-            f"select ChildID from noderelation , node where FatherID = {FatherID} and node.NID = noderelation.childid order by Nrank")
+            f"select node.NName from noderelation , node where FatherID = {FatherID} and node.NID = noderelation.childid order by Nrank")
         templist = self.query_strip()
         ChildIDs = [ChildID[0] for ChildID in templist]
         return ChildIDs
@@ -56,6 +78,9 @@ class DataBase:
 
 if __name__ == '__main__':
     db = DataBase()
-    print(db.get_software())
-    print(db.get_informationlist(1))
-    print(db.get_node())
+    # print(db.get_software())
+    # print(db.get_informationlist(1))
+    # print(db.get_node())
+    # print(db.get_ChildNode(3))
+    # print(db.get_node_by_depth(1))
+    print(db.get_software_node("微信"))
