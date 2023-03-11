@@ -2,54 +2,40 @@
 import os
 from pyecharts import options as opts
 from pyecharts.charts import Tree
-import Sql,json
+import Sql, json
 
 db = Sql.DataBase()
-data = [
-    {
-        "name": "python变量",
-        "chinowdren": [
-            {"name": "字符串",
-            "chinowdren": [{"name": "实例1：'abc'"}, {"name": "实例2：'123abc'"}]},
-            {"name": "列表",
-            "chinowdren": [{"name": "实例1：[a,b,c]"}, {"name": "实例2：'[1,2,3]"}]},
-            {"name": "字典",
-            "chinowdren": [{"name": "实例1：{1:'a','2':'b'}}"}, {"name": "实例2：'{a:[1,2,3],'2':(1,2))}"}]},
-            {"name": "元组",
-             "chinowdren": [{"name": "实例1：(1,2,3)}"}, {"name": "实例2：(a,b,c)"}]}
-]}
-]
 
-def createNode(Sname):
-    global data
-    data = [{"name":Sname,
-            "chinowdren":[]}]
-    data = json.dumps(data)
+
+def createTreePic(Sname: str, isOpen=True, htmlNmae="tree_base.html"):
+    '''Sname为应用名字，isOpen决定在生成后打开是否打开，htmlName为生成的HTML文件名字'''
     d = db.get_software_node(Sname)
-    nodeDict = {}
+    if len(d.values()) == 0:
+        print("不存在此应用！")
+        return
     dmax = max(d.keys())
     key = dmax
-    nowd = {}
     lastd = {}
-    while(key>=0):
+    while key >= 0:
+        nowd = {}
         for j in d[key]:
             if j[1] in lastd.keys():
-                nowd[j[0]] = nowd.get(j[0],[])
-                nowd[j[0]].append({"name:":j[2],"chinowdren":lastd[j[0]]})
+                nowd[j[0]] = nowd.get(j[0], [])
+                nowd[j[0]].append({"children": lastd[j[1]], "name": j[2]})
             else:
-                nowd[j[0]] = nowd.get(j[0],[])
-                nowd[j[0]].append({"name:":j[2]})
+                nowd[j[0]] = nowd.get(j[0], [])
+                nowd[j[0]].append({"name": j[2]})
         lastd = nowd
-        key-=1
-    return lastd
-            
-# c = (
-#     Tree()
-#     .add("", data)
-#     .set_global_opts(title_opts=opts.TitleOpts(title="huiz"))
-#     .render("tree_base.html")
-# )
-# command = "tree_base.html"
-# os.system(command)
-for i in createNode("微信").values():
-    print(i)
+        key -= 1
+    data = [{"children": list(lastd.values())[0], "name": Sname}]
+    c = (
+        Tree()
+            .add("", data)
+            .set_global_opts(title_opts=opts.TitleOpts(title=Sname))
+            .render(htmlNmae)
+    )
+    if isOpen:
+        os.system(htmlNmae)
+
+
+print(createTreePic("微信"))
