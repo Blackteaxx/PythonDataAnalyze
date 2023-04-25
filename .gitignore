@@ -12,3 +12,6 @@ FuckYouIM/__pycache__/Sql.cpython-39.pyc
 FuckYouIM/__pycache__/Sql.cpython-39.pyc
 FuckYouIM/__pycache__/Sql.cpython-39.pyc
 *.pyc
+PCA&Clustered/preProcessdata.csv
+.gitignore
+PCA&Clustered/finalData.csv
