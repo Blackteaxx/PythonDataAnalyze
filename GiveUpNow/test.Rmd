@@ -1,0 +1,168 @@
+---
+title: "Test"
+author: 
+date: '2023-03-19'
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(knitr)
+library(kableExtra)
+library(Hmisc)
+library(dplyr)
+library(ggplot2)
+
+getwd()
+setwd("E:/R_Tutorial")
+save.image()
+```
+# 0  对结果处理
+```{r}
+sample.df = read.csv(file="./OnlineNewsPopularity.csv", header = T,
+                     na.strings=c("","NA","NULL",NULL), sep = " ")
+# 计算分位点
+q1 <- quantile(sample.df$shares, 0.2)
+q2 <- quantile(sample.df$shares, 0.8)
+
+sample.df$result <- cut(sample.df$shares, c(-Inf, q1, q2, Inf), 
+                        labels = c(0, 1, 2))
+
+# 查看结果
+head(sample.df)
+
+write.csv(sample.df,file = "DataSet1.csv", col.names = T, row.names = F,
+          sep = " ")
+```
+
+# 1. 数据预处理
+```{r}
+sample.df = read.csv(file="./DataSet1.csv", header = T, 
+                  na.strings=c("","NA","NULL",NULL), sep = " ")
+head(sample.df)
+```
+
+## 1.1 数据描述
+
+### 查找缺失值
+```{r}
+colSums(is.na(sample.df))
+sum(complete.cases(sample.df))
+```
+### 描述
+
+利用Hmisc包中describe进行描述
+```{r}
+desc <- describe(sample.df)
+
+# 将结果存储到文本文件
+sink("describe.txt")
+cat(capture.output(desc), sep = "\n")
+sink()
+```
+
+查看类型
+```{r}
+str(sample.df)
+
+# 转因子变量
+sample.df$data_channel_is_lifestyle <- 
+  as.factor(sample.df$data_channel_is_lifestyle)
+sample.df$data_channel_is_entertainment <- 
+  as.factor(sample.df$data_channel_is_entertainment)
+sample.df$data_channel_is_bus <- 
+  as.factor(sample.df$data_channel_is_bus)
+sample.df$data_channel_is_socmed <- 
+  as.factor(sample.df$data_channel_is_socmed)
+sample.df$data_channel_is_tech <- 
+  as.factor(sample.df$data_channel_is_tech)
+sample.df$data_channel_is_world <- 
+  as.factor(sample.df$data_channel_is_world)
+
+sample.df$weekday_is_monday <- 
+  as.factor(sample.df$weekday_is_monday)
+sample.df$weekday_is_tuesday <- 
+  as.factor(sample.df$weekday_is_tuesday)
+sample.df$weekday_is_thursday <- 
+  as.factor(sample.df$weekday_is_thursday)
+sample.df$weekday_is_wednesday <- 
+  as.factor(sample.df$weekday_is_wednesday)
+sample.df$weekday_is_friday <- 
+  as.factor(sample.df$weekday_is_friday)
+sample.df$weekday_is_saturday <- 
+  as.factor(sample.df$weekday_is_saturday)
+sample.df$weekday_is_sunday <- 
+  as.factor(sample.df$weekday_is_sunday)
+sample.df$is_weekend <- 
+  as.factor(sample.df$is_weekend)
+sample.df$result <- 
+  as.factor(sample.df$result)
+
+
+```
+
+### 特征分布与异常值
+画分布
+```{r}
+
+GetDistribution <- function(df){
+  df = as.data.frame(df)
+  variable.No <- ncol(df) 
+
+  for(i in 1:variable.No){
+    # 判断该列是否为数值型变量
+    if (class(df[,i][1])[1] == "numeric") {
+      TmpFileName <- paste("PlotHistFigures/",i,"-",colnames(df)[i],".png",sep="")
+      png(file=TmpFileName)
+      hist(df[,i],xlim=c(min(na.omit(df[,i])),max(na.omit(df[,i])) )) #get hist for each column
+      dev.off()
+    }
+  }
+}
+
+GetDistribution(sample.df)
+```
+
+查看预测值分布
+```{r}
+hist(log(sample.df$shares))
+```
+
+画箱线图
+```{r}
+# 对于集中于一条线的，例如kw_avg_avg那种，一般是有严重的偏态，一般取对数
+# 绘制箱线图，并保存至文件夹内
+for (col in names(sample.df)) {
+  if (is.numeric(sample.df[[col]][1])){
+      filename <- paste0("boxplots/",col, ".png")
+      png(filename)
+      boxplot(sample.df[[col]], main = col, horizontal = TRUE)
+      dev.off()
+  }
+}
+```
+
+
+
+## 1.2 特征选择
+
+方差选择
+
+```{r}
+test.df = select(sample.df, c(-"url",-"timedelta",-"shares"))
+# 找出所有的因子列
+factor_cols <- which(sapply(test.df, is.factor))
+
+# 删除这些因子列
+test.df <- test.df[, -factor_cols]
+
+# 使用方差选择法选择最佳特征
+library(caret)
+set.seed(123)
+vars <- caret::nearZeroVar(test.df, saveMetrics = TRUE)
+print(vars) # kw_min_max是T，可以删了
+
+sample.df <- select(sample.df, -"kw_min_max")
+```
