@@ -19,3 +19,6 @@ PCA&Clustered/finalData.csv
 PCA&Clustered/preProcessdata.csv
 PCA&Clustered/trainDataSet.csv
 PCA&Clustered/YT_Videos_Comments.csv
+PCA&Clustered/preProcessdata.csv
+.gitignore
+PCA&Clustered/finalData.csv
