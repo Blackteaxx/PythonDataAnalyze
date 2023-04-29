@@ -1,0 +1,29 @@
+nav.leftsidebar {
+  width: 250px;
+  padding: 20px;
+  position: fixed;
+}
+
+h2.leftsidebar_title {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+ul.articlemenu {
+  list-style: none;
+}
+
+ul.articlemenu > li {
+  margin-bottom: 10px;
+}
+
+ul.articlemenu > li > a {
+  color: #333;
+  text-decoration: none;
+}
+
+ul.articlemenu > li > a:hover {
+  color: #0088cc;
+  transition: all 0.3s ease-in-out;
+}

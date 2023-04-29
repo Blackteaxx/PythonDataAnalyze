@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/header.css" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/leftsidebar.css" />
+    <link rel="stylesheet" href="../css/footer.css" />
+    <link rel="stylesheet" href="../css/shell.css" />
+    <link rel="stylesheet" href="../css/article.css" />
+    <script src="../js/shell.js"></script>
+    <script src="../js/header.js"></script>
+    <title>内容窗口</title>
+  </head>
+  <body>
+    <!-- 侧边画布外导航条 -->
+    <div class="shell" id="myShell">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeShell()">
+        &times;
+      </a>
+      <a href="#">关于信管</a>
+      <a href="#">课程</a>
+      <a href="#">实践</a>
+      <a href="#">暂时没想出来</a>
+    </div>
+
+    <!-- 页面主窗口 -->
+    <div id="main">
+      <!-- 顶部导航条 -->
+      <header>
+        <nav class="blog_header" id="topnav">
+          <ul>
+            <li class="blog_header-item"><a href="#">Home</a></li>
+            <li class="blog_header-item">
+              <a href="javascript:void(0)" onclick="openShell()">openShell</a>
+            </li>
+            <li class="blog_header-item"><a href="#">Login</a></li>
+            <li class="blog_header-item"><a href="#">Register</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <!-- 主容器 -->
+      <div class="blog_main_container">
+        <!-- 设置左侧导航栏 -->
+        <div class="blog_left_sidebar">
+          <nav class="leftsidebar">
+            <ul class="articlemenu">
+              <h2 class="leftsidebar_title">文章总览</h2>
+              <li><a href="#">文章 1</a></li>
+              <li><a href="#">文章 2</a></li>
+              <li><a href="#">文章 3</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <!-- 文章区域 -->
+        <div class="blog_main_content">
+          <article>
+            <h1>Article</h1>
+            <h3>Author:Blackteaxx</h3><br>
+            <h3>Time:2022-04-26</h3>
+          </article>
+        </div>
+
+        <!-- 设置右侧导航栏 -->
+        <div class="blog_left_sidebar">
+          <nav class="leftsidebar">
+            <ul class="articlemenu">
+              <h2 class="leftsidebar_title">目录</h2>
+              <li><a href="#">锚点 1</a></li>
+              <li><a href="#">锚点 2</a></li>
+              <li><a href="#">锚点 3</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <!-- 底部导航条 -->
+      <footer class="blog_footer">
+        <p>
+          本文作者：A<br />
+          版权所有，转载请联系作者。
+        </p>
+        <a href="#" class="next_article">阅读下一篇文章</a>
+      </footer>
+    </div>
+  </body>
+</html>

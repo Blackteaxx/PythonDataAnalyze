@@ -22,25 +22,36 @@ save.image()
 # 0  对结果处理
 ```{r}
 sample.df = read.csv(file="./OnlineNewsPopularity.csv", header = T,
-                     na.strings=c("","NA","NULL",NULL), sep = " ")
+                     na.strings=c("","NA","NULL",NULL), sep = ",")
 # 计算分位点
-q1 <- quantile(sample.df$shares, 0.2)
-q2 <- quantile(sample.df$shares, 0.8)
+range_capture <- function(x) {
+    if (x >= 0 & x < 100) {
+        return(0)
+    } else if (x < 500) {
+        return(1)
+    } else if (x < 2500) {
+        return(2)
+    } else if (x < 15000) {
+        return(3)
+    } else {
+        return(4)
+    }
+}
 
-sample.df$result <- cut(sample.df$shares, c(-Inf, q1, q2, Inf), 
-                        labels = c(0, 1, 2))
+sample.df$result <- sapply(sample.df$shares, range_capture)
+
 
 # 查看结果
 head(sample.df)
 
 write.csv(sample.df,file = "DataSet1.csv", col.names = T, row.names = F,
-          sep = " ")
+          sep = ",")
 ```
 
 # 1. 数据预处理
 ```{r}
 sample.df = read.csv(file="./DataSet1.csv", header = T, 
-                  na.strings=c("","NA","NULL",NULL), sep = " ")
+                  na.strings=c("","NA","NULL",NULL), sep = ",")
 head(sample.df)
 ```
 
@@ -144,7 +155,21 @@ for (col in names(sample.df)) {
 }
 ```
 
+根据特征画图
+```{r}
+ggplot(data = sample.df, aes(x = n_tokens_title, fill=result)) +
+  geom_bar()
 
+
+ggplot(data = sample.df, aes(x = shares)) +
+  geom_histogram()
+
+ggplot(data = sample.df, aes(x = shares)) +
+  geom_histogram() + scale_x_log10()
+
+ggplot(data = sample.df, aes(x = shares)) +
+  geom_histogram() + scale_x_continuous(limits = c(0, 10000))
+```
 
 ## 1.2 特征选择
 
