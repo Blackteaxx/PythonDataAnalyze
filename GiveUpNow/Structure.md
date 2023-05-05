@@ -1,133 +1,51 @@
-简介
+## 简介
+
 此数据集总结了 Mashable 在两年内发表的文章的一组异质特征。目标是预测社交网络（人气）的份额数量。
 
 数据
-这些文章由Mashable（www.mashable.com）出版，其内容作为复制权属于他们。因此，此数据集不共享原始内容，而是共享与它相关的一些统计数据。使用提供的网址公开访问和检索原始内容。
+这些文章由 Mashable（www.mashable.com）出版，其内容作为复制权属于他们。因此，此数据集不共享原始内容，而是共享与它相关的一些统计数据。使用提供的网址公开访问和检索原始内容。
 
 收购日期：2015 年 1 月 8 日
 
 作者使用随机森林分类器和滚动窗口作为评估方法估计了估计的相对性能值。有关相对性能值的设置方式，请参阅他们的文章以了解更多详细信息。
 
-属性信息：
+## 特征构建
 
-```
-url: URL of the article (non-predictive)
+- OnlineNewsPopularity
 
-timedelta: Days between the article publication and the dataset acquisition (non-predictive)
+  - 时间特征
 
-ntokenstitle: Number of words in the title
+    - timedelta（这个或需要改成年-月-日的形式）
+    - weekday_is_xxx
 
-ntokenscontent: Number of words in the content
+  - 文本特征
 
-nuniquetokens: Rate of unique words in the content
+    - 标题
+      - 情感
+      - 长短
+      - 表达风格
+      - 句子可读性
+    - 内容
 
-nnonstop_words: Rate of non-stop words in the content
+      - 情感
+      - 长短
+      - 文章可读性
+        - 可以用公式也可以用预分类模型干，这个待定
+      - 表达风格
 
-nnonstopuniquetokens: Rate of unique non-stop words in the content
+        - 词汇多样性：分析文章中使用的不同词语数量和种类，计算出词汇丰富度，以此反映文章的表达多样性。
 
-num_hrefs: Number of links
+        - 句子长度：统计文章中各个句子的平均长度、方差等指标，以此反映作者的表述清晰度和语言表达能力。
 
-numselfhrefs: Number of links to other articles published by Mashable
+        - 修辞手法：分析文章中使用的修辞手法，如比喻、排比、对比等。这些修辞手法反映作者的文笔水平和表达能力。
 
-num_imgs: Number of images
+        - 语气情感：通过情感分析技术，分析文章中各个部分的情感倾向和语气特点，如肯定、否定、感慨等，从而揭示作者的态度和立场
 
-num_videos: Number of videos
+  - 作者特征
 
-averagetokenlength: Average length of the words in the content
+    - 作者名称
+    - 作者影响力（历史发文量，或许可能会有阈值？）
+    - 擅长领域、发文质量...
 
-numkeywords: Number of keywords in the metadata 13. datachannelislifestyle: Is data channel 'Lifestyle'?
-
-datachannelis_entertainment: Is data channel 'Entertainment'?
-
-datachannelis_bus: Is data channel 'Business'?
-
-datachannelis_socmed: Is data channel 'Social Media'?
-
-datachannelis_tech: Is data channel 'Tech'?
-
-datachannelis_world: Is data channel 'World'?
-
-kwminmin: Worst keyword (min. shares)
-
-kwmaxmin: Worst keyword (max. shares)
-
-kwavgmin: Worst keyword (avg. shares)
-
-kwminmax: Best keyword (min. shares)
-
-kwmaxmax: Best keyword (max. shares)
-
-kwavgmax: Best keyword (avg. shares)
-
-kwminavg: Avg. keyword (min. shares)
-
-kwmaxavg: Avg. keyword (max. shares)
-
-kwavgavg: Avg. keyword (avg. shares)
-
-selfreferencemin_shares: Min. shares of referenced articles in Mashable
-
-selfreferencemax_shares: Max. shares of referenced articles in Mashable
-
-selfreferenceavg_sharess: Avg. shares of referenced articles in Mashable
-
-weekdayismonday: Was the article published on a Monday?
-
-weekdayistuesday: Was the article published on a Tuesday?
-
-weekdayiswednesday: Was the article published on a Wednesday?
-
-weekdayisthursday: Was the article published on a Thursday?
-
-weekdayisfriday: Was the article published on a Friday?
-
-weekdayissaturday: Was the article published on a Saturday?
-
-weekdayissunday: Was the article published on a Sunday?
-
-is_weekend: Was the article published on the weekend?
-
-LDA_00: Closeness to LDA topic 0
-
-LDA_01: Closeness to LDA topic 1
-
-LDA_02: Closeness to LDA topic 2
-
-LDA_03: Closeness to LDA topic 3
-
-LDA_04: Closeness to LDA topic 4
-
-global_subjectivity: Text subjectivity
-
-globalsentimentpolarity: Text sentiment polarity
-
-globalratepositive_words: Rate of positive words in the content
-
-globalratenegative_words: Rate of negative words in the content
-
-ratepositivewords: Rate of positive words among non-neutral tokens
-
-ratenegativewords: Rate of negative words among non-neutral tokens
-
-avgpositivepolarity: Avg. polarity of positive words
-
-minpositivepolarity: Min. polarity of positive words
-
-maxpositivepolarity: Max. polarity of positive words
-
-avgnegativepolarity: Avg. polarity of negative words
-
-minnegativepolarity: Min. polarity of negative words
-
-maxnegativepolarity: Max. polarity of negative words
-
-title_subjectivity: Title subjectivity
-
-titlesentimentpolarity: Title polarity
-
-abstitlesubjectivity: Absolute subjectivity level
-
-abstitlesentiment_polarity: Absolute polarity level
-
-shares: Number of shares (target)
-```
+  - 栏目特征
+    - 栏目名称

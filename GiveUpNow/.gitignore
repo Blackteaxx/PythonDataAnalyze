@@ -1,4 +1,4 @@
-
+*.csv
 *.png
 Old/.RData
 Old/competition_test.txt
