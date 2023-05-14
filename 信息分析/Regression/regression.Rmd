@@ -48,6 +48,7 @@ str(data)
 # 模型1：预测G1
 
 ```{r}
+library(gtsummary)
 library(dplyr)
 data_G1 <- select(data, -c("school", "G2", "G3"))
 ```
@@ -55,7 +56,12 @@ data_G1 <- select(data, -c("school", "G2", "G3"))
 ## 带/不带截距全变量预测
 Multiple R-squared:  0.3339,	Adjusted R-squared:  0.2628 
 ```{r}
+library(broom)
+library(knitr)
+
+# 拟合线性模型
 lm.model <- lm(G1~., data=data_G1)
+
 summary(lm.model)
 ```
 
@@ -99,6 +105,7 @@ durbinWatsonTest(G1.model)
 # 共线性，无截距，算了吧不看了
 vif(G1.model)
 
+outlierTest(G1.model)
 # 离群值检验
 influencePlot(G1.model)
 ```
@@ -106,7 +113,7 @@ influencePlot(G1.model)
 解决异常值,解决因变量不线性
 ```{r}
 data_G1[c(3,79,199,233,249),]
-data_G1 <- data_G1[-c(3,79,199,233,249),]
+data_G1 <- data_G1[-c(199),]
 ```
 
 ```{r}
@@ -114,6 +121,8 @@ G1.model2 <- lm(sqrt(sqrt(G1))~sex+studytime+failures+schoolsup+goout-1,
                data=data_G1)
 summary(G1.model2)
 AIC(G1.model2)
+
+cor(x=data_G1$studytime, y=data_G1$goout)
 ```
 
 
@@ -140,7 +149,14 @@ influencePlot(G1.model2)
 # 2. 预测G2
 ```{r}
 data_G2 <- select(data, -c("school","G3"))
+cor(data_G2$G1, data_G2$G2)
+data_G2_2 <- select(data, -c("school","G3", "G1"))
 ```
+```{r}
+G2.model3 <- lm(G2~sex+studytime+failures+schoolsup+goout-1, data=data_G2_2)
+summary(G2.model3)
+```
+
 
 ```{r}
 G2.model <- lm(G2~traveltime+romantic+G1-1, data=data_G2)
