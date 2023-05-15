@@ -36,3 +36,5 @@ GiveUpNow/pre.csv
 信息分析/PCA&Clustered/bertlabelPCA.csv
 信息分析/PCA&Clustered/finalData.csv
 信息分析/PCA&Clustered/preProcessdata.csv
+GiveUpNow/.RData
+GiveUpNow/.Rhistory

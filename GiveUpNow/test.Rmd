@@ -8,22 +8,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
-library(knitr)
-library(kableExtra)
-library(Hmisc)
-library(dplyr)
-library(ggplot2)
 
-getwd()
-setwd("E:/R_Tutorial")
-save.image()
 ```
-# 0  对结果处理
-```{r}
-sample.df = read.csv(file="./OnlineNewsPopularity.csv", header = T,
-                     na.strings=c("","NA","NULL",NULL), sep = ",")
-# 计算分位点
+# 没用上的分位点处理
 range_capture <- function(x) {
     if (x >= 0 & x < 100) {
         return(0)
@@ -38,20 +25,34 @@ range_capture <- function(x) {
     }
 }
 
+# 计算分位点
 sample.df$result <- sapply(sample.df$shares, range_capture)
+
+```
+
+
+```{r}
+library(knitr)
+library(kableExtra)
+library(Hmisc)
+library(dplyr)
+library(ggplot2)
+
+getwd()
+```
+# 0  对结果处理
+```{r}
+sample.df <- read.csv(file="./Data/News2.csv", header = T,
+                     na.strings=c("","NA","NULL",NULL), sep = ",")
 
 
 # 查看结果
 head(sample.df)
 
-write.csv(sample.df,file = "DataSet1.csv", col.names = T, row.names = F,
-          sep = ",")
 ```
 
 # 1. 数据预处理
 ```{r}
-sample.df = read.csv(file="./DataSet1.csv", header = T, 
-                  na.strings=c("","NA","NULL",NULL), sep = ",")
 head(sample.df)
 ```
 
@@ -60,11 +61,19 @@ head(sample.df)
 ### 查找缺失值
 ```{r}
 colSums(is.na(sample.df))
+
+sample.df[is.na(sample.df$content.Seg),]
+
 sum(complete.cases(sample.df))
 ```
 ### 描述
+```{r}
+colnames(sample.df)
+```
+
 
 利用Hmisc包中describe进行描述
+GMD(Gini mean difference) - 度量变量的离散值
 ```{r}
 desc <- describe(sample.df)
 
@@ -79,6 +88,13 @@ sink()
 str(sample.df)
 
 # 转因子变量
+sample.df$n_tokens_title <- 
+  as.factor(sample.df$n_tokens_title)
+# num_hrefs 133
+# num_self_hrefs 59
+# num_imgs 91
+# num_videos 53
+
 sample.df$data_channel_is_lifestyle <- 
   as.factor(sample.df$data_channel_is_lifestyle)
 sample.df$data_channel_is_entertainment <- 
@@ -108,9 +124,39 @@ sample.df$weekday_is_sunday <-
   as.factor(sample.df$weekday_is_sunday)
 sample.df$is_weekend <- 
   as.factor(sample.df$is_weekend)
-sample.df$result <- 
-  as.factor(sample.df$result)
 
+# 大部分全都是发在不是节假日日期的
+sample.df$isHoliday <- 
+  as.factor(sample.df$isHoliday)
+
+sample.df$topicNo <- 
+  as.factor(sample.df$topicNo)
+
+# Flesch.Kincaid.Grade.of.Title 122
+
+sample.df$SyntaxTree.Height <- 
+  as.factor(sample.df$SyntaxTree.Height)
+
+# All.Possible.Meanings 这个可能需要归一化
+
+sample.df$noun_count <- 
+  as.factor(sample.df$noun_count)
+sample.df$verb_count <- 
+  as.factor(sample.df$verb_count)
+
+# adverb 和 punc偏态都挺严重，可能需要删去
+sample.df$adverb_count <- 
+  as.factor(sample.df$adverb_count)
+sample.df$punc_count <- 
+  as.factor(sample.df$punc_count)
+
+
+
+# 考虑删除
+# Comparatives.Count 
+# Superlatives.Count 
+# Count.Intensifiers 
+# Count.Downtoners 
 
 ```
 
