@@ -66,6 +66,12 @@ sample.df[is.na(sample.df$content.Seg),]
 
 sum(complete.cases(sample.df))
 ```
+```{r}
+sample.df <- sample.df[-c(21228,29063,30930,35423),]
+sample.df[is.na(sample.df$content.Seg),]
+```
+
+
 ### 描述
 ```{r}
 colnames(sample.df)
@@ -81,6 +87,18 @@ desc <- describe(sample.df)
 sink("describe.txt")
 cat(capture.output(desc), sep = "\n")
 sink()
+```
+
+删掉没用的特征
+```{r}
+sample.df <- dplyr::select(sample.df, -c("url","title","content",
+                                         "n_unique_tokens","n_non_stop_words",
+                                         "n_non_stop_unique_tokens",
+                                         "num_keywords","content.Seg",
+                                         "WikiEntity","title.tokens",
+                                         "title.tags"))
+
+
 ```
 
 查看类型
@@ -217,23 +235,51 @@ ggplot(data = sample.df, aes(x = shares)) +
   geom_histogram() + scale_x_continuous(limits = c(0, 10000))
 ```
 
-## 1.2 特征选择
-
-方差选择
+## 2. 先拿随机森林试试水
+```{r}
+library(randomForest)
+set.seed(20021119)
+train.forest <- randomForest(shares~timedelta + n_tokens_title + n_tokens_content + num_hrefs + 
+    num_self_hrefs + num_imgs + num_videos + average_token_length + 
+    data_channel_is_lifestyle + data_channel_is_entertainment + 
+    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
+    data_channel_is_world + is_weekend + topicNo + 
+          Comparatives.Count + Superlatives.Count + Count.Intensifiers + 
+    Flesch.Kincaid.Grade.of.Title + Count.Downtoners + SyntaxTree.Height + 
+    All.Possible.Meanings + noun_count + verb_count + adverb_count + 
+    punc_count + title_subjectivity + title_sentiment_polarity + isHoliday, data = sample.df, importance = TRUE, ntree=50)
+train.forest
+```
 
 ```{r}
-test.df = select(sample.df, c(-"url",-"timedelta",-"shares"))
-# 找出所有的因子列
-factor_cols <- which(sapply(test.df, is.factor))
+plot(train.forest[["predicted"]],sample.df$shares)
+```
 
-# 删除这些因子列
-test.df <- test.df[, -factor_cols]
+```{r}
+importance <- train.forest$importance
+importance <- as.data.frame(importance)
 
-# 使用方差选择法选择最佳特征
-library(caret)
-set.seed(123)
-vars <- caret::nearZeroVar(test.df, saveMetrics = TRUE)
-print(vars) # kw_min_max是T，可以删了
+#可以根据某种重要性的高低排个序，例如根据“IncNodePurity”指标
+importance <- importance[order(importance$IncNodePurity, decreasing = TRUE),]
+head(importance)
+```
 
-sample.df <- select(sample.df, -"kw_min_max")
+
+```{r}
+lm.model <- lm(shares~timedelta + n_tokens_title + n_tokens_content + num_hrefs + 
+    num_self_hrefs + num_imgs + num_videos + average_token_length + 
+    data_channel_is_lifestyle + data_channel_is_entertainment + 
+    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
+    data_channel_is_world + is_weekend + topicNo + 
+          Comparatives.Count + Superlatives.Count + Count.Intensifiers + 
+    Flesch.Kincaid.Grade.of.Title + Count.Downtoners + SyntaxTree.Height + 
+    All.Possible.Meanings + noun_count + verb_count + adverb_count + 
+    punc_count + title_subjectivity + title_sentiment_polarity + isHoliday-1,
+    data = sample.df)
+summary(lm.model)
+```
+```{r}
+library(car)
+AIC(lm.model)
+vif(lm.model)
 ```
