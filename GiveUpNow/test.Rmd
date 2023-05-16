@@ -92,7 +92,7 @@ sink()
 删掉没用的特征
 ```{r}
 sample.df <- dplyr::select(sample.df, -c("url","title","content",
-                                         "n_unique_tokens","n_non_stop_words",
+                                        "n_unique_tokens","n_non_stop_words",
                                          "n_non_stop_unique_tokens",
                                          "num_keywords","content.Seg",
                                          "WikiEntity","title.tokens",
@@ -106,8 +106,6 @@ sample.df <- dplyr::select(sample.df, -c("url","title","content",
 str(sample.df)
 
 # 转因子变量
-sample.df$n_tokens_title <- 
-  as.factor(sample.df$n_tokens_title)
 # num_hrefs 133
 # num_self_hrefs 59
 # num_imgs 91
@@ -239,7 +237,8 @@ ggplot(data = sample.df, aes(x = shares)) +
 ```{r}
 library(randomForest)
 set.seed(20021119)
-train.forest <- randomForest(shares~timedelta + n_tokens_title + n_tokens_content + num_hrefs + 
+train.forest <- randomForest(logShares~timedelta + n_tokens_title + n_tokens_content +
+                 num_hrefs + 
     num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
     data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
@@ -247,7 +246,8 @@ train.forest <- randomForest(shares~timedelta + n_tokens_title + n_tokens_conten
           Comparatives.Count + Superlatives.Count + Count.Intensifiers + 
     Flesch.Kincaid.Grade.of.Title + Count.Downtoners + SyntaxTree.Height + 
     All.Possible.Meanings + noun_count + verb_count + adverb_count + 
-    punc_count + title_subjectivity + title_sentiment_polarity + isHoliday, data = sample.df, importance = TRUE, ntree=50)
+    punc_count + title_subjectivity + title_sentiment_polarity + isHoliday, 
+    data = sample.df, importance = TRUE, ntree=500)
 train.forest
 ```
 
@@ -264,9 +264,16 @@ importance <- importance[order(importance$IncNodePurity, decreasing = TRUE),]
 head(importance)
 ```
 
+```{r}
+sample.df$logShares <- log(sample.df$shares)
+
+
+
+```
 
 ```{r}
-lm.model <- lm(shares~timedelta + n_tokens_title + n_tokens_content + num_hrefs + 
+lm.model <- lm(logShares~timedelta + n_tokens_title + n_tokens_content +
+                 num_hrefs + 
     num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
     data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
@@ -278,8 +285,11 @@ lm.model <- lm(shares~timedelta + n_tokens_title + n_tokens_content + num_hrefs 
     data = sample.df)
 summary(lm.model)
 ```
+
+
 ```{r}
 library(car)
-AIC(lm.model)
-vif(lm.model)
+
+# 因变量幂次检验
+spreadLevelPlot(lm.model)
 ```
