@@ -150,9 +150,6 @@ sample.df$topicNo <-
 
 # Flesch.Kincaid.Grade.of.Title 122
 
-sample.df$SyntaxTree.Height <- 
-  as.factor(sample.df$SyntaxTree.Height)
-
 # All.Possible.Meanings 这个可能需要归一化
 
 sample.df$noun_count <- 
@@ -174,6 +171,17 @@ sample.df$punc_count <-
 # Count.Intensifiers 
 # Count.Downtoners 
 
+
+```
+
+归一化
+```{r}
+normalize <- function(x) {
+  return((x - min(x)) / (max(x) - min(x)))
+}
+
+# apply normalization to entire data frame
+sample.df$All.Possible.Meanings <- normalize(sample.df$All.Possible.Meanings)
 ```
 
 ### 特征分布与异常值
@@ -217,23 +225,60 @@ for (col in names(sample.df)) {
 }
 ```
 
-根据特征画图
+
+## 2. 回归模型拟合
+
 ```{r}
-ggplot(data = sample.df, aes(x = n_tokens_title, fill=result)) +
-  geom_bar()
-
-
-ggplot(data = sample.df, aes(x = shares)) +
-  geom_histogram()
-
-ggplot(data = sample.df, aes(x = shares)) +
-  geom_histogram() + scale_x_log10()
-
-ggplot(data = sample.df, aes(x = shares)) +
-  geom_histogram() + scale_x_continuous(limits = c(0, 10000))
+sample.df$logShares <- log(sample.df$shares)
 ```
 
-## 2. 先拿随机森林试试水
+```{r}
+set.seed(20021119)
+index <- sample(c(1,2), nrow(sample.df), replace = T, prob = c(0.7, 0.3))
+train <- sample.df[index==1,]
+test <- sample.df[index==2,]
+```
+
+```{r}
+lm.model <- lm(logShares~timedelta + n_tokens_title + n_tokens_content +
+                 num_hrefs + 
+    num_self_hrefs + num_imgs + num_videos + average_token_length + 
+    data_channel_is_lifestyle + data_channel_is_entertainment + 
+    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
+    data_channel_is_world + is_weekend + topicNo + 
+          Comparatives.Count + Superlatives.Count + Count.Intensifiers + 
+    Flesch.Kincaid.Grade.of.Title + Count.Downtoners + SyntaxTree.Height + 
+    All.Possible.Meanings + noun_count + verb_count + adverb_count + 
+    punc_count + title_subjectivity + 
+      title_sentiment_polarity+
+      isHoliday+ContentFleschReadingEase+NWordRatio+
+      VWordRatio+wordRatioIn8000+global_subjectivity+global_sentiment_polarity+
+      global_rate_positive_words+global_rate_negative_words-1,
+    data = train)
+summary(lm.model)
+```
+
+```{r}
+train_pred <- predict(lm.model, newdata = train)
+mean(abs(exp(train_pred) - exp(train$logShares)))
+test_pred <- predict(lm.model, newdata = test)
+mean((test_pred - test$logShares)^2)
+```
+
+# 3. 分类模型拟合
+
+## shares分箱
+
+```{r}
+library(factoextra)
+fviz_nbclust(sample.df$shares, kmeans, method = "silhouette")+ 
+  labs(subtitle = "silhouette")
+km <- kmeans(Data, center = 3)
+
+```
+
+
+
 ```{r}
 library(randomForest)
 set.seed(20021119)
@@ -262,34 +307,4 @@ importance <- as.data.frame(importance)
 #可以根据某种重要性的高低排个序，例如根据“IncNodePurity”指标
 importance <- importance[order(importance$IncNodePurity, decreasing = TRUE),]
 head(importance)
-```
-
-```{r}
-sample.df$logShares <- log(sample.df$shares)
-
-
-
-```
-
-```{r}
-lm.model <- lm(logShares~timedelta + n_tokens_title + n_tokens_content +
-                 num_hrefs + 
-    num_self_hrefs + num_imgs + num_videos + average_token_length + 
-    data_channel_is_lifestyle + data_channel_is_entertainment + 
-    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
-    data_channel_is_world + is_weekend + topicNo + 
-          Comparatives.Count + Superlatives.Count + Count.Intensifiers + 
-    Flesch.Kincaid.Grade.of.Title + Count.Downtoners + SyntaxTree.Height + 
-    All.Possible.Meanings + noun_count + verb_count + adverb_count + 
-    punc_count + title_subjectivity + title_sentiment_polarity + isHoliday-1,
-    data = sample.df)
-summary(lm.model)
-```
-
-
-```{r}
-library(car)
-
-# 因变量幂次检验
-spreadLevelPlot(lm.model)
 ```
