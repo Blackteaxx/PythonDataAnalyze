@@ -1,0 +1,43 @@
+/* 主容器 */
+.blog_timeline_container {
+  position: relative;
+  margin-left: 20%;
+  margin-right: 20%;
+  box-sizing: border-box;
+  display: flex;
+}
+
+
+.blog_timeline_title {
+  font-size: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.blog_timeline_entry {
+  display: flex;
+}
+
+.time {
+  color: grey;
+  font-size: 20px;
+}
+
+.blog_timeline_blogtitle {
+  font-size: 20px;
+  color: black;
+  transition: 0.3s;
+}
+
+.blog_timeline_blogtitle:hover {
+  color: blueviolet;
+  font-size: 25px;
+}
+
+.blank {
+  margin-left: 40px;
+}
+
+.blank2 {
+  margin-left: 10px;
+}

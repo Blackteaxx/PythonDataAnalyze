@@ -1,0 +1,12 @@
+.toc ul {
+  list-style: circle;
+}
+
+.toc a {
+  color: black;
+  transition: 0.3s;
+}
+
+.toc a:hover::after {
+  content: ">>";
+}

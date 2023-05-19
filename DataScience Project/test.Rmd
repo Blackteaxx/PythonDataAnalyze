@@ -9,9 +9,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-
-
-
 ```{r prepare}
 library(knitr)
 library(kableExtra)
@@ -21,6 +18,7 @@ library(ggplot2)
 
 getwd()
 ```
+
 # 0  对结果处理
 ```{r load}
 sample.df <- read.csv(file="./Data/News2.csv", header = T,
@@ -270,7 +268,7 @@ sample.df$result <- as.factor(sapply(sample.df$shares, range_capture))
 ## 划分test train
 
 ```{r 划分测试集与训练集}
-set.seed(333)
+set.seed(20021119)
 index <- sample(c(1,2), nrow(sample.df), replace = T, prob = c(0.7, 0.3))
 train <- sample.df[index==1,]
 test <- sample.df[index==2,]
@@ -293,12 +291,48 @@ rf.model <- randomForest::randomForest(result ~ timedelta + n_tokens_title +
     title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
     NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
     global_sentiment_polarity + global_rate_positive_words + 
-    global_rate_negative_words + novel.of.title, data=train, importance=T)
+    global_rate_negative_words + novel.of.title + dayRatio + threeDayRatio +
+      weekRation + twoWeekRation, data=train, importance=T, ntree=450)
 
 rf.model
 ```
 
+### 选择特征
+```{r}
+varImpPlot(rf.model, n.var = 30, main = "Top 30 - Variable Importance")
+```
+
 
 ```{r}
-rf.model$importance
+library(caret)
+
+# 构建控制参数
+ctrl <- trainControl(method = "cv", number = 5, search = "grid")
+
+grid <- expand.grid(mtry = 10:43)
+
+# 训练模型
+model <- caret::train(result ~ timedelta + n_tokens_title + 
+                             n_tokens_content + 
+    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
+    data_channel_is_lifestyle + data_channel_is_entertainment + 
+    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
+    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
+    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
+    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
+    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
+    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
+    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
+    global_sentiment_polarity + global_rate_positive_words + 
+    global_rate_negative_words + novel.of.title + dayRatio + threeDayRatio +
+      weekRation + twoWeekRation, data=train,
+    method = "rf", trControl = ctrl, tuneGrid = grid, ntree=500)
+
+# 输出最优参数
+print(paste0("Best Parameters: ", model$bestTune))
+
+# 输出准确率和召回率
+print(model$results[, c("ntree", "mtry", "Accuracy", "Recall")])
+
+
 ```

@@ -1,0 +1,137 @@
+/*from https://gist.github.com/xiaolai/aa190255b7dde302d10208ae247fc9f2*/
+
+article pre, code {
+  font-size: 14px;
+  font-family: Roboto, 'Courier New', Consolas, Inconsolata, Courier, monospace;
+  margin: auto 5px;
+}
+
+article code {
+  white-space: pre-wrap;
+  border-radius: 2px;
+  display: inline;
+}
+
+article pre {
+  font-size: 15px;
+  line-height: 1.4em;
+  background-color: aliceblue;
+  display: block; !important;
+}
+
+article pre code {
+  white-space: pre;
+  overflow: auto;
+  border-radius: 3px;
+  padding: 1px 1px;
+  display: block !important;
+}
+
+article strong, b{
+  color: #BF360C;
+}
+
+article em, i {
+  color: #009688;
+}
+
+article hr {
+  border: 1px solid #BF360C;
+  margin: 1.5em auto;
+}
+
+article p {
+  margin: 1.5em 5px;
+}
+
+article div.description {
+  color: grey;
+  text-align: center;
+}
+
+article table, pre, dl, blockquote, q, ul, ol {
+  margin: 10px 5px;
+}
+
+article ul, ol {
+  padding-left: 15px;
+}
+
+article li {
+  margin: 10px;
+}
+
+article li p {
+  margin: 10px 0 !important;
+}
+
+article ul ul, ul ol, ol ul, ol ol {
+  margin: 0;
+  padding-left: 10px;
+  list-style: circle;
+}
+
+article ul {
+  list-style-type: circle;
+}
+
+article dl {
+  padding: 0;
+}
+
+article dl dt {
+  font-size: 1em;
+  font-weight: bold;
+  font-style: italic;
+}
+
+article dl dd {
+  margin: 0 0 10px;
+  padding: 0 10px;
+}
+
+article blockquote, q {
+  border-left: 2px solid #009688;
+  padding: 0 10px;
+  color: #777;
+  quotes: none;
+  margin-left: 1em;
+}
+
+article blockquote::before, blockquote::after, q::before, q::after {
+  content: none;
+}
+
+article h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-style: bold !important;
+  color: #009688 !important;
+  text-align: center !important;
+  margin: 1.5em 5px !important;
+  padding: 0.5em 1em !important;
+}
+
+article h1 {
+  font-size: 24px !important;
+  border-bottom: 1px solid #ddd !important;
+}
+
+article h2 {
+  font-size: 20px !important;
+  border-bottom: 1px solid #eee !important;
+}
+
+article h3 {
+  font-size: 18px;
+}
+
+article h4 {
+  font-size: 16px;
+}
+
+article img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}

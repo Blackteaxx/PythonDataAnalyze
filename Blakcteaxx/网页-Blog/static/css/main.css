@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+}
+
+.blog_main_container {
+  margin-top: 200px;
+  margin-left: 0;
+  display: flex;
+  padding-left: 10%;
+  padding-right: 10%;
+  /* 设置高度 */
+  min-height: 100vh;
+  z-index: 0;
+}
+
+.blog_left_sidebar {
+  flex-basis: 20%;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.blog_main_content {
+  flex-basis: 60%;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.blog_right_sidebar {
+  flex-basis: 20%;
+  flex-grow: 1;
+  overflow: auto;
+}
