@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
-```{r}
+```{r prepare}
 library(knitr)
 library(kableExtra)
 library(Hmisc)
@@ -22,7 +22,7 @@ library(ggplot2)
 getwd()
 ```
 # 0  对结果处理
-```{r}
+```{r load}
 sample.df <- read.csv(file="./Data/News2.csv", header = T,
                      na.strings=c("","NA","NULL",NULL), sep = ",")
 
@@ -40,28 +40,28 @@ head(sample.df)
 ## 1.1 数据描述
 
 ### 查找缺失值
-```{r}
+```{r 查找缺失值}
 colSums(is.na(sample.df))
 
 sample.df[is.na(sample.df$content.Seg),]
 
 sum(complete.cases(sample.df))
 ```
-```{r}
+```{r 删去没什么内容的条目}
 sample.df <- sample.df[-c(21228,29063,30930,35423),]
 sample.df[is.na(sample.df$content.Seg),]
 ```
 
 
 ### 描述
-```{r}
+```{r 所有列名}
 colnames(sample.df)
 ```
 
 
 利用Hmisc包中describe进行描述
 GMD(Gini mean difference) - 度量变量的离散值
-```{r}
+```{r describe查看分布}
 desc <- describe(sample.df)
 
 # 将结果存储到文本文件
@@ -71,7 +71,7 @@ sink()
 ```
 
 删掉没用的特征
-```{r}
+```{r 去除预处理过程中产生的数据}
 sample.df <- dplyr::select(sample.df, -c("url","title","content",
                                         "n_unique_tokens","n_non_stop_words",
                                          "n_non_stop_unique_tokens",
@@ -83,7 +83,7 @@ sample.df <- dplyr::select(sample.df, -c("url","title","content",
 ```
 
 查看类型
-```{r}
+```{r 转因子变量}
 str(sample.df)
 
 # 转因子变量
@@ -156,7 +156,7 @@ sample.df$punc_count <-
 ```
 
 归一化
-```{r}
+```{r 将歧义归一化}
 normalize <- function(x) {
   return((x - min(x)) / (max(x) - min(x)))
 }
@@ -167,7 +167,7 @@ sample.df$All.Possible.Meanings <- normalize(sample.df$All.Possible.Meanings)
 
 ### 特征分布与异常值
 画分布
-```{r}
+```{r 直方图}
 
 GetDistribution <- function(df){
   df = as.data.frame(df)
@@ -188,14 +188,14 @@ GetDistribution(sample.df)
 ```
 
 查看预测值分布
-```{r}
+```{r shares分布}
 hist(sample.df$shares)
 boxplot(sample.df$shares)
 hist(log(sample.df$shares))
 ```
 
 画箱线图
-```{r}
+```{r 箱线图}
 # 对于集中于一条线的，例如kw_avg_avg那种，一般是有严重的偏态，一般取对数
 # 绘制箱线图，并保存至文件夹内
 for (col in names(sample.df)) {
@@ -211,18 +211,18 @@ for (col in names(sample.df)) {
 
 ## 2. 回归模型拟合
 
-```{r}
+```{r log转换}
 sample.df$logShares <- log(sample.df$shares)
 ```
 
-```{r}
+```{r 划分测试集与训练集}
 set.seed(333)
 index <- sample(c(1,2), nrow(sample.df), replace = T, prob = c(0.7, 0.3))
 train <- sample.df[index==1,]
 test <- sample.df[index==2,]
 ```
 
-```{r}
+```{r 模型拟合}
 lm.model <- lm(logShares~timedelta + n_tokens_title + n_tokens_content +
                  num_hrefs + 
     num_self_hrefs + num_imgs + num_videos + average_token_length + 
@@ -243,7 +243,7 @@ lm.model <- lm(logShares~timedelta + n_tokens_title + n_tokens_content +
 summary(lm.model)
 ```
 
-```{r}
+```{r MAE}
 train_pred <- predict(lm.model, newdata = train)
 mean(abs(exp(train_pred) - exp(train$logShares)))
 test_pred <- predict(lm.model, newdata = test)
@@ -254,28 +254,51 @@ mean(abs(exp(test_pred) - exp(test$logShares)))
 
 ## shares分箱
 
-```{r}
+```{r 二分}
 range_capture <- function(x) {
-    if (x >= 0 & x < 100) {
+    if (x >= 0 & x < 1400) {
         return(0)
-    } else if (x < 500) {
-        return(1)
-    } else if (x < 2500) {
-        return(2)
-    } else if (x < 15000) {
-        return(3)
     } else {
-        return(4)
+      return(1)
     }
 }
 
-# 计算分位点
-sample.df$result <- sapply(sample.df$shares, range_capture)
+sample.df$result <- as.factor(sapply(sample.df$shares, range_capture))
 
 ```
 
+## 划分test train
+
+```{r 划分测试集与训练集}
+set.seed(333)
+index <- sample(c(1,2), nrow(sample.df), replace = T, prob = c(0.7, 0.3))
+train <- sample.df[index==1,]
+test <- sample.df[index==2,]
+```
+
+## 随机森林
+
+```{r 随机森林}
+library(randomForest)
+
+rf.model <- randomForest::randomForest(result ~ timedelta + n_tokens_title + 
+                             n_tokens_content + 
+    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
+    data_channel_is_lifestyle + data_channel_is_entertainment + 
+    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
+    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
+    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
+    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
+    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
+    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
+    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
+    global_sentiment_polarity + global_rate_positive_words + 
+    global_rate_negative_words + novel.of.title, data=train, importance=T)
+
+rf.model
+```
+
+
 ```{r}
-
-
-
+rf.model$importance
 ```
