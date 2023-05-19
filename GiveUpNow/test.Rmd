@@ -8,6 +8,10 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+
+
+
 ```{r}
 library(knitr)
 library(kableExtra)
@@ -16,42 +20,20 @@ library(dplyr)
 library(ggplot2)
 
 getwd()
-setwd("E:/R_Tutorial")
-save.image()
 ```
 # 0  对结果处理
 ```{r}
-sample.df = read.csv(file="./OnlineNewsPopularity.csv", header = T,
+sample.df <- read.csv(file="./Data/News2.csv", header = T,
                      na.strings=c("","NA","NULL",NULL), sep = ",")
-# 计算分位点
-range_capture <- function(x) {
-    if (x >= 0 & x < 100) {
-        return(0)
-    } else if (x < 500) {
-        return(1)
-    } else if (x < 2500) {
-        return(2)
-    } else if (x < 15000) {
-        return(3)
-    } else {
-        return(4)
-    }
-}
-
-sample.df$result <- sapply(sample.df$shares, range_capture)
 
 
 # 查看结果
 head(sample.df)
 
-write.csv(sample.df,file = "DataSet1.csv", col.names = T, row.names = F,
-          sep = ",")
 ```
 
 # 1. 数据预处理
 ```{r}
-sample.df = read.csv(file="./DataSet1.csv", header = T, 
-                  na.strings=c("","NA","NULL",NULL), sep = ",")
 head(sample.df)
 ```
 
@@ -60,11 +42,25 @@ head(sample.df)
 ### 查找缺失值
 ```{r}
 colSums(is.na(sample.df))
+
+sample.df[is.na(sample.df$content.Seg),]
+
 sum(complete.cases(sample.df))
 ```
+```{r}
+sample.df <- sample.df[-c(21228,29063,30930,35423),]
+sample.df[is.na(sample.df$content.Seg),]
+```
+
+
 ### 描述
+```{r}
+colnames(sample.df)
+```
+
 
 利用Hmisc包中describe进行描述
+GMD(Gini mean difference) - 度量变量的离散值
 ```{r}
 desc <- describe(sample.df)
 
@@ -74,11 +70,28 @@ cat(capture.output(desc), sep = "\n")
 sink()
 ```
 
+删掉没用的特征
+```{r}
+sample.df <- dplyr::select(sample.df, -c("url","title","content",
+                                        "n_unique_tokens","n_non_stop_words",
+                                         "n_non_stop_unique_tokens",
+                                         "num_keywords","content.Seg",
+                                         "WikiEntity","title.tokens",
+                                         "title.tags", "kmeans.Temporary"))
+
+
+```
+
 查看类型
 ```{r}
 str(sample.df)
 
 # 转因子变量
+# num_hrefs 133
+# num_self_hrefs 59
+# num_imgs 91
+# num_videos 53
+
 sample.df$data_channel_is_lifestyle <- 
   as.factor(sample.df$data_channel_is_lifestyle)
 sample.df$data_channel_is_entertainment <- 
@@ -108,10 +121,48 @@ sample.df$weekday_is_sunday <-
   as.factor(sample.df$weekday_is_sunday)
 sample.df$is_weekend <- 
   as.factor(sample.df$is_weekend)
-sample.df$result <- 
-  as.factor(sample.df$result)
+
+# 大部分全都是发在不是节假日日期的
+sample.df$isHoliday <- 
+  as.factor(sample.df$isHoliday)
+
+sample.df$topicNo <- 
+  as.factor(sample.df$topicNo)
+
+# Flesch.Kincaid.Grade.of.Title 122
+
+# All.Possible.Meanings 这个可能需要归一化
+
+sample.df$noun_count <- 
+  as.factor(sample.df$noun_count)
+sample.df$verb_count <- 
+  as.factor(sample.df$verb_count)
+
+# adverb 和 punc偏态都挺严重，可能需要删去
+sample.df$adverb_count <- 
+  as.factor(sample.df$adverb_count)
+sample.df$punc_count <- 
+  as.factor(sample.df$punc_count)
 
 
+
+# 考虑删除
+# Comparatives.Count 
+# Superlatives.Count 
+# Count.Intensifiers 
+# Count.Downtoners 
+
+
+```
+
+归一化
+```{r}
+normalize <- function(x) {
+  return((x - min(x)) / (max(x) - min(x)))
+}
+
+# apply normalization to entire data frame
+sample.df$All.Possible.Meanings <- normalize(sample.df$All.Possible.Meanings)
 ```
 
 ### 特征分布与异常值
@@ -138,6 +189,8 @@ GetDistribution(sample.df)
 
 查看预测值分布
 ```{r}
+hist(sample.df$shares)
+boxplot(sample.df$shares)
 hist(log(sample.df$shares))
 ```
 
@@ -155,39 +208,74 @@ for (col in names(sample.df)) {
 }
 ```
 
-根据特征画图
+
+## 2. 回归模型拟合
+
 ```{r}
-ggplot(data = sample.df, aes(x = n_tokens_title, fill=result)) +
-  geom_bar()
-
-
-ggplot(data = sample.df, aes(x = shares)) +
-  geom_histogram()
-
-ggplot(data = sample.df, aes(x = shares)) +
-  geom_histogram() + scale_x_log10()
-
-ggplot(data = sample.df, aes(x = shares)) +
-  geom_histogram() + scale_x_continuous(limits = c(0, 10000))
+sample.df$logShares <- log(sample.df$shares)
 ```
 
-## 1.2 特征选择
-
-方差选择
+```{r}
+set.seed(333)
+index <- sample(c(1,2), nrow(sample.df), replace = T, prob = c(0.7, 0.3))
+train <- sample.df[index==1,]
+test <- sample.df[index==2,]
+```
 
 ```{r}
-test.df = select(sample.df, c(-"url",-"timedelta",-"shares"))
-# 找出所有的因子列
-factor_cols <- which(sapply(test.df, is.factor))
+lm.model <- lm(logShares~timedelta + n_tokens_title + n_tokens_content +
+                 num_hrefs + 
+    num_self_hrefs + num_imgs + num_videos + average_token_length + 
+    data_channel_is_lifestyle + data_channel_is_entertainment + 
+    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
+    data_channel_is_world + is_weekend + topicNo + 
+          Comparatives.Count + Superlatives.Count + Count.Intensifiers + 
+    Flesch.Kincaid.Grade.of.Title + Count.Downtoners + SyntaxTree.Height + 
+    All.Possible.Meanings + noun_count + verb_count + adverb_count + 
+    punc_count + title_subjectivity + 
+      title_sentiment_polarity+
+      isHoliday+ContentFleschReadingEase+NWordRatio+
+      VWordRatio+wordRatioIn8000+global_subjectivity+global_sentiment_polarity+
+      global_rate_positive_words+global_rate_negative_words+novel.of.title+ 
+      dayRatio+threeDayRatio+weekRation+twoWeekRation
+      -1,
+    data = train)
+summary(lm.model)
+```
 
-# 删除这些因子列
-test.df <- test.df[, -factor_cols]
+```{r}
+train_pred <- predict(lm.model, newdata = train)
+mean(abs(exp(train_pred) - exp(train$logShares)))
+test_pred <- predict(lm.model, newdata = test)
+mean(abs(exp(test_pred) - exp(test$logShares)))
+```
 
-# 使用方差选择法选择最佳特征
-library(caret)
-set.seed(123)
-vars <- caret::nearZeroVar(test.df, saveMetrics = TRUE)
-print(vars) # kw_min_max是T，可以删了
+# 3. 分类模型拟合
 
-sample.df <- select(sample.df, -"kw_min_max")
+## shares分箱
+
+```{r}
+range_capture <- function(x) {
+    if (x >= 0 & x < 100) {
+        return(0)
+    } else if (x < 500) {
+        return(1)
+    } else if (x < 2500) {
+        return(2)
+    } else if (x < 15000) {
+        return(3)
+    } else {
+        return(4)
+    }
+}
+
+# 计算分位点
+sample.df$result <- sapply(sample.df$shares, range_capture)
+
+```
+
+```{r}
+
+
+
 ```
