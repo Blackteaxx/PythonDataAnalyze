@@ -23,3 +23,5 @@ PCA&Clustered/preProcessdata.csv
 .gitignore
 PCA&Clustered/finalData.csv
 GiveUpNow/pre.csv
+GiveUpNow/test.ipynb
+GiveUpNow/authorData.json
