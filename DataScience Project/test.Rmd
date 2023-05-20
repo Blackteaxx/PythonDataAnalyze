@@ -274,7 +274,7 @@ train <- sample.df[index==1,]
 test <- sample.df[index==2,]
 ```
 
-## 随机森林
+## 随机森林：选择特征
 
 ```{r 随机森林}
 library(randomForest)
@@ -291,48 +291,180 @@ rf.model <- randomForest::randomForest(result ~ timedelta + n_tokens_title +
     title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
     NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
     global_sentiment_polarity + global_rate_positive_words + 
-    global_rate_negative_words + novel.of.title + dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=train, importance=T, ntree=450)
+    global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
+      weekRation + twoWeekRation, data=train, importance=T, 
+    ntree=450, mtry = 10, samplesize=2000)
 
 rf.model
 ```
 
 ### 选择特征
 ```{r}
-varImpPlot(rf.model, n.var = 30, main = "Top 30 - Variable Importance")
+train.df <- select(train, c(timedelta,n_tokens_title,n_tokens_content,
+    num_hrefs,num_self_hrefs,num_imgs,num_videos,average_token_length , 
+    data_channel_is_lifestyle , data_channel_is_entertainment , 
+    data_channel_is_bus , data_channel_is_socmed , data_channel_is_tech , 
+    data_channel_is_world , is_weekend , topicNo , Comparatives.Count , 
+    Superlatives.Count , Count.Intensifiers , Flesch.Kincaid.Grade.of.Title , 
+    Count.Downtoners , SyntaxTree.Height , All.Possible.Meanings , 
+    noun_count , verb_count , adverb_count , punc_count , title_subjectivity , 
+    title_sentiment_polarity , isHoliday , ContentFleschReadingEase , 
+    NWordRatio , VWordRatio , wordRatioIn8000 , global_subjectivity , 
+    global_sentiment_polarity , global_rate_positive_words , 
+    global_rate_negative_words , novel.of.title , dayRatio , threeDayRatio ,
+      weekRation , twoWeekRation))
 ```
 
 
 ```{r}
-library(caret)
+varImpPlot(rf.model, n.var = 30, main = "Top 30 - Variable Importance")
 
-# 构建控制参数
-ctrl <- trainControl(method = "cv", number = 5, search = "grid")
+importance.df <- data.frame(importance(rf.model), check.names = F)
+importance.df <- importance.df[order(importance.df$MeanDecreaseGini, 
+                                   decreasing = T),]
+head(importance.df)
+```
 
-grid <- expand.grid(mtry = 10:43)
+```{r}
+##交叉验证辅助评估选择特定数量的 Feature
+#5 次重复十折交叉验证
+set.seed(20021119)
+train.cv <- replicate(5, rfcv(train.df, train$result, 
+                              cv.fold = 10, step = 1.5), simplify = FALSE)
+```
 
-# 训练模型
-model <- caret::train(result ~ timedelta + n_tokens_title + 
-                             n_tokens_content + 
-    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
-    data_channel_is_lifestyle + data_channel_is_entertainment + 
-    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
-    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
-    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
-    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
-    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
-    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
-    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
-    global_sentiment_polarity + global_rate_positive_words + 
-    global_rate_negative_words + novel.of.title + dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=train,
-    method = "rf", trControl = ctrl, tuneGrid = grid, ntree=500)
-
-# 输出最优参数
-print(paste0("Best Parameters: ", model$bestTune))
-
-# 输出准确率和召回率
-print(model$results[, c("ntree", "mtry", "Accuracy", "Recall")])
+```{r}
+#提取验证结果绘图
+train.cv <- data.frame(sapply(train.cv, '[[', 'error.cv'))
+train.cv$features <- rownames(train.cv)
+train.cv <- reshape2::melt(train.cv, id = 'features')
+train.cv$features <- as.numeric(as.character(train.cv$features))
+ 
+train.cv.mean <- aggregate(train.cv$value, by = list(train.cv$features), FUN = mean)
+head(train.cv.mean, 10)
+```
 
 
+```{r}
+#拟合线图
+library(ggplot2)
+ 
+ggplot(train.cv.mean, aes(Group.1, x)) +
+  geom_line() +
+labs(title = '',x = 'Number of Features', y = 'Cross-validation error')
+```
+
+```{r}
+train.cv.mean
+```
+
+
+
+```{r}
+importance.df <- importance.df[order(importance.df$MeanDecreaseAccuracy, 
+                                   decreasing = T),]
+features <- rownames(importance.df[1:19,])
+
+formula <- paste0("result ~ ", paste(features, collapse = " + "))
+
+formula
+```
+
+```{r}
+library(randomForest)
+
+rf.model2 <- randomForest::randomForest(result ~ is_weekend + data_channel_is_world + data_channel_is_entertainment + data_channel_is_socmed + num_imgs + timedelta + n_tokens_content + num_hrefs + global_rate_positive_words + average_token_length + global_subjectivity + global_sentiment_polarity + data_channel_is_tech + data_channel_is_bus + num_self_hrefs + global_rate_negative_words + num_videos + title_sentiment_polarity + title_subjectivity, data=train, importance=T, ntree=200)
+
+rf.model2
+```
+
+
+Confusion Matrix
+```{r}
+test_pred.rf <- predict(rf.model2, newdata = test)
+table(test_pred.rf, test$result)
+```
+
+### ROC & AUC
+
+$$ 
+TPR = TP / P 
+$$
+
+$$
+FPR = FP(FalsePositive) / N
+$$
+目的是取得软分类转硬分类的概率阈值，借以评估分类效果
+```{r}
+library(pROC)
+
+tableTestBinary <- function(model) {
+  p <- predict(model, newdata=test)
+  table(p, test$result2,dnn=c("预测值","真实值"))
+}
+
+tableTrainBinary <- function(model) {
+  p <- predict(model, newdata=train)
+  table(p, train$result2,dnn=c("预测值","真实值"))
+}
+
+plotROC <- function(model, theme) {
+  pre_ran <- predict(model, newdata=test)
+  ran_roc <- roc(test$result, as.numeric(pre_ran))
+  plot(ran_roc, print.auc=TRUE, auc.polygon=TRUE, grid=c(0.1,0.2),grid.col=c("green", "red"), max.auc.polygon=TRUE,auc.polygon.col="skyblue", print.thres=TRUE,main=theme)
+}
+
+```
+
+```{r}
+plotROC(rf.model, "随机森林")
+tableTestBinary(rf.model)
+tableTrainBinary(rf.model)
+
+plotROC(rf.model2, "随机森林2")
+tableTestBinary(rf.model2)
+tableTrainBinary(rf.model2)
+
+```
+
+
+## C50
+
+```{r}
+quantile(sample.df$shares, c(0.33, 0.66))
+selectResult2 <- function(x) {
+  if (x < 1100) {
+    return(1)
+  } else if (x < 2100) {
+    return(2)
+  } else {
+    return(3)
+  }
+}
+
+sample.df$result2 <- as.factor(sapply(sample.df$shares, selectResult2))
+set.seed(20021119)
+index <- sample(c(1,2), nrow(sample.df), replace = T, prob = c(0.7, 0.3))
+train <- sample.df[index==1,]
+test <- sample.df[index==2,]
+
+```
+
+
+```{r}
+library(C50)
+c50.model <- C5.0(result2 ~ is_weekend + data_channel_is_world + data_channel_is_entertainment + data_channel_is_socmed + num_imgs + timedelta + n_tokens_content + num_hrefs + global_rate_positive_words + average_token_length + global_subjectivity + global_sentiment_polarity + data_channel_is_tech + data_channel_is_bus + num_self_hrefs + global_rate_negative_words + num_videos + title_sentiment_polarity + title_subjectivity, data = train)
+
+plotROC(c50.model, "C50")
+tableTestBinary(c50.model)
+tableTrainBinary(c50.model)
+```
+
+
+## Naive Bayes
+```{r}
+library(e1071)
+nb.model <- naiveBayes(result2 ~ is_weekend + data_channel_is_world + data_channel_is_entertainment + data_channel_is_socmed + num_imgs + timedelta + n_tokens_content + num_hrefs + global_rate_positive_words + average_token_length + global_subjectivity + global_sentiment_polarity + data_channel_is_tech + data_channel_is_bus + num_self_hrefs + global_rate_negative_words + num_videos + title_sentiment_polarity + title_subjectivity, data=train)
+tableTestBinary(nb.model)
+tableTrainBinary(nb.model)
 ```
