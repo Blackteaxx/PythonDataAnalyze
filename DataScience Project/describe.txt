@@ -1,21 +1,21 @@
 sample.df 
 
  67  Variables      39607  Observations
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 url 
        n  missing distinct 
    39607        0    39607 
 
 lowest : http://mashable.com/2013/01/07/amazon-instant-video-browser/                          http://mashable.com/2013/01/07/ap-samsung-sponsored-tweets/                           http://mashable.com/2013/01/07/apple-40-billion-app-downloads/                        http://mashable.com/2013/01/07/astronaut-notre-dame-bcs/                              http://mashable.com/2013/01/07/att-u-verse-apps/                                     
 highest: http://mashable.com/2014/12/27/samsung-app-autism/                                    http://mashable.com/2014/12/27/seth-rogen-james-franco-will-live-tweet-the-interview/ http://mashable.com/2014/12/27/son-pays-off-mortgage/                                 http://mashable.com/2014/12/27/ukraine-blasts/                                        http://mashable.com/2014/12/27/youtube-channels-2015/                                
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 title 
        n  missing distinct 
    39607        0    39412 
 
 lowest : ''Twas the Night Before Christmas,' as told in GIFs                                 '#aiww: The Arrest of Ai Weiwei' Puts Digital Dissent in the Limelight              '@SummerBreak' Web Series Fueled by Viewer Feedback                                 '10/10 Would Squat Again': Airbnb Squatter May Be Behind Faltering Kickstarter Game '12 Monkeys' to Become Latest Time-Travelling TV Show                              
 highest: Zynga Stock Rises on Rumors of CEO's Departure                                      Zynga Stock Up More Than 15% After Beating Q3 Earnings                              Zynga Sues 'Bang With Friends' App Over Trademark Infringement                      ZZ Ward's App Uses Facebook to Plot When Fans Discovered Her Music                  ZzzQuil Flunks MLK Day on Twitter                                                  
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 content 
        n  missing distinct 
    39607        0    39605 
@@ -147,44 +147,44 @@ Here are the biggest group texting pet peeves that we’ve encountered. Please, 
 [nggallery id=18627 layout=list title=top]
 BONUS: 5 Emoji Meanings That Might Surprise You
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 timedelta 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0      724        1    354.6      247     43.0     71.0    164.0 
-     .50      .75      .90      .95 
-   339.0    543.0    661.4    697.0 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0      724        1    354.6      247     43.0     71.0    164.0    339.0    543.0    661.4 
+     .95 
+   697.0 
 
 lowest :   8   9  10  11  12, highest: 727 728 729 730 731
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 n_tokens_title 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       20     0.98     10.4    2.364        7        8        9 
-     .50      .75      .90      .95 
-      10       12       13       14 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       20     0.98     10.4    2.364        7        8        9       10       12       13 
+     .95 
+      14 
 
 lowest :  2  3  4  5  6, highest: 17 18 19 20 23
-                                                                                  
-Value          2     3     4     5     6     7     8     9    10    11    12    13
-Frequency      1     4    28   182   803  2117  4225  6273  7356  6951  5296  3504
-Proportion 0.000 0.000 0.001 0.005 0.020 0.053 0.107 0.158 0.186 0.175 0.134 0.088
-                                                          
-Value         14    15    16    17    18    19    20    23
-Frequency   1730   756   259    91    22     6     2     1
-Proportion 0.044 0.019 0.007 0.002 0.001 0.000 0.000 0.000
------------------------------------------------------------------------------------
+                                                                                                                
+Value          2     3     4     5     6     7     8     9    10    11    12    13    14    15    16    17    18
+Frequency      1     4    28   182   803  2117  4225  6273  7356  6951  5296  3504  1730   756   259    91    22
+Proportion 0.000 0.000 0.001 0.005 0.020 0.053 0.107 0.158 0.186 0.175 0.134 0.088 0.044 0.019 0.007 0.002 0.001
+                            
+Value         19    20    23
+Frequency      6     2     1
+Proportion 0.000 0.000 0.000
+-----------------------------------------------------------------------------------------------------------------
 n_tokens_content 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0     2406        1    546.6    452.1      105      152      246 
-     .50      .75      .90      .95 
-     410      716     1090     1407 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0     2406        1    546.6    452.1      105      152      246      410      716     1090 
+     .95 
+    1407 
 
 lowest :    0   18   21   22   24, highest: 7081 7185 7413 7764 8474
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 n_unique_tokens 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0    27264        1   0.5482   0.1747   0.3490   0.4064   0.4708 
-     .50      .75      .90      .95 
-  0.5392   0.6086   0.6767   0.7208 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0    27264        1   0.5482   0.1747   0.3490   0.4064   0.4708   0.5392   0.6086   0.6767 
+     .95 
+  0.7208 
 
 lowest :   0.0000000   0.1149635   0.1234222   0.1243017   0.1279230
 highest:   0.9795918   1.0000000   1.0000000   1.0000000 701.0000000
@@ -194,12 +194,12 @@ Frequency  39606     1
 Proportion     1     0
 
 For the frequency table, variable is rounded to the nearest 10
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 n_non_stop_words 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0     1451        1   0.9965   0.1104        1        1        1 
-     .50      .75      .90      .95 
-       1        1        1        1 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0     1451        1   0.9965   0.1104        1        1        1        1        1        1 
+     .95 
+       1 
 
 lowest :    0.0000000    0.9999999    0.9999999    0.9999999    0.9999999
 highest:    1.0000000    1.0000000    1.0000000    1.0000000 1042.0000000
@@ -209,12 +209,12 @@ Frequency  39606     1
 Proportion     1     0
 
 For the frequency table, variable is rounded to the nearest 10
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 n_non_stop_unique_tokens 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0    22922        1   0.6892   0.1775   0.4772   0.5534   0.6257 
-     .50      .75      .90      .95 
-  0.6905   0.7546   0.8188   0.8571 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0    22922        1   0.6892   0.1775   0.4772   0.5534   0.6257   0.6905   0.7546   0.8188 
+     .95 
+  0.8571 
 
 lowest :   0.0000000   0.1191336   0.1232143   0.1263345   0.1292629
 highest:   1.0000000   1.0000000   1.0000000   1.0000000 650.0000000
@@ -224,164 +224,163 @@ Frequency  39606     1
 Proportion     1     0
 
 For the frequency table, variable is rounded to the nearest 5
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 num_hrefs 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0      133    0.997    10.89    10.04        1        2        4 
-     .50      .75      .90      .95 
-       8       14       23       30 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0      133    0.997    10.89    10.04        1        2        4        8       14       23 
+     .95 
+      30 
 
 lowest :   0   1   2   3   4, highest: 162 171 186 187 304
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 num_self_hrefs 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       59    0.979    3.294    3.216        0        0        1 
-     .50      .75      .90      .95 
-       3        4        6        9 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       59    0.979    3.294    3.216        0        0        1        3        4        6 
+     .95 
+       9 
 
 lowest :   0   1   2   3   4, highest:  62  63  65  74 116
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 num_imgs 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       91    0.899    4.544    6.388        0        0        1 
-     .50      .75      .90      .95 
-       1        4       14       20 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       91    0.899    4.544    6.388        0        0        1        1        4       14 
+     .95 
+      20 
 
 lowest :   0   1   2   3   4, highest: 100 101 108 111 128
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 num_videos 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       53    0.734     1.25    2.137        0        0        0 
-     .50      .75      .90      .95 
-       0        1        2        6 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       53    0.734     1.25    2.137        0        0        0        0        1        2 
+     .95 
+       6 
 
 lowest :  0  1  2  3  4, highest: 66 73 74 75 91
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 average_token_length 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0    30113        1    4.548   0.5657    4.157    4.303    4.478 
-     .50      .75      .90      .95 
-   4.664    4.855    5.037    5.153 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0    30113        1    4.548   0.5657    4.157    4.303    4.478    4.664    4.855    5.037 
+     .95 
+   5.153 
 
-lowest : 0.000000 3.600000 3.624585 3.657143 3.660900
-highest: 6.816754 7.218430 7.695652 7.974684 8.041534
------------------------------------------------------------------------------------
+lowest : 0.000000 3.600000 3.624585 3.657143 3.660900, highest: 6.816754 7.218430 7.695652 7.974684 8.041534
+-----------------------------------------------------------------------------------------------------------------
 num_keywords 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       10    0.976    7.224    2.165        4        5        6 
-     .50      .75      .90      .95 
-       7        9       10       10 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       10    0.976    7.224    2.165        4        5        6        7        9       10 
+     .95 
+      10 
 
 lowest :  1  2  3  4  5, highest:  6  7  8  9 10
                                                                       
 Value          1     2     3     4     5     6     7     8     9    10
 Frequency     51    45   635  2422  4825  6795  7313  6086  4731  6704
 Proportion 0.001 0.001 0.016 0.061 0.122 0.172 0.185 0.154 0.119 0.169
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 data_channel_is_lifestyle 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.151     2099    0.053   0.1004 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 data_channel_is_entertainment 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.439     7052    0.178   0.2927 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 data_channel_is_bus 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.399     6253   0.1579   0.2659 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 data_channel_is_socmed 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.166     2321   0.0586   0.1103 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 data_channel_is_tech 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.453     7337   0.1852   0.3019 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 data_channel_is_world 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.502     8419   0.2126   0.3348 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 weekday_is_monday 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.419     6655    0.168   0.2796 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 weekday_is_tuesday 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.455     7384   0.1864   0.3034 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 weekday_is_wednesday 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.457     7429   0.1876   0.3048 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 weekday_is_thursday 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.449     7258   0.1833   0.2993 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 weekday_is_friday 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.369     5695   0.1438   0.2462 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 weekday_is_saturday 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.174     2452  0.06191   0.1162 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 weekday_is_sunday 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.193     2734  0.06903   0.1285 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 is_weekend 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2    0.341     5186   0.1309   0.2276 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 shares 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0     1452    0.999     3391     4140    584.3    708.0    946.0 
-     .50      .75      .90      .95 
-  1400.0   2800.0   6200.0  10800.0 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0     1452    0.999     3391     4140    584.3    708.0    946.0   1400.0   2800.0   6200.0 
+     .95 
+ 10800.0 
 
 lowest :      1      5      8     22     23, highest: 617900 652900 663600 690400 843300
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 content.Seg 
        n  missing distinct 
    39604        3    39601 
 
 lowest : — em honest fun pop song belt nas doo doos la las unabashedly nonsensical nature lyrics hard remember songs Fortunately assembled Music Monday playlist nonsense syllable passages popular music throw songs enjoy sing fear forgetting add playlist Share comments Spotify add Share Song 1 follow Mashable Spotify click hereopens tab popup window launch external application accept browser Spotify 2 Follow Mashable send music clicking Send Music 3 send music browsing tracks Spotify follow MashableHQ accountopens tab rightclick ctrl click song send click Share option 4 default Spotify pulls Post Feed option select Send Friend tab type MashableHQ hit blue Send button MashableHQ doesnt send track account sending song comments                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ‘ Google Edition ’ HTC headed Google Play stock Android additional software HTC Google ’ Sundar Pichai announced phone interview Thursday Digital conference Google Edition Galaxy S4 announced earlier month phone offer user experience Google ’ Nexus devices unlocked handset support LTE GSM networks TMobile ATT Google Play starting June 26                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ‘ ole hockey rivalry ice Boston Bruins beat Pittsburgh Penguins 61 Game 2 commanding lead Eastern Conference Finals Fans Beantown lot celebrate Pittsburgh supporters win Bruins fans called Pittsburgh sports bar Owen hilarity ensued pompous ’ clever prank surely fans clashing heads teams prepare Game 3 Watch video comments prank clever cross Warning Video NSFW language BONUS 10 Easy Pranks 5 Minutes nggallery id10609                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ‘ Tis season airplane travel forward ’ aspects travel endured ’ stressful security madding crowd scrum boarding people myriad belongings clog gate standing departure heart scientifically proven improve boarding process speed ’ wrong feels walked destination time ’ ve waited boarding calls levels travelers elite dregs refundable coach scan pass enter jetway ’ packed crammed ticket scanner minutes – affectionately called “ gate lice ” contributor logjam common airline policy charge checked baggage leading passengers bring aboard packed luggage carryons time stow fuller plane takes luggage – notveryfun version Tetris boarding process passengers board assume fastest load plane front passenger pass aisle hop row logic forms basis standard boarding procedures happen boarded precisely passengers rush cabin proceed – screeching halt passengers stow luggage 30 passengers rows entire length cabin rest simply moved airport gate jetway cabin – moves faster leap serial parallel boarding front serial process action time completed ’ deleting text delete key selecting entire passenger time seated aisle airplane isn ’ effectively efficient board passengers airplane luggage interfering passengers eliminate pass aisle rows passenger boarding parallel process multiple actions occur simultaneously serial process optimum method Virtually scientific industrial fields optimization finding complete tasks classic “ traveling salesman ” ’ shortest route connects cities optimization routine solve traveling salesman applied airplane boarding Drawing ’ ve proposedopens tab optimum boarding method approach called Steffen method adjacent passengers seated rows wave passengers 30A 28A 26A 24A starting typical airplane 12 waves seat row odd rows field testsopens tab method outperformed test 72 passengers fast boarding backtofront rotating blocks rows methods commonly industry 2030 faster optimized boarding methods random boarding people regard assigned seats beat boarding windowsmiddleaisle method outperformed industry gold standard seating Southwest airlines ’ passengers don ’ assigned seats switch isn ’ optimum method airplane boarding carrier industry reason challenge implementation – lining passengers rigid obstacle insurmountable question overlooks primary benefits Steffen method airline measure improvement identifies improvement headtohead comparison existing strategy Steffen method incorporating elite specialneeds passengers 30 reduction boarding time powersthatbe weigh cost changing efficient practical process – effectively aisle – benefit recovering portion potential savings kinds decisions based – eliminates common utterly useless defense “ ’ improvement ” Cold comfort flight week spend time standing spreading word ’ ’ reading ’ hungover ’ hungover identify seal rest daytime neighbors bunch unruly sea lions loud ’ deal tourists thrusting camera day Poor guy ’ rest                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 highest: Zyngaopens tab Chief Executive Officer Don Mattrick putting stamp company seeking reduce layers management push struggling developer social games Chief Operations Officer David Ko Chief People Officer Colleen McCreary Chief Technology Officer Cadir Lee leaving amid executive shuffle Mattrick emailopens tab staff Tuesday exits follow month ’ appointment Mattrick Microsoftopens tab executive replaced founder Mark Pincus seeking reverse 71 share slide company public December 2011 CEO revive growth reinvigorate Zynga ’ efforts mobile games company expects quarters “ volatility ” Mattrick evaluates business products developing strategy conference call month “ layers executive rank senior leaders closer product initiatives ” Mattrick wrote Tuesdays email yesterday Zynga dropped 17 announcing July 25 ’ abandoning plans enter onlinegambling business company forecast thirdquarter sales earnings fell short analysts ’ estimates fewer users play games Facebookopens tabs website Zynga fell 1 290 938 York ‘ Games ’ “ CEO authority shake reducing executive ranks suggests downsizing ” Colin Sebastianopens tab analyst Robert Baird “ Zynga won ’ rightsized demonstrate improving product performance ’ hope result games ” Kingcom developer Candy Crush Saga reached 1504 monthly users Facebook June surpassing Zynga online tracker AppDataopens tab Zynga ’ fiveyear reign top game maker socialnetworking service Ko spent decade Yahooopens tab joining Zynga promoted COO November previous reorganization led Pincus                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Zyngas stock fell 12 afterhours trading company reported revenues fell 18 quarter compared yearago period Zyngas revenues analysts predicted 230 expected 210 earnings share 001 003 estimated company predicting revenues 225 235 quarter Revenues quarter 2012 321 press releaseopens tab announcing Zynga praised strong performance FarmVille 2 drawn 40 monthly users Zyngas monthly active users daily active users time company claims 253 monthly users 292 quarter 2012 13 decrease Monthly active users fell 15 quarter Zyngas stock price 65 company public December 2011                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Zyngas stock fell 14 afterhours trading Thursday company announced abandoning plans realmoney gambling Company continues evaluate real money gaming products United Kingdom test Zynga focused choice pursue license real money gaming United company release announcement reports revenues fell 31 quarter daily active users dropped 45 alltime peak 72 39 bright company reported loss 001 share beat expected 004 loss expected Wall Street Revenues 231 topped anticipated 1854 earnings Zynga announced earlier month replacing CEO Mark Pincus Don Mattrick president interactive entertainment Microsoft                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Zyngas thirdquarter analysts expected sending companys stock 15 afterhours trading company reported bookings 152 quarter loss 2 cents share beat 1427 4 cents Wall Street predicted seealso slugandroidindiegames quarter CEO Don Mattrick replaced Mark Pincus July company launched titles quarter including Fairy Tale Twist Ninja Kingdom Scramble Friends huge breakout hits FarmVille Zynga Poker Friends remain popular games news Zynga reported mobile bookings 46 compared 51 comparable quarter 2012 Daily active users fell 60 3Q 2012 30 49 yearoveryear 3Q disappointing quarters companys stock price 60 alltime chart Zynga announced appointed Clive Downie chief operating officer Downie served CEO Japanese social gaming firm DeNA West replaces David Ko img srchttpmediaychartscomcharts748817735416ea7de222551067d0872epng caption credit altZNGA Chartopens tabZNGAopens tab data YChartsopens tab                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          Zzz Zzz Zzzzzzzzzzzz ’ sound phone buzzing unexpectedly slapped text chain struggles ‘ techiquette ’ social media email texting lag ’ hit “ hide ” “ unsubscribe ” text chain lay law messages ’ stopping anytime biggest texting pet peeves ’ ve encountered people subject friends oversights nggallery id18627 layoutlist titletop BONUS 5 Emoji Meanings Surprise                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 topicNo 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       11    0.967    5.603    3.244        1        1        3 
-     .50      .75      .90      .95 
-       7        7        9       10 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       11    0.967    5.603    3.244        1        1        3        7        7        9 
+     .95 
+      10 
 
 lowest :  0  1  2  3  4, highest:  6  7  8  9 10
                                                                             
 Value          0     1     2     3     4     5     6     7     8     9    10
 Frequency   1358  3221  4721  1392  2241  4714   445 11962  3163  3077  3313
 Proportion 0.034 0.081 0.119 0.035 0.057 0.119 0.011 0.302 0.080 0.078 0.084
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 WikiEntity 
        n  missing distinct 
    22815    16792    16642 
 
 lowest : #Brands&&Resist Being #Brands                  @Everyword                                     10 Someecard Valentines                        1Password Unveils '                            3 College Comics                              
 highest: Zynga Names Microsoft's                        Zynga Stock Falls After&&U.S.                  Zynga&&CityVille Comes To Life With Kre-O Line Zynga&&Shakes Up                               ZzzQuil Flunks                                
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 Comparatives.Count 
        n  missing distinct     Info     Mean      Gmd 
    39607        0        3     0.09  0.03153  0.06115 
@@ -389,7 +388,7 @@ Comparatives.Count
 Value          0     1     2
 Frequency  38380  1205    22
 Proportion 0.969 0.030 0.001
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 Superlatives.Count 
        n  missing distinct     Info     Mean      Gmd 
    39607        0        3    0.071  0.02462  0.04805 
@@ -397,7 +396,7 @@ Superlatives.Count
 Value          0     1     2
 Frequency  38642   955    10
 Proportion 0.976 0.024 0.000
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 Count.Intensifiers 
        n  missing distinct     Info     Mean      Gmd 
    39607        0        3    0.102  0.03575  0.06901 
@@ -405,41 +404,37 @@ Count.Intensifiers
 Value          0     1     2
 Frequency  38207  1384    16
 Proportion 0.965 0.035 0.000
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 Flesch.Kincaid.Grade.of.Title 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0      122    0.998    5.497    3.557      0.5      2.1      3.3 
-     .50      .75      .90      .95 
-     5.2      7.2      9.9     11.1 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0      122    0.998    5.497    3.557      0.5      2.1      3.3      5.2      7.2      9.9 
+     .95 
+    11.1 
 
 lowest : -2.7 -2.5 -2.3 -2.1 -1.9, highest: 21.8 22.2 24.5 25.7 31.2
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 Count.Downtoners 
         n   missing  distinct      Info       Sum      Mean       Gmd 
     39607         0         2     0.001         9 0.0002272 0.0004544 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 SyntaxTree.Height 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       16    0.968    7.821    1.933        5        6        7 
-     .50      .75      .90      .95 
-       8        9       10       11 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       16    0.968    7.821    1.933        5        6        7        8        9       10 
+     .95 
+      11 
 
 lowest :  4  5  6  7  8, highest: 15 16 17 18 19
-                                                                                  
-Value          4     5     6     7     8     9    10    11    12    13    14    15
-Frequency     69  2589  6843  9097  8816  5706  3499  1694   803   298   132    46
-Proportion 0.002 0.065 0.173 0.230 0.223 0.144 0.088 0.043 0.020 0.008 0.003 0.001
-                                  
-Value         16    17    18    19
-Frequency      9     3     2     1
-Proportion 0.000 0.000 0.000 0.000
------------------------------------------------------------------------------------
+                                                                                                          
+Value          4     5     6     7     8     9    10    11    12    13    14    15    16    17    18    19
+Frequency     69  2589  6843  9097  8816  5706  3499  1694   803   298   132    46     9     3     2     1
+Proportion 0.002 0.065 0.173 0.230 0.223 0.144 0.088 0.043 0.020 0.008 0.003 0.001 0.000 0.000 0.000 0.000
+-----------------------------------------------------------------------------------------------------------------
 All.Possible.Meanings 
-        n   missing  distinct      Info      Mean       Gmd       .05       .10 
-    39607         0     10747         1 937431808 1.872e+09        72       240 
-      .25       .50       .75       .90       .95 
-     2080     28560    475200   7306171  42956928 
+        n   missing  distinct      Info      Mean       Gmd       .05       .10       .25       .50       .75 
+    39607         0     10747         1 937431808 1.872e+09        72       240      2080     28560    475200 
+      .90       .95 
+  7306171  42956928 
 
 lowest : 1.000000e+00 2.000000e+00 3.000000e+00 4.000000e+00 5.000000e+00
 highest: 9.662673e+11 1.554470e+12 1.586624e+12 3.237826e+12 1.801056e+13
@@ -449,37 +444,33 @@ Frequency    39574      20       6       1       2       2       1       1
 Proportion   0.999   0.001   0.000   0.000   0.000   0.000   0.000   0.000
 
 For the frequency table, variable is rounded to the nearest 2e+11
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 title.tokens 
        n  missing distinct 
    39607        0    39405 
 
 lowest : ['#', 'BackIn7thGrade', 'Brings', 'Up', 'Crushes', ',', 'Braces', 'and', 'Awkward', 'Dances']                      ['#', 'BeyonceBooks', ':', 'Go', 'Crazy', 'in', 'Love', 'Mixing', 'Bey', "'s", 'Songs', 'With', 'Book', 'Titles']  ['#', 'Brands', 'Could', "n't", 'Resist', 'Being', '#', 'Brands', ',', 'Even', 'on', '9/11']                       ['#', 'CancelColbert', 'Slams', 'Stephen', 'Colbert', 'for', 'Racist', 'Tweet']                                    ['#', 'ChevyGuy', 'is', 'having', 'a', 'no', 'good', ',', 'very', 'bad', 'day']                                   
 highest: ["L'affaire", 'Legere', ':', 'T-Mobile', 'CEO', 'Kicked', 'Out', 'of', 'AT', '&', 'T', "'s", 'CES', 'Party']       ["Mo'ne", 'Davis', ':', 'Get', 'to', 'Know', 'Little', 'League', "'s", 'Biggest', 'Star']                          ["Mo'ne", 'Davis', 'and', 'Team', 'Still', 'Alive', 'After', 'Little', 'League', 'World', 'Series', 'Loss']        ["Mo'ne", 'Davis', 'Is', 'Signing', 'Autographs', 'for', 'MLB', 'Stars', 'Now']                                    ["Mo'ne", 'Davis', 'Throws', 'First', 'Pitch', 'at', 'World', 'Series', 'and', 'Kills', 'It', ',', 'Of', 'Course']
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 title.tags 
        n  missing distinct 
    39607        0    39405 
 
 lowest : [('#', '#'), ('BackIn7thGrade', 'NNP'), ('Brings', 'NNP'), ('Up', 'NNP'), ('Crushes', 'NNP'), (',', ','), ('Braces', 'NNP'), ('and', 'CC'), ('Awkward', 'NNP'), ('Dances', 'NNP')]                                                          [('#', '#'), ('BeyonceBooks', 'NNS'), (':', ':'), ('Go', 'NNP'), ('Crazy', 'NNP'), ('in', 'IN'), ('Love', 'NNP'), ('Mixing', 'NNP'), ('Bey', 'NNP'), ("'s", 'POS'), ('Songs', 'NNS'), ('With', 'IN'), ('Book', 'NNP'), ('Titles', 'NNP')]   [('#', '#'), ('Brands', 'NNS'), ('Could', 'VBP'), ("n't", 'RB'), ('Resist', 'NNP'), ('Being', 'NNP'), ('#', '#'), ('Brands', 'NNP'), (',', ','), ('Even', 'RB'), ('on', 'IN'), ('9/11', 'CD')]                                              [('#', '#'), ('CancelColbert', 'NNP'), ('Slams', 'NNP'), ('Stephen', 'NNP'), ('Colbert', 'NNP'), ('for', 'IN'), ('Racist', 'NNP'), ('Tweet', 'NNP')]                                                                                        [('#', '#'), ('ChevyGuy', 'NNP'), ('is', 'VBZ'), ('having', 'VBG'), ('a', 'DT'), ('no', 'DT'), ('good', 'JJ'), (',', ','), ('very', 'RB'), ('bad', 'JJ'), ('day', 'NN')]                                                                   
 highest: [("L'affaire", 'NNP'), ('Legere', 'NNP'), (':', ':'), ('T-Mobile', 'JJ'), ('CEO', 'NNP'), ('Kicked', 'NNP'), ('Out', 'NNP'), ('of', 'IN'), ('AT', 'NNP'), ('&', 'CC'), ('T', 'NNP'), ("'s", 'POS'), ('CES', 'NNP'), ('Party', 'NNP')]       [("Mo'ne", 'NNP'), ('Davis', 'NNP'), (':', ':'), ('Get', 'VB'), ('to', 'TO'), ('Know', 'NNP'), ('Little', 'NNP'), ('League', 'NNP'), ("'s", 'POS'), ('Biggest', 'NNP'), ('Star', 'NN')]                                                     [("Mo'ne", 'NNP'), ('Davis', 'NNP'), ('and', 'CC'), ('Team', 'NNP'), ('Still', 'RB'), ('Alive', 'NNP'), ('After', 'IN'), ('Little', 'NNP'), ('League', 'NNP'), ('World', 'NNP'), ('Series', 'NNP'), ('Loss', 'NNP')]                        [("Mo'ne", 'NNP'), ('Davis', 'NNP'), ('Is', 'VBZ'), ('Signing', 'VBG'), ('Autographs', 'NNP'), ('for', 'IN'), ('MLB', 'NNP'), ('Stars', 'NNP'), ('Now', 'RB')]                                                                              [("Mo'ne", 'NNP'), ('Davis', 'NNP'), ('Throws', 'NNP'), ('First', 'NNP'), ('Pitch', 'NNP'), ('at', 'IN'), ('World', 'NNP'), ('Series', 'NNP'), ('and', 'CC'), ('Kills', 'NNP'), ('It', 'PRP'), (',', ','), ('Of', 'IN'), ('Course', 'NNP')]
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 noun_count 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       13    0.976    5.404     2.11        2        3        4 
-     .50      .75      .90      .95 
-       5        7        8        8 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       13    0.976    5.404     2.11        2        3        4        5        7        8 
+     .95 
+       8 
 
 lowest :  0  1  2  3  4, highest:  8  9 10 11 12
-                                                                                  
-Value          0     1     2     3     4     5     6     7     8     9    10    11
-Frequency     29   418  1757  4216  6583  7801  7487  5900  3485  1414   406    86
-Proportion 0.001 0.011 0.044 0.106 0.166 0.197 0.189 0.149 0.088 0.036 0.010 0.002
-                
-Value         12
-Frequency     25
-Proportion 0.001
------------------------------------------------------------------------------------
+                                                                                        
+Value          0     1     2     3     4     5     6     7     8     9    10    11    12
+Frequency     29   418  1757  4216  6583  7801  7487  5900  3485  1414   406    86    25
+Proportion 0.001 0.011 0.044 0.106 0.166 0.197 0.189 0.149 0.088 0.036 0.010 0.002 0.001
+-----------------------------------------------------------------------------------------------------------------
 verb_count 
        n  missing distinct     Info     Mean      Gmd 
    39607        0        7    0.852   0.7616   0.8757 
@@ -489,7 +480,7 @@ lowest : 0 1 2 3 4, highest: 2 3 4 5 6
 Value          0     1     2     3     4     5     6
 Frequency  18259 14293  5556  1260   219    18     2
 Proportion 0.461 0.361 0.140 0.032 0.006 0.000 0.000
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 adverb_count 
        n  missing distinct     Info     Mean      Gmd 
    39607        0        5    0.338   0.1475   0.2611 
@@ -499,7 +490,7 @@ lowest : 0 1 2 3 4, highest: 0 1 2 3 4
 Value          0     1     2     3     4
 Frequency  34498  4453   583    70     3
 Proportion 0.871 0.112 0.015 0.002 0.000
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 punc_count 
        n  missing distinct     Info     Mean      Gmd 
    39607        0        5    0.149  0.05315   0.1008 
@@ -509,215 +500,205 @@ lowest : 0 1 2 3 4, highest: 0 1 2 3 4
 Value          0     1     2     3     4
 Frequency  37538  2039    25     4     1
 Proportion 0.948 0.051 0.001 0.000 0.000
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 title_subjectivity 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0      795    0.906   0.2824   0.3463   0.0000   0.0000   0.0000 
-     .50      .75      .90      .95 
-  0.1444   0.5000   0.8000   1.0000 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0      795    0.906   0.2824   0.3463   0.0000   0.0000   0.0000   0.1444   0.5000   0.8000 
+     .95 
+  1.0000 
 
-lowest : 0.00000000 0.02222222 0.02500000 0.03333333 0.03333333
-highest: 0.94444444 0.95000000 0.96666667 0.97500000 1.00000000
------------------------------------------------------------------------------------
+lowest : 0.00000000 0.02222222 0.02500000 0.03333333 0.03333333, highest: 0.94444444 0.95000000 0.96666667 0.97500000 1.00000000
+-----------------------------------------------------------------------------------------------------------------
 title_sentiment_polarity 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0      927    0.873  0.07142   0.2558  -0.3333  -0.1333   0.0000 
-     .50      .75      .90      .95 
-  0.0000   0.1500   0.4500   0.5000 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0      927    0.873  0.07142   0.2558  -0.3333  -0.1333   0.0000   0.0000   0.1500   0.4500 
+     .95 
+  0.5000 
 
 lowest : -1.000 -0.910 -0.900 -0.875 -0.850, highest:  0.800  0.850  0.900  0.950  1.000
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 Date 
        n  missing distinct 
    39607        0      720 
 
-lowest : 2013/01/07 2013/01/08 2013/01/09 2013/01/10 2013/01/11
-highest: 2014/12/23 2014/12/24 2014/12/25 2014/12/26 2014/12/27
------------------------------------------------------------------------------------
+lowest : 2013/01/07 2013/01/08 2013/01/09 2013/01/10 2013/01/11, highest: 2014/12/23 2014/12/24 2014/12/25 2014/12/26 2014/12/27
+-----------------------------------------------------------------------------------------------------------------
 isHoliday 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2     0.06      804   0.0203  0.03978 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 HolidayName 
        n  missing distinct 
    39607        0       11 
 
 lowest : Christmas Day              Columbus Day               Independence Day           Labor Day                  Martin Luther King Jr. Day
 highest: New Year's Day             Not Holiday                Thanksgiving               Veterans Day               Washington's Birthday     
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 HolidayDay 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       17     0.06    4.437    8.749        0        0        0 
-     .50      .75      .90      .95 
-       0        0        0        0 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       17     0.06    4.437    8.749        0        0        0        0        0        0 
+     .95 
+       0 
 
 lowest :   0   1  20  21  48, highest: 287 315 331 332 359
-                                                                                  
-Value          0     1    20    21    48    49   146   147   185   244   245   286
-Frequency  38803    23    41    66    29    29    32    26    70    34    28    80
-Proportion 0.980 0.001 0.001 0.002 0.001 0.001 0.001 0.001 0.002 0.001 0.001 0.002
-                                        
-Value        287   315   331   332   359
-Frequency     66   144    41    28    67
-Proportion 0.002 0.004 0.001 0.001 0.002
------------------------------------------------------------------------------------
+                                                                                                                
+Value          0     1    20    21    48    49   146   147   185   244   245   286   287   315   331   332   359
+Frequency  38803    23    41    66    29    29    32    26    70    34    28    80    66   144    41    28    67
+Proportion 0.980 0.001 0.001 0.002 0.001 0.001 0.001 0.001 0.002 0.001 0.001 0.002 0.002 0.004 0.001 0.001 0.002
+-----------------------------------------------------------------------------------------------------------------
 HolidayDaysLeft 
        n  missing distinct     Info      Sum     Mean      Gmd 
    39607        0        2     0.06      804   0.0203  0.03978 
 
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 ContentFleschReadingEase 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0     1595        1    63.18    11.14    46.78    50.57    57.16 
-     .50      .75      .90      .95 
-   63.29    69.92    75.20    79.50 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0     1595        1    63.18    11.14    46.78    50.57    57.16    63.29    69.92    75.20 
+     .95 
+   79.50 
 
 lowest : -72.01 -71.81 -50.13 -48.94 -48.66, highest: 102.61 104.54 105.66 114.12 206.84
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 NWordRatio 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0    12228        1   0.4962  0.06633   0.4014   0.4242   0.4583 
-     .50      .75      .90      .95 
-  0.4950   0.5325   0.5685   0.5932 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0    12228        1   0.4962  0.06633   0.4014   0.4242   0.4583   0.4950   0.5325   0.5685 
+     .95 
+  0.5932 
 
-lowest : 0.00000000 0.09090909 0.13333333 0.14285714 0.16666667
-highest: 0.89458414 0.89607098 0.91304348 0.92307692 1.00000000
------------------------------------------------------------------------------------
+lowest : 0.00000000 0.09090909 0.13333333 0.14285714 0.16666667, highest: 0.89458414 0.89607098 0.91304348 0.92307692 1.00000000
+-----------------------------------------------------------------------------------------------------------------
 VWordRatio 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0     9808        1   0.1787  0.03904   0.1198   0.1348   0.1575 
-     .50      .75      .90      .95 
-  0.1799   0.2009   0.2207   0.2338 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0     9808        1   0.1787  0.03904   0.1198   0.1348   0.1575   0.1799   0.2009   0.2207 
+     .95 
+  0.2338 
 
-lowest : 0.00000000 0.01562500 0.01680672 0.01694915 0.01724138
-highest: 0.40000000 0.42857143 0.44444444 0.47368421 0.50000000
------------------------------------------------------------------------------------
+lowest : 0.00000000 0.01562500 0.01680672 0.01694915 0.01724138, highest: 0.40000000 0.42857143 0.44444444 0.47368421 0.50000000
+-----------------------------------------------------------------------------------------------------------------
 wordRatioIn8000 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0    13277        1   0.6907  0.08469   0.5569   0.5915   0.6452 
-     .50      .75      .90      .95 
-  0.6973   0.7442   0.7816   0.8027 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0    13277        1   0.6907  0.08469   0.5569   0.5915   0.6452   0.6973   0.7442   0.7816 
+     .95 
+  0.8027 
 
-lowest : 0.0000000 0.1509434 0.1538462 0.1666667 0.1688312
-highest: 0.9310345 0.9371429 0.9375000 0.9444444 1.0000000
------------------------------------------------------------------------------------
+lowest : 0.0000000 0.1509434 0.1538462 0.1666667 0.1688312, highest: 0.9310345 0.9371429 0.9375000 0.9444444 1.0000000
+-----------------------------------------------------------------------------------------------------------------
 global_subjectivity 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0    34708        1   0.4433   0.1183   0.2751   0.3319   0.3962 
-     .50      .75      .90      .95 
-  0.4534   0.5083   0.5617   0.6003 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0    34708        1   0.4433   0.1183   0.2751   0.3319   0.3962   0.4534   0.5083   0.5617 
+     .95 
+  0.6003 
 
-lowest : 0.00000000 0.02222222 0.06250000 0.06666667 0.08949275
-highest: 0.92222222 0.92857143 0.93750000 0.95000000 1.00000000
------------------------------------------------------------------------------------
+lowest : 0.00000000 0.02222222 0.06250000 0.06666667 0.08949275, highest: 0.92222222 0.92857143 0.93750000 0.95000000 1.00000000
+-----------------------------------------------------------------------------------------------------------------
 global_sentiment_polarity 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0    34898        1   0.1193   0.1067 -0.02463  0.00000  0.05778 
-     .50      .75      .90      .95 
- 0.11912  0.17785  0.23621  0.27634 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0    34898        1   0.1193   0.1067 -0.02463  0.00000  0.05778  0.11912  0.17785  0.23621 
+     .95 
+ 0.27634 
 
-lowest : -0.3937500 -0.3802083 -0.3776569 -0.3750000 -0.3739305
-highest:  0.6250000  0.6317460  0.6500000  0.6550000  0.7278409
------------------------------------------------------------------------------------
+lowest : -0.3937500 -0.3802083 -0.3776569 -0.3750000 -0.3739305, highest:  0.6250000  0.6317460  0.6500000  0.6550000  0.7278409
+-----------------------------------------------------------------------------------------------------------------
 global_rate_positive_words 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0    14494        1  0.03963  0.01932  0.01242  0.01894  0.02838 
-     .50      .75      .90      .95 
- 0.03902  0.05029  0.06134  0.06838 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0    14494        1  0.03963  0.01932  0.01242  0.01894  0.02838  0.03902  0.05029  0.06134 
+     .95 
+ 0.06838 
 
 lowest : 0.000000000 0.002136752 0.002645503 0.002793296 0.002793296
 highest: 0.136363636 0.136986301 0.152173913 0.152777778 0.155487800
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 global_rate_negative_words 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0    11592        1  0.01661  0.01147 0.000000 0.004535 0.009615 
-     .50      .75      .90      .95 
-0.015337 0.021739 0.029500 0.036000 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0    11592        1  0.01661  0.01147 0.000000 0.004535 0.009615 0.015337 0.021739 0.029500 
+     .95 
+0.036000 
 
 lowest : 0.0000000000 0.0004016064 0.0004182350 0.0007535795 0.0009661836
 highest: 0.1352941176 0.1369294606 0.1398305085 0.1620370370 0.1849315068
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 kmeans.Temporary 
        n  missing distinct 
    39605        2    39351 
 
 lowest : '' twa night christma , told gif                     '10/10 squat airbnb squatter falter kickstart game   '12 monkey time-travel tv                            '12 slave take bafta film , 'graviti win 6           '2014 baby-sitt club millenni spin childhood classic
 highest: zynga stock fall swear real-money gambl u.           zynga stock jump 6 beat q4 earn estim                zynga stock rise rumor ceo departur                  zynga sue 'bang friend app trademark infring         zzzquil flunk mlk day twitter                       
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 novel.of.title 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0    39300        1   0.6384   0.1349   0.4012   0.4787   0.5805 
-     .50      .75      .90      .95 
-  0.6619   0.7246   0.7698   0.7938 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0    39300        1   0.6384   0.1349   0.4012   0.4787   0.5805   0.6619   0.7246   0.7698 
+     .95 
+  0.7938 
 
 lowest : -4.440892e-16 -2.220446e-16  0.000000e+00  1.110223e-16  2.220446e-16
 highest:  9.349969e-01  9.358132e-01  9.440914e-01  9.536332e-01  1.000000e+00
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 dayRatio 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       11    0.967    0.192   0.4723  -1.3955  -0.1964   0.1659 
-     .50      .75      .90      .95 
-  0.1750   0.2105   0.9741   0.9741 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       11    0.967    0.192   0.4723  -1.3955  -0.1964   0.1659   0.1750   0.2105   0.9741 
+     .95 
+  0.9741 
 
 lowest : -1.39552970 -0.19638732 -0.02581897  0.07016986  0.16589783
 highest:  0.17496155  0.21051626  0.27153497  0.78896649  0.97407487
-                                                                                  
-Value      -1.39552970 -0.19638732 -0.02581897  0.07016986  0.16589783  0.17046620
-Frequency         2241        3313        1392        1358        3163        4721
-Proportion       0.057       0.084       0.035       0.034       0.080       0.119
-                                                                      
-Value       0.17496155  0.21051626  0.27153497  0.78896649  0.97407487
-Frequency        11962        3077         445        3221        4714
-Proportion       0.302       0.078       0.011       0.081       0.119
------------------------------------------------------------------------------------
+                                                                                                          
+Value      -1.39552970 -0.19638732 -0.02581897  0.07016986  0.16589783  0.17046620  0.17496155  0.21051626
+Frequency         2241        3313        1392        1358        3163        4721       11962        3077
+Proportion       0.057       0.084       0.035       0.034       0.080       0.119       0.302       0.078
+                                              
+Value       0.27153497  0.78896649  0.97407487
+Frequency          445        3221        4714
+Proportion       0.011       0.081       0.119
+-----------------------------------------------------------------------------------------------------------------
 threeDayRatio 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       11    0.967    5.551    11.13  -0.5696  -0.5696  -0.5696 
-     .50      .75      .90      .95 
- -0.1213   0.3705   0.3757 100.7647 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       11    0.967    5.551    11.13  -0.5696  -0.5696  -0.5696  -0.1213   0.3705   0.3757 
+     .95 
+100.7647 
 
 lowest :  -0.56960714  -0.39402613  -0.28222177  -0.12128282  -0.04847633
 highest:   0.04488317   0.18021506   0.37047584   0.37569838 100.76472742
-
--0.569607139227057 (11962, 0.302), -0.394026134411478 (3221, 0.081),
--0.282221766457571 (1392, 0.035), -0.12128281657191 (3313, 0.084),
--0.0484763296563139 (4721, 0.119), 0.0225899362295706 (3077, 0.078),
-0.0448831708034848 (1358, 0.034), 0.180215056289305 (445, 0.011),
-0.370475836832422 (4714, 0.119), 0.375698377181235 (3163, 0.080), 100.764727422132
-(2241, 0.057)
------------------------------------------------------------------------------------
+                                                                                                     
+Value       -0.56960714  -0.39402613  -0.28222177  -0.12128282  -0.04847633   0.02258994   0.04488317
+Frequency         11962         3221         1392         3313         4721         3077         1358
+Proportion        0.302        0.081        0.035        0.084        0.119        0.078        0.034
+                                                              
+Value        0.18021506   0.37047584   0.37569838 100.76472742
+Frequency           445         4714         3163         2241
+Proportion        0.011        0.119        0.080        0.057
+-----------------------------------------------------------------------------------------------------------------
 weekRation 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       11    0.967    4.418    8.627 -0.46209 -0.46209 -0.46209 
-     .50      .75      .90      .95 
- 0.02967  0.96073  1.18531 75.18548 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       11    0.967    4.418    8.627 -0.46209 -0.46209 -0.46209  0.02967  0.96073  1.18531 
+     .95 
+75.18548 
 
 lowest : -0.46209158 -0.34781350 -0.03235691  0.02966534  0.25686497
 highest:  0.54032325  0.96073399  1.18530673  1.48826550 75.18547747
-                                                                                  
-Value      -0.46209158 -0.34781350 -0.03235691  0.02966534  0.25686497  0.53695172
-Frequency        11962        3163        3221        3077        3313        1358
-Proportion       0.302       0.080       0.081       0.078       0.084       0.034
-                                                                      
-Value       0.54032325  0.96073399  1.18530673  1.48826550 75.18547747
-Frequency         1392        4721        4714         445        2241
-Proportion       0.035       0.119       0.119       0.011       0.057
------------------------------------------------------------------------------------
+                                                                                                          
+Value      -0.46209158 -0.34781350 -0.03235691  0.02966534  0.25686497  0.53695172  0.54032325  0.96073399
+Frequency        11962        3163        3221        3077        3313        1358        1392        4721
+Proportion       0.302       0.080       0.081       0.078       0.084       0.034       0.035       0.119
+                                              
+Value       1.18530673  1.48826550 75.18547747
+Frequency         4714         445        2241
+Proportion       0.119       0.011       0.057
+-----------------------------------------------------------------------------------------------------------------
 twoWeekRation 
-       n  missing distinct     Info     Mean      Gmd      .05      .10      .25 
-   39607        0       11    0.967     4.98    8.548  -0.5883  -0.5883   0.1459 
-     .50      .75      .90      .95 
-  1.0043   1.2967   7.1361  64.3082 
+       n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75      .90 
+   39607        0       11    0.967     4.98    8.548  -0.5883  -0.5883   0.1459   1.0043   1.2967   7.1361 
+     .95 
+ 64.3082 
 
 lowest : -0.88446454 -0.58826776 -0.48560549 -0.02478344  0.14585978
 highest:  0.81374244  1.00434247  1.29673071  7.13610832 64.30819439
-                                                                                  
-Value      -0.88446454 -0.58826776 -0.48560549 -0.02478344  0.14585978  0.74993725
-Frequency         1392        4721         445        3313        1358        3221
-Proportion       0.035       0.119       0.011       0.084       0.034       0.081
-                                                                      
-Value       0.81374244  1.00434247  1.29673071  7.13610832 64.30819439
-Frequency         3163        3077       11962        4714        2241
-Proportion       0.080       0.078       0.302       0.119       0.057
------------------------------------------------------------------------------------
+                                                                                                          
+Value      -0.88446454 -0.58826776 -0.48560549 -0.02478344  0.14585978  0.74993725  0.81374244  1.00434247
+Frequency         1392        4721         445        3313        1358        3221        3163        3077
+Proportion       0.035       0.119       0.011       0.084       0.034       0.081       0.080       0.078
+                                              
+Value       1.29673071  7.13610832 64.30819439
+Frequency        11962        4714        2241
+Proportion       0.302       0.119       0.057
+-----------------------------------------------------------------------------------------------------------------
