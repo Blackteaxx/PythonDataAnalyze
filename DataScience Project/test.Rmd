@@ -233,7 +233,7 @@ test <- sample.df[index==2,]
 ```
 
 ```{r 模型拟合}
-lm.model <- lm(shares~timedelta + n_tokens_title + n_tokens_content +
+lm.model <- lm(logShares~timedelta + n_tokens_title + n_tokens_content +
                  num_hrefs + 
     num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -249,7 +249,7 @@ lm.model <- lm(shares~timedelta + n_tokens_title + n_tokens_content +
       global_rate_positive_words+global_rate_negative_words+novel.of.title+ 
       dayRatio+threeDayRatio+weekRation+twoWeekRation
       -1,
-    data = sample.df2)
+    data = train)
 summary(lm.model)
 ```
 ```{r}
@@ -291,7 +291,7 @@ while (length(outlierTest(lm.model))) {
 
 ```{r MAE}
 train_pred <- predict(lm.model, newdata = train)
-mean(abs(train_pred - train$shares))
+mean(abs(train_pred - train$logShares) / train$logShares)
 test_pred <- predict(lm.model, newdata = test)
 mean(abs(exp(test_pred) - exp(test$logShares)))
 ```
@@ -317,6 +317,12 @@ sample.df$result <- as.factor(sapply(sample.df$shares, range_capture))
 
 
 ```{r}
+ggplot(data = sample.df, aes(x = shares)) +
+  geom_histogram() +
+  xlim(0,10000)
+
+quantile(sample.df$shares, c(0.25,0.95))
+
 selectResult2 <- function(x) {
   if (x < 1000) {
     return(1)
@@ -333,6 +339,62 @@ selectResult2 <- function(x) {
 sample.df$result2 <- as.factor(sapply(sample.df$shares, selectResult2))
 ```
 
+## 定义ROC AUC Confusion
+$$ 
+TPR = TP / P 
+$$
+
+$$
+FPR = FP(FalsePositive) / N
+$$
+目的是取得软分类转硬分类的概率阈值，借以评估分类效果
+```{r}
+library(pROC)
+
+tableTestBinary <- function(model) {
+  p <- predict(model, newdata=test)
+  table(p, test$result2,dnn=c("预测值","真实值"))
+}
+
+tableTrainBinary <- function(model) {
+  p <- predict(model, newdata=train)
+  table(p, train$result2,dnn=c("预测值","真实值"))
+}
+```
+
+```{r}
+plotTestROC <- function(model, theme) {
+  pre_ran <- predict(model, newdata=test)
+  ran_roc <- roc(test$result2, as.numeric(pre_ran), levels=c("1","2"))
+  plot(ran_roc, print.auc=TRUE, auc.polygon=TRUE, grid=c(0.1,0.2),grid.col=c("green", "red"), max.auc.polygon=TRUE,auc.polygon.col="skyblue", print.thres=TRUE,main=theme)
+}
+
+
+plotTrainROC <- function(model, theme) {
+  pre_ran <- predict(model, newdata=train)
+  ran_roc <- roc(train$result2, as.numeric(pre_ran), levels=c("1","2"))
+  plot(ran_roc, print.auc=TRUE, auc.polygon=TRUE, grid=c(0.1,0.2),grid.col=c("green", "red"), max.auc.polygon=TRUE,auc.polygon.col="skyblue", print.thres=TRUE,main=theme)
+}
+```
+
+# some labels
+```{r}
+calResult <- function(model) {
+  p <- predict(model, newdata=test)
+  confusion <- table(p, test$result2,dnn=c("预测值","真实值"))
+  acc <- (confusion[1,1] + confusion[2,2] + confusion[3,3]) / nrow(test)
+  recall1 <- (confusion[1,1] + confusion[1,2] + confusion[1,3]) / nrow(test)
+  recall2 <- (confusion[2,1] + confusion[2,2] + confusion[2,3]) / nrow(test)
+  recall3 <- (confusion[3,1] + confusion[3,2] + confusion[3,3]) / nrow(test)
+  result <- data.frame(
+    acc=acc,
+    recall1=recall1,
+    recall2=recall2,
+    recall3=recall3
+  )
+}
+```
+
 ## 划分test train
 
 ```{r 划分测试集与训练集}
@@ -343,45 +405,74 @@ test <- sample.df[index==2,]
 ```
 
 
-处理不平衡
+## 处理不平衡
+[不平衡处理方法](https://www.zhihu.com/question/324187407)
+[ROSE](https://zhuanlan.zhihu.com/p/24826792)
+
+
+var1_new:1 and 2+3
+var2_new:2 and 1+3
+var3_new:3 and 1+2
+
+$$
+P_1 = Num(1) / N_1 \\
+P_2 = Num(1+3) / N_2 \\
+P_3 = Num(3) / N_3 \\
+$$
 ```{r}
 library(ROSE)
 train.df <- select(train, -c("Date", "HolidayName"))
 
 table(train.df$result2)
-# 过采样
 
 # 将三分类变量转换为二分类变量
 train.df$var1_new <- as.factor(model.matrix(~ as.factor(result2) - 1, 
-                                            data = train.df)[, 2])
-train.df$var2_new <- as.factor(model.matrix(~ as.factor(result2) - 1, 
-                                            data = train.df)[, 3])
-train.df$var3_new <- as.factor(model.matrix(~ as.factor(result2) - 1, 
                                             data = train.df)[, 1])
+train.df$var2_new <- as.factor(model.matrix(~ as.factor(result2) - 1, 
+                                            data = train.df)[, 2])
+train.df$var3_new <- as.factor(model.matrix(~ as.factor(result2) - 1, 
+                                            data = train.df)[, 3])
 table(train.df$var1_new)
 table(train.df$var2_new)
 table(train.df$var3_new)
 
 # 进行采样，分别以var1_new var2_new var3_new为过采样主变量
-over_sampled1 <- ovun.sample(var1_new ~ ., data = train.df, method = "over")$data
-over_sampled2 <- ovun.sample(var2_new ~ ., data = over_sampled1, p=0.35,method = "over")$data
-over_sampled3 <- ovun.sample(var3_new ~ ., data = over_sampled2, p=0.33,method = "over")$data
+over_sampled1 <- ovun.sample(var1_new ~ ., data = train.df, p=0.4, method = "over")$data
+over_sampled2 <- ovun.sample(var2_new ~ ., data = over_sampled1,p=0.7,method = "over")$data
+over_sampled3 <- ovun.sample(var3_new ~ ., data = over_sampled2, p=0.4,method = "over")$data
 
-both_sampled1 <- ovun.sample(var1_new ~ ., data = train.df, method = "both")$data
-both_sampled2 <- ovun.sample(var2_new ~ ., data = over_sampled1, p=0.35,method = "both")$data
-both_sampled3 <- ovun.sample(var3_new ~ ., data = over_sampled2, p=0.33,method = "both")$data
+both_sampled1 <- ovun.sample(var1_new ~ ., data = train.df, p=0.4,method = "both")$data
+both_sampled2 <- ovun.sample(var2_new ~ ., data = over_sampled1, p=0.7,method = "both")$data
+both_sampled3 <- ovun.sample(var3_new ~ ., data = over_sampled2, p=0.4,method = "both")$data
 
-under_sampled1 <- ovun.sample(var1_new ~ ., data = train.df, method = "over")$data
-under_sampled2 <- ovun.sample(var2_new ~ ., data = over_sampled1, p=0.35,method = "over")$data
-under_sampled3 <- ovun.sample(var3_new ~ ., data = over_sampled2, p=0.33,method = "over")$data
+under_sampled1 <- ovun.sample(var1_new ~ ., data = train.df,p=0.4,method = "over")$data
+under_sampled2 <- ovun.sample(var2_new ~ ., data = over_sampled1, p=0.7,method = "over")$data
+under_sampled3 <- ovun.sample(var3_new ~ ., data = over_sampled2, p=0.4,method = "over")$data
 
-rose_sampled1 <- ROSE(var1_new ~ ., data = train.df)$data
-rose_sampled2 <- ROSE(var2_new ~ ., data = over_sampled1, p=0.35)$data
-rose_sampled3 <- ROSE(var3_new ~ ., data = over_sampled2, p=0.33)$data
+rose_sampled1 <- ROSE(var1_new ~ ., p=0.4, data = train.df)$data
+rose_sampled2 <- ROSE(var2_new ~ ., data = over_sampled1, p=0.7)$data
+rose_sampled3 <- ROSE(var3_new ~ ., data = over_sampled2, p=0.4)$data
+
+table(over_sampled1$result2)
+table(over_sampled2$result2)
+table(over_sampled3$result2)
+table(rose_sampled3$result2)
 ```
+
+```{r}
+set.seed(20021119)
+index <- sample(c(1,2), nrow(sample.df), replace = T, prob = c(0.4, 0.6))
+over_sampled3 <- over_sampled3[index==1,]
+both_sampled3 <- both_sampled3[index==1,]
+under_sampled3 <- under_sampled3[index==1,]
+rose_sampled3 <- rose_sampled3[index==1,]
+
+```
+
 评估
 ```{r}
-tree.over <-  randomForest(result2 ~ timedelta + n_tokens_title + 
+library(C50)
+tree.over <-  C5.0(result2 ~ timedelta + n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -396,7 +487,7 @@ tree.over <-  randomForest(result2 ~ timedelta + n_tokens_title +
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
       weekRation + twoWeekRation, data=over_sampled3)
 
-tree.under <-  randomForest(result2 ~ timedelta + n_tokens_title + 
+tree.under <-  C5.0(result2 ~ timedelta + n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -411,7 +502,7 @@ tree.under <-  randomForest(result2 ~ timedelta + n_tokens_title +
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
       weekRation + twoWeekRation, data=under_sampled3)
 
-tree.both <-  randomForest(result2 ~ timedelta + n_tokens_title + 
+tree.both <-  C5.0(result2 ~ timedelta + n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -426,7 +517,7 @@ tree.both <-  randomForest(result2 ~ timedelta + n_tokens_title +
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
       weekRation + twoWeekRation, data=both_sampled3)
 
-tree.rose <-  randomForest(result2 ~ timedelta + n_tokens_title + 
+tree.rose <-  C5.0(result2 ~ timedelta + n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -442,14 +533,21 @@ tree.rose <-  randomForest(result2 ~ timedelta + n_tokens_title +
       weekRation + twoWeekRation, data=rose_sampled3)
 ```
 
-
+结论：使用ROSE进行采样
 ```{r}
 plotTestROC(tree.over, "Over")
 plotTestROC(tree.under, "Under")
 plotTestROC(tree.both, "Both")
 plotTestROC(tree.rose, "Rose")
+
+tableTestBinary(tree.over)
+tableTestBinary(tree.under)
+tableTestBinary(tree.both)
+tableTestBinary(tree.rose)
 ```
  
+
+
 
 ## 随机森林
 
@@ -469,11 +567,52 @@ rf.model <- randomForest::randomForest(result2 ~ timedelta + n_tokens_title +
     NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
     global_sentiment_polarity + global_rate_positive_words + 
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=rose_sampled3, importance=T, 
-    ntree=450, mtry = 10)
+      weekRation + twoWeekRation, data=both_sampled3, importance=T, 
+    ntree=100, mtry = 20)
 
 rf.model
 ```
+
+### 调参
+[随机森林调参](https://zhuanlan.zhihu.com/p/352793220)
+```{r}
+train.df <- select(both_sampled3, -c("var1_new", "var2_new", "var3_new", "result", "shares"))
+```
+
+3次10折
+```{r}
+library(caret)
+if(file.exists('rda/rf_manual.rda')){
+  results <- readRDS("rda/rf_manual.rda")
+} else {
+  # Manual Search
+  trControl <- trainControl(method="repeatedcv", number=10, repeats=3, search="grid")
+
+  # 用默认值固定mtry
+  tunegrid <- expand.grid(mtry=c(5,10,15,20))
+
+  # 定义模型列表，存储每一个模型评估结果
+  modellist <- list()
+
+  # 交叉验证，调参，耗时很久，同时误差率没啥参考价值，别跑
+  for (ntree in c(100,150,200,250,300,350,400,450,500)) {
+      fit <- train(x=select(train.df, -c("result2")), y=train.df$result2, method="rf", 
+                   metric="Accuracy", tuneGrid=tunegrid, 
+                   trControl=trControl, ntree=ntree)
+      key <- toString(ntree)
+      modellist[[key]] <- fit
+      print(paste0("训练完成:", ntree))
+  }
+  results <- resamples(modellist)
+  modellist
+  saveRDS(results, "rda/rf_manual.rda")
+}
+summary(results)
+dotplot(results)
+
+# 100 + mtry=20
+```
+
 
 ### 选择特征
 
@@ -481,7 +620,7 @@ rf.model
 varImpPlot(rf.model, n.var = 30, main = "Top 30 - Variable Importance")
 
 importance.df <- data.frame(importance(rf.model), check.names = F)
-importance.df <- importance.df[order(importance.df$MeanDecreaseGini, 
+importance.df <- importance.df[order(importance.df$MeanDecreaseAccuracy, 
                                    decreasing = T),]
 head(importance.df)
 ```
@@ -546,49 +685,7 @@ test_pred.rf <- predict(rf.model2, newdata = test)
 table(test_pred.rf, test$result)
 ```
 
-### ROC & AUC
 
-$$ 
-TPR = TP / P 
-$$
-
-$$
-FPR = FP(FalsePositive) / N
-$$
-目的是取得软分类转硬分类的概率阈值，借以评估分类效果
-```{r}
-library(pROC)
-
-tableTestBinary <- function(model) {
-  p <- predict(model, newdata=test)
-  table(p, test$result2,dnn=c("预测值","真实值"))
-}
-
-tableTrainBinary <- function(model) {
-  p <- predict(model, newdata=train)
-  table(p, train$result2,dnn=c("预测值","真实值"))
-}
-```
-
-```{r}
-str(test$result2)
-
-```
-
-```{r}
-plotTestROC <- function(model, theme) {
-  pre_ran <- predict(model, newdata=test)
-  ran_roc <- roc(test$result2, as.numeric(pre_ran), levels=c("1","3"))
-  plot(ran_roc, print.auc=TRUE, auc.polygon=TRUE, grid=c(0.1,0.2),grid.col=c("green", "red"), max.auc.polygon=TRUE,auc.polygon.col="skyblue", print.thres=TRUE,main=theme)
-}
-
-
-plotTrainROC <- function(model, theme) {
-  pre_ran <- predict(model, newdata=train)
-  ran_roc <- roc(train$result2, as.numeric(pre_ran), levels=c("1","3"))
-  plot(ran_roc, print.auc=TRUE, auc.polygon=TRUE, grid=c(0.1,0.2),grid.col=c("green", "red"), max.auc.polygon=TRUE,auc.polygon.col="skyblue", print.thres=TRUE,main=theme)
-}
-```
 
 
 ### 不用欠采样会发生什么事情...
@@ -616,42 +713,28 @@ plotTrainROC(rf.model_full, "随机森林+不做采样- Train")
 tableTestBinary(rf.model_full)
 tableTrainBinary(rf.model_full)
 
-plotTestROC(rf.model, "随机森林+欠采样- Test")
-plotTrainROC(rf.model, "随机森林+欠采样- Train")
+plotTestROC(rf.model, "随机森林+Both- Test")
+plotTrainROC(rf.model, "随机森林+Both- Train")
 tableTestBinary(rf.model)
 tableTrainBinary(rf.model)
 
-plotTestROC(rf.model2, "随机森林2+欠采样- Test")
-plotTrainROC(rf.model2, "随机森林2+欠采样- Train")
+
+
+plot13ROC <- function() {
+  pre_ran <- predict(rf.model, newdata=test)
+  ran_roc <- roc(test$result2, as.numeric(pre_ran), levels=c("2","3"))
+  plot(ran_roc, print.auc=TRUE, auc.polygon=TRUE, grid=c(0.1,0.2),grid.col=c("green", "red"), max.auc.polygon=TRUE,auc.polygon.col="skyblue", print.thres=TRUE,main="theme")
+}
+
+plot13ROC()
+
+plotTestROC(rf.model2, "随机森林2+Both- Test")
+plotTrainROC(rf.model2, "随机森林2+Both- Train")
 tableTestBinary(rf.model2)
 tableTrainBinary(rf.model2)
 ```
 
 
 
-## C50
-
-
-```{r}
-library(C50)
-c50.model <- C5.0(result ~ timedelta + n_tokens_title + 
-                             n_tokens_content + 
-    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
-    data_channel_is_lifestyle + data_channel_is_entertainment + 
-    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
-    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
-    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
-    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
-    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
-    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
-    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
-    global_sentiment_polarity + global_rate_positive_words + 
-    global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data = train)
-
-plotROC(c50.model, "C50")
-tableTestBinary(c50.model)
-tableTrainBinary(c50.model)
-```
 
 
