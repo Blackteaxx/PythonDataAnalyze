@@ -533,7 +533,7 @@ tree.rose <-  C5.0(result2 ~ timedelta + n_tokens_title +
       weekRation + twoWeekRation, data=rose_sampled3)
 ```
 
-结论：使用ROSE进行采样
+结论：使用both进行采样
 ```{r}
 plotTestROC(tree.over, "Over")
 plotTestROC(tree.under, "Under")
