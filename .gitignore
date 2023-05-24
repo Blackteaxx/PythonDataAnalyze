@@ -38,3 +38,5 @@ GiveUpNow/pre.csv
 信息分析/PCA&Clustered/preProcessdata.csv
 GiveUpNow/.RData
 GiveUpNow/.Rhistory
+GiveUpNow/News.csv
+GiveUpNow/DataWithAuthor.csv
