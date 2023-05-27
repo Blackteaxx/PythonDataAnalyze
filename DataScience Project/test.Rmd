@@ -848,7 +848,7 @@ rf.binarymodelDown <- randomForest::randomForest(result ~ timedelta + n_tokens_t
     global_sentiment_polarity + global_rate_positive_words + 
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
       weekRation + twoWeekRation, data=under_sampled4, importance=T, 
-    ntree=500, mtry = 20)
+    ntree=400, mtry = 20)
 
 rf.binarymodelDown
 
@@ -881,7 +881,7 @@ if(file.exists('rda/rf_manual1.rda')){
 
   # 交叉验证，调参，耗时很久，同时误差率没啥参考价值，别跑
   for (ntree in c(100,150,200,250,300,350,400,450,500)) {
-      fit <- train(x=select(train.df, -c("result")), y=train.df$result, method="rf", 
+      fit <- train(x=train.df, y=under_sampled4$result, method="rf", 
                    metric="Accuracy", tuneGrid=tunegrid, 
                    trControl=trControl, ntree=ntree)
       key <- toString(ntree)
@@ -895,7 +895,7 @@ if(file.exists('rda/rf_manual1.rda')){
 summary(results)
 dotplot(results)
 
-modellist[["100"]]
+modellist[["400"]]
 
 ```
 
@@ -997,7 +997,7 @@ getAUCDown5(dichotomy.nnet)
 ```{r}
 library(randomForest)
 
-rf.binarymodel <- randomForest::randomForest(result3 ~ timedelta + n_tokens_title + 
+rf.binarymodelTop <- randomForest::randomForest(result2 ~ timedelta + n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -1013,11 +1013,12 @@ rf.binarymodel <- randomForest::randomForest(result3 ~ timedelta + n_tokens_titl
       weekRation + twoWeekRation, data=over_sampled5, importance=T, 
     ntree=500, mtry = 20)
 
-rf.binarymodel
+rf.binarymodelTop
+plot(rf.binarymodelTop)
 ```
 ```{r}
-tableDown5(rf.binarymodel)
-getResDown5(rf.binarymodel)
+tableDown5(rf.binarymodelTop)
+getResDown5(rf.binarymodelTop)
 ```
 
 
