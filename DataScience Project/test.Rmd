@@ -15,6 +15,9 @@ library(kableExtra)
 library(Hmisc)
 library(dplyr)
 library(ggplot2)
+library(ROSE)
+library(DALEX)
+library(pROC)
 
 getwd()
 ```
@@ -215,6 +218,9 @@ test <- sample.df[index==2,]
 ```
 
 ```{r 模型拟合}
+lm.modelbase <- lm(logShares ~ 1, data = train)
+
+
 lm.model <- lm(logShares~timedelta + n_tokens_title + n_tokens_content +
                  num_hrefs + 
     num_self_hrefs + num_imgs + num_videos + average_token_length + 
@@ -236,9 +242,11 @@ summary(lm.model)
 ```
 
 ```{r MAE}
+train_pred_base <- predict(lm.modelbase, newdata = train)
 train_pred <- predict(lm.model, newdata = train)
 
 mean((abs(exp(train_pred) - exp(train$logShares)) / train$shares))
+mean((abs(exp(train_pred_base) - exp(train$logShares)) / train$shares))
 mean((abs(train_pred - train$logShares) / train$logShares))
 ```
 # 3. 分类模型拟合
@@ -570,7 +578,7 @@ tempfun <- function(over, both, under, rose) {
     #input:four balanced data
     #output:C50 model scores: recallPos recallNeg Accuracy
   
-  tree.over <-  C5.0(result ~ timedelta + n_tokens_title + 
+  tree.over <-  C5.0(result ~ n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -585,7 +593,7 @@ tempfun <- function(over, both, under, rose) {
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
       weekRation + twoWeekRation, data=over)
 
-tree.under <-  C5.0(result ~ timedelta + n_tokens_title + 
+tree.under <-  C5.0(result ~ n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -600,7 +608,7 @@ tree.under <-  C5.0(result ~ timedelta + n_tokens_title +
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
       weekRation + twoWeekRation, data=under)
 
-tree.both <-  C5.0(result ~ timedelta + n_tokens_title + 
+tree.both <-  C5.0(result ~ n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -615,7 +623,7 @@ tree.both <-  C5.0(result ~ timedelta + n_tokens_title +
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
       weekRation + twoWeekRation, data=both)
 
-tree.rose <-  C5.0(result ~ timedelta + n_tokens_title + 
+tree.rose <-  C5.0(result ~ n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -680,7 +688,7 @@ for (prob in seq(from=0.2,to=0.8,by=0.02)) {
 ```{r 查看探索结果}
 model.list1[["0.44"]]
 model.list1[["0.46"]]
-model.list1[["0.48"]]
+model.list1[["0.46"]]
 ```
 
 ```{r 选择欠采样}
@@ -852,6 +860,8 @@ rf.binarymodelDown <- randomForest::randomForest(result ~ timedelta + n_tokens_t
 
 rf.binarymodelDown
 
+getResDown5(rf.binarymodelDown)
+
 # 选择100就可以了
 plot(rf.binarymodelDown)
 ```
@@ -902,7 +912,7 @@ modellist[["400"]]
 ##### 选择特征
 ```{r 交叉验证}
 ##交叉验证辅助评估选择特定数量的 Feature
-#3 次重复十折交叉验证
+#5 次重复十折交叉验证
 library(dplyr)
 set.seed(20021119)
 train.cv <- replicate(5,rfcv(train.df ,
@@ -953,7 +963,8 @@ formula
 
 #### 结果呈现
 ```{r 最终的结果}
-rf.binarymodelDown2 <- randomForest(result ~ timedelta + noun_count + average_token_length + topicNo + n_tokens_content + global_subjectivity + wordRatioIn8000 + All.Possible.Meanings + novel.of.title + global_rate_positive_words + VWordRatio + ContentFleschReadingEase + num_hrefs + NWordRatio + global_sentiment_polarity + global_rate_negative_words + Flesch.Kincaid.Grade.of.Title + num_imgs + num_self_hrefs + data_channel_is_world + n_tokens_title + title_sentiment_polarity + data_channel_is_entertainment + title_subjectivity + is_weekend, data = under_sampled4, mtry=10, ntree=300,
+library(randomForest)
+rf.binarymodelDown2 <- randomForest(result ~ timedelta + noun_count + topicNo + n_tokens_content + global_subjectivity + wordRatioIn8000 + All.Possible.Meanings + novel.of.title + global_rate_positive_words + VWordRatio + ContentFleschReadingEase + num_hrefs + NWordRatio + global_sentiment_polarity + global_rate_negative_words + Flesch.Kincaid.Grade.of.Title + num_imgs + num_self_hrefs + data_channel_is_world + n_tokens_title + title_sentiment_polarity + data_channel_is_entertainment + title_subjectivity + is_weekend, data = under_sampled4, mtry=10, ntree=300,
                                     importance=T, proximity=T)
 
 # 这个结果会抽风，就算0.68了，可能出不来0.68
@@ -1023,3 +1034,78 @@ getResDown5(rf.binarymodelTop)
 
 
 # 4.变量解释
+
+https://zhuanlan.zhihu.com/p/354108603?utm_id=0
+
+result ~ timedelta + noun_count + average_token_length + topicNo + n_tokens_content + global_subjectivity + wordRatioIn8000 + All.Possible.Meanings + novel.of.title + global_rate_positive_words + VWordRatio + ContentFleschReadingEase + num_hrefs + NWordRatio + global_sentiment_polarity + global_rate_negative_words + Flesch.Kincaid.Grade.of.Title + num_imgs + num_self_hrefs + data_channel_is_world + n_tokens_title + title_sentiment_polarity + data_channel_is_entertainment + title_subjectivity + is_weekend
+
+
+```{r}
+library(DALEX)
+```
+
+
+```{r}
+test$response <- ifelse(test$result == 1, "Positive", "Negative")
+
+test$response <- as.factor(test$response)
+
+explainer_rf <- DALEX::explain(rf.binarymodelDown2, label = "rf", data = test, y = test$result)
+
+plotPDPPos <- function(variable) {
+  pdp_rf1<-model_profile(explainer_rf,
+                          variable = variable,
+                          type = "partial",
+                      target="1")
+  plot(pdp_rf1)
+}
+
+plotPDPNeg <- function(variable) {
+  pdp_rf1<-model_profile(explainer_rf,
+                          variable = variable,
+                          type = "partial",
+                      target="2")
+  plot(pdp_rf1)
+}
+
+plotPDPPos("global_subjectivity")
+plotPDPNeg("global_subjectivity")
+
+```
+
+```{r}
+library(randomForest)
+set.seed(20021119)
+
+rf.binarymodelDown2 <- randomForest(result ~ noun_count + topicNo + n_tokens_content + global_subjectivity + wordRatioIn8000 + All.Possible.Meanings + novel.of.title + global_rate_positive_words + VWordRatio + ContentFleschReadingEase + num_hrefs + NWordRatio + global_sentiment_polarity + global_rate_negative_words + Flesch.Kincaid.Grade.of.Title + num_imgs + num_self_hrefs + data_channel_is_world + n_tokens_title + title_sentiment_polarity + data_channel_is_entertainment + title_subjectivity + is_weekend, data = under_sampled4, mtry=10, ntree=300,
+                                    importance=T, proximity=T)
+
+# 这个结果会抽风，就算0.68了，可能出不来0.68
+getResDown5(rf.binarymodelDown2)
+
+# timedelta : [1] 0.7104191 0.6455479 0.7138011 0.6798977
+```
+ICE
+```{r}
+library(ICEbox)
+test.df <- select(test, -c("result"))
+
+prob <- predict(rf.binarymodelDown2, newdata = test, type = "prob")
+preds <- data.frame(prob)
+
+
+pred_class <- ifelse(preds$X1 > 0.5, 1, 2)
+preds$class <- pred_class
+t <- table(preds$class, test$result, dnn = c("预测值","真实值"))
+t
+getScoresDown5(t)
+tableDown5(rf.binarymodelDown2)
+getResDown5(rf.binarymodelDown2)
+hist(preds$X1)
+
+
+
+# ICEbox::ice(rf.binarymodelDown2,test.df, predictor = "Flesch.Kincaid.Grade.of.Title", nlines=100, preProbs = preds)
+
+
+```
