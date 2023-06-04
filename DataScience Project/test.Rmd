@@ -218,8 +218,9 @@ test <- sample.df[index==2,]
 ```
 
 ```{r 模型拟合}
+# 基准模型
 lm.modelbase <- lm(logShares ~ 1, data = train)
-
+summary(lm.modelbase)
 
 lm.model <- lm(logShares~timedelta + n_tokens_title + n_tokens_content +
                  num_hrefs + 
@@ -236,7 +237,7 @@ lm.model <- lm(logShares~timedelta + n_tokens_title + n_tokens_content +
       VWordRatio+wordRatioIn8000+global_subjectivity+global_sentiment_polarity+
       global_rate_positive_words+global_rate_negative_words+novel.of.title+ 
       dayRatio+threeDayRatio+weekRation+twoWeekRation
-      -1,
+      ,
     data = train)
 summary(lm.model)
 ```
@@ -285,44 +286,21 @@ sample.df$result2 <- as.factor(sapply(sample.df$shares, range_capture_top))
 ```
 
 
-```{r 三分}
-ggplot(data = sample.df, aes(x = shares)) +
-  geom_histogram() +
-  xlim(0,6000)
-
-quantile(sample.df$shares, c(0.05,0.95))
-
-selectResult3 <- function(x) {
-  if (x < 584) {
-    return(1)
-  } else if (x < 10800) {
-    return(2)
-  } else {
-    return(3)
-  }
-}
-```
-
-
-```{r 三分}
-sample.df$result3 <- as.factor(sapply(sample.df$shares, selectResult3))
-```
-
 ### 画几张图
 ```{r}
 library(ggplot2)
 # timedelta
-  ggplot(data = sample.df, aes(x = timedelta, fill=result3)) +
+  ggplot(data = sample.df, aes(x = timedelta, fill=result)) +
   geom_histogram(bins = 100, position = "fill")
 
   ggplot(data = sample.df, aes(x = timedelta, y=shares)) +
   geom_line()
   
 # topicNo
-ggplot(data = sample.df, aes(x = topicNo, fill=result2)) +
+ggplot(data = sample.df, aes(x = topicNo, fill=result)) +
   geom_bar(position = position_dodge(width = 0.5))
 
-ggplot(data = sample.df, aes(x = result2)) +
+ggplot(data = sample.df, aes(x = result)) +
   geom_bar(position = position_dodge(width = 0.5))
 ```
 
@@ -339,15 +317,27 @@ $$
 ```{r ROC曲线}
 library(pROC)
 plotTestROC <- function(model, theme) {
-  pre_ran <- predict(model, newdata=test)
-  ran_roc <- roc(test$result2, as.numeric(pre_ran), levels=c("2","1"))
-  plot(ran_roc, print.auc=TRUE, auc.polygon=TRUE, grid=c(0.1,0.2),grid.col=c("green", "red"), max.auc.polygon=TRUE,auc.polygon.col="skyblue", print.thres=TRUE,main=theme)
+  # 求得概率值
+  prob <- predict(model, newdata = test, type = "prob")
+  preds <- data.frame(prob)
+  
+  pred_class <- ifelse(preds$X1 > 0.5, 1, 2)
+  preds$class <- pred_class
+
+pre_ran <- predict(model, newdata=test, type = "prob")
+  ran_roc <- roc(test$result,as.numeric(preds$X1))
+
+plot(ran_roc,col="black",#颜色
+     legacy.axes=T,#y轴格式更改
+     print.auc=T,#显示AUC面积
+     print.thres=F,#添加截点和95%CI
+     grid=c(0.2,0.2),grid.col=c("blue","yellow"))#网格线设置
 }
 
 
 plotTrainROC <- function(model, theme) {
   pre_ran <- predict(model, newdata=train)
-  ran_roc <- roc(train$result2, as.numeric(pre_ran), levels=c("1","2"))
+  ran_roc <- roc(train$result, as.numeric(pre_ran), levels=c("1","2"))
   plot(ran_roc, print.auc=TRUE, auc.polygon=TRUE, grid=c(0.1,0.2),grid.col=c("green", "red"), max.auc.polygon=TRUE,auc.polygon.col="skyblue", print.thres=TRUE,main=theme)
 }
 ```
@@ -366,152 +356,16 @@ test <- sample.df[index==2,]
 [不平衡处理方法](https://www.zhihu.com/question/324187407)
 [ROSE](https://zhuanlan.zhihu.com/p/24826792)
 
-### 3.4.1 三分的不平衡处理
-var1_new:1 and 2+3
-var2_new:2 and 1+3
-var3_new:3 and 1+2
-
-$$
-P_1 = Num(1) / N_1 \\
-P_2 = Num(1+3) / N_2 \\
-P_3 = Num(3) / N_3 \\
-$$
-```{r}
-library(ROSE)
-train.df <- select(train, -c("Date", "HolidayName"))
-
-table(train.df$result2)
-
-# 将三分类变量转换为二分类变量
-train.df$var1_new <- as.factor(model.matrix(~ as.factor(result2) - 1, 
-                                            data = train.df)[, 1])
-train.df$var2_new <- as.factor(model.matrix(~ as.factor(result2) - 1, 
-                                            data = train.df)[, 2])
-train.df$var3_new <- as.factor(model.matrix(~ as.factor(result2) - 1, 
-                                            data = train.df)[, 3])
-table(train.df$var1_new)
-table(train.df$var2_new)
-table(train.df$var3_new)
-
-# 进行采样，分别以var1_new var2_new var3_new为过采样主变量
-over_sampled1 <- ovun.sample(var1_new ~ ., data = train.df, p=0.4, method = "over")$data
-over_sampled2 <- ovun.sample(var2_new ~ ., data = over_sampled1,p=0.7,method = "over")$data
-over_sampled3 <- ovun.sample(var3_new ~ ., data = over_sampled2, p=0.4,method = "over")$data
-
-both_sampled1 <- ovun.sample(var1_new ~ ., data = train.df, p=0.4,method = "both")$data
-both_sampled2 <- ovun.sample(var2_new ~ ., data = over_sampled1, p=0.7,method = "both")$data
-both_sampled3 <- ovun.sample(var3_new ~ ., data = over_sampled2, p=0.4,method = "both")$data
-
-under_sampled1 <- ovun.sample(var1_new ~ ., data = train.df,p=0.4,method = "over")$data
-under_sampled2 <- ovun.sample(var2_new ~ ., data = over_sampled1, p=0.7,method = "over")$data
-under_sampled3 <- ovun.sample(var3_new ~ ., data = over_sampled2, p=0.4,method = "over")$data
-
-rose_sampled1 <- ROSE(var1_new ~ ., p=0.4, data = train.df)$data
-rose_sampled2 <- ROSE(var2_new ~ ., data = over_sampled1, p=0.7)$data
-rose_sampled3 <- ROSE(var3_new ~ ., data = over_sampled2, p=0.4)$data
-
-table(over_sampled1$result2)
-table(over_sampled2$result2)
-table(over_sampled3$result2)
-table(rose_sampled3$result2)
-```
-
-```{r}
-set.seed(20021119)
-index <- sample(c(1,2), nrow(sample.df), replace = T, prob = c(0.4, 0.6))
-over_sampled3 <- over_sampled3[index==1,]
-both_sampled3 <- both_sampled3[index==1,]
-under_sampled3 <- under_sampled3[index==1,]
-rose_sampled3 <- rose_sampled3[index==1,]
-
-```
-
-评估
-```{r}
-library(C50)
-tree.over <-  C5.0(result2 ~ timedelta + n_tokens_title + 
-                             n_tokens_content + 
-    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
-    data_channel_is_lifestyle + data_channel_is_entertainment + 
-    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
-    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
-    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
-    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
-    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
-    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
-    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
-    global_sentiment_polarity + global_rate_positive_words + 
-    global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=over_sampled3)
-
-tree.under <-  C5.0(result2 ~ timedelta + n_tokens_title + 
-                             n_tokens_content + 
-    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
-    data_channel_is_lifestyle + data_channel_is_entertainment + 
-    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
-    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
-    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
-    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
-    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
-    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
-    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
-    global_sentiment_polarity + global_rate_positive_words + 
-    global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=under_sampled3)
-
-tree.both <-  C5.0(result2 ~ timedelta + n_tokens_title + 
-                             n_tokens_content + 
-    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
-    data_channel_is_lifestyle + data_channel_is_entertainment + 
-    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
-    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
-    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
-    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
-    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
-    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
-    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
-    global_sentiment_polarity + global_rate_positive_words + 
-    global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=both_sampled3)
-
-tree.rose <-  C5.0(result2 ~ timedelta + n_tokens_title + 
-                             n_tokens_content + 
-    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
-    data_channel_is_lifestyle + data_channel_is_entertainment + 
-    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
-    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
-    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
-    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
-    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
-    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
-    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
-    global_sentiment_polarity + global_rate_positive_words + 
-    global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=rose_sampled3)
-```
-
-结论：使用both进行采样
-```{r}
-plotTestROC(tree.over, "Over")
-plotTestROC(tree.under, "Under")
-plotTestROC(tree.both, "Both")
-plotTestROC(tree.rose, "Rose")
-
-tableTestBinary(tree.over)
-tableTestBinary(tree.under)
-tableTestBinary(tree.both)
-tableTestBinary(tree.rose)
-```
-
 ### 3.4.2 二分的不平衡处理-Down5
 
 #### 定义一些函数
 ```{r 结果函数定义以及采样过程函数定义}
+# 这边修改C5.0的formula，取消timedelta +
 library(ROSE)
 library(C50)
 library(dplyr)
 table(train.df$result)
-train.df <- select(train, -c("Date", "HolidayName"))
+train.df <- dplyr::select(train, -c("Date", "HolidayName"))
 
 # 混淆矩阵
 tableDown5 <- function(model) {
@@ -539,11 +393,11 @@ getAUCDown5 <- function(model) {
   
   # 有可能出现上下颠倒的情况
   if (rownames(t)[1] == "2") {
-    ran_roc <- roc(test$result, as.numeric(pre_ran), levels=c("2","1"))
+    ran_roc <- roc(test$result,as.numeric(pre_ran), levels=c("2","1"))
     auc_v <- auc(ran_roc)
     return(auc_v)
   } else {
-    ran_roc <- roc(test$result, as.numeric(pre_ran), levels=c("1","2"))
+    ran_roc <- roc(test$result,as.numeric(pre_ran), levels=c("1","2"))
     auc_v <- auc(ran_roc)
     return(auc_v)
   }
@@ -578,7 +432,7 @@ tempfun <- function(over, both, under, rose) {
     #input:four balanced data
     #output:C50 model scores: recallPos recallNeg Accuracy
   
-  tree.over <-  C5.0(result ~ n_tokens_title + 
+  tree.over <-  C5.0(result ~ timedelta +n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -593,7 +447,7 @@ tempfun <- function(over, both, under, rose) {
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
       weekRation + twoWeekRation, data=over)
 
-tree.under <-  C5.0(result ~ n_tokens_title + 
+tree.under <-  C5.0(result ~ timedelta +n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -608,7 +462,7 @@ tree.under <-  C5.0(result ~ n_tokens_title +
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
       weekRation + twoWeekRation, data=under)
 
-tree.both <-  C5.0(result ~ n_tokens_title + 
+tree.both <-  C5.0(result ~ timedelta +n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -623,7 +477,7 @@ tree.both <-  C5.0(result ~ n_tokens_title +
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
       weekRation + twoWeekRation, data=both)
 
-tree.rose <-  C5.0(result ~ n_tokens_title + 
+tree.rose <-  C5.0(result ~ timedelta +n_tokens_title + 
                              n_tokens_content + 
     num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
@@ -686,9 +540,41 @@ for (prob in seq(from=0.2,to=0.8,by=0.02)) {
 ```
 
 ```{r 查看探索结果}
-model.list1[["0.44"]]
-model.list1[["0.46"]]
-model.list1[["0.46"]]
+# 遍历 my_list 列表及其索引
+cur.df <- model.list1[["0.2"]]
+result.df <- data.frame(cur.df$AUC, rownames(cur.df), c("0.2","0.2","0.2","0.2"))
+colnames(result.df) <- c("AUC", "METHOD", "P")
+
+
+
+for (prob in seq(from=0.22, to=0.8, by=0.02)) {
+  key <- toString(prob)
+  cur.df <- model.list1[[key]]
+  
+  # 创建临时数据框
+  temp <- data.frame(cur.df$AUC, rownames(cur.df), c(key,key,key,key))
+  colnames(temp) <- c("AUC", "METHOD", "P")
+  
+  # 将临时数据框与 result.df 合并
+  result.df <- rbind(result.df, temp)
+}
+
+# 将 P 列转换为因子类型
+result.df$P <- as.factor(result.df$P)
+result.df$METHOD <- as.factor(result.df$METHOD)
+
+# 拆分 METHOD 列为四个不同的列
+library(tidyr)
+result.df <- separate(result.df, col = METHOD, into = c("Method", "Index"))
+
+library(ggplot2)
+
+result.df
+
+# 创建 ggplot 对象
+p <- ggplot(result.df, aes(x = P, y = AUC, group=METHOD, color = METHOD)) + geom_line()
+
+p
 ```
 
 ```{r 选择欠采样}
@@ -727,119 +613,23 @@ getResDown5(tree.under)
 library(ROSE)
 library(C50)
 library(dplyr)
-table(train.df$result2)
-train.df <- select(train, -c("Date", "HolidayName"))
+table(train$result2)
 ```
 
-#### 修改函数
-```{r}
-tempfun2 <- function(over, both, under, rose) {
-  
-    #input:four balanced data
-    #output:C50 model scores: recallPos recallNeg Accuracy
-  
-  tree.over <-  C5.0(result2 ~ timedelta + n_tokens_title + 
-                             n_tokens_content + 
-    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
-    data_channel_is_lifestyle + data_channel_is_entertainment + 
-    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
-    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
-    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
-    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
-    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
-    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
-    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
-    global_sentiment_polarity + global_rate_positive_words + 
-    global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=over)
-
-tree.under <-  C5.0(result2 ~ timedelta + n_tokens_title + 
-                             n_tokens_content + 
-    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
-    data_channel_is_lifestyle + data_channel_is_entertainment + 
-    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
-    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
-    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
-    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
-    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
-    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
-    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
-    global_sentiment_polarity + global_rate_positive_words + 
-    global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=under)
-
-tree.both <-  C5.0(result2 ~ timedelta + n_tokens_title + 
-                             n_tokens_content + 
-    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
-    data_channel_is_lifestyle + data_channel_is_entertainment + 
-    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
-    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
-    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
-    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
-    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
-    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
-    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
-    global_sentiment_polarity + global_rate_positive_words + 
-    global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=both)
-
-tree.rose <-  C5.0(result2 ~ timedelta + n_tokens_title + 
-                             n_tokens_content + 
-    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
-    data_channel_is_lifestyle + data_channel_is_entertainment + 
-    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
-    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
-    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
-    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
-    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
-    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
-    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
-    global_sentiment_polarity + global_rate_positive_words + 
-    global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=rose)
-
-  # 得到指标
-  return(getScoresDown5InBalancedExec(tree.under, tree.over, tree.both, tree.rose))
-  
-}
-```
-#### 还是找最好的方法
 
 ```{r}
-model.list2 <- list()
-
-# 我直接开始都搜一遍
-for (prob in seq(from=0.2,to=0.8,by=0.02)) {
-  # balance
-  over_sampled5 <- ovun.sample(result2 ~ ., data = train.df, method = "over", p=prob)$data
-  both_sampled5 <- ovun.sample(result2 ~ ., data = train.df, method = "both", p=prob)$data
-  under_sampled5 <- ovun.sample(result2 ~ ., data = train.df, method = "under", p=prob)$data
-  rose_sampled5 <- ROSE(result2 ~ ., data = train.df, p=prob)$data
-  
-  # 拟合,并得出准确率和召回率
-  res.df <- tempfun(over_sampled5, both_sampled5, under_sampled5, rose_sampled5)
-  
-  key <- toString(prob)
-  model.list2[[key]] <- res.df
-  print(paste0("训练完成:", prob))
-} 
-
-
-```
-Top 5识别不出来，很符合我对热点的想象
-```{r}
-model.list2[["0.5"]]
-```
-```{r}
-over_sampled5 <- ovun.sample(result2 ~ ., data = train.df, method = "over", p=0.5)$data
+over_sampled5 <- ovun.sample(result2 ~ ., data = train, method = "over", p=0.5)$data
 ```
 
 
  
 ## 3.5 二分类-Down 5
 
-### 随机森林
-```{r 随机森林}
+### 1 随机森林
+
+Generated by HT
+
+```{r}
 library(randomForest)
 
 rf.binarymodelDown <- randomForest::randomForest(result ~ timedelta + n_tokens_title + 
@@ -855,22 +645,66 @@ rf.binarymodelDown <- randomForest::randomForest(result ~ timedelta + n_tokens_t
     NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
     global_sentiment_polarity + global_rate_positive_words + 
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=under_sampled4, importance=T, 
+      weekRation + twoWeekRation, data=train, importance=T, 
     ntree=400, mtry = 20)
 
 rf.binarymodelDown
-
 getResDown5(rf.binarymodelDown)
+plotTestROC(rf.binarymodelDown,"")
+```
 
-# 选择100就可以了
+```{r 随机森林}
+library(randomForest)
+
+rf.binarymodelDownWithOutT <- randomForest::randomForest(result ~  n_tokens_title + 
+                             n_tokens_content + 
+    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
+    data_channel_is_lifestyle + data_channel_is_entertainment + 
+    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
+    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
+    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
+    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
+    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
+    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
+    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
+    global_sentiment_polarity + global_rate_positive_words + 
+    global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
+      weekRation + twoWeekRation, data=under_sampled4, importance=T, 
+    ntree=500, mtry = 40)
+
+# 带时间的模型
+rf.binarymodelDown <- randomForest::randomForest(result ~  timedelta + n_tokens_title + 
+                             n_tokens_content + 
+    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
+    data_channel_is_lifestyle + data_channel_is_entertainment + 
+    data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
+    data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
+    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
+    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
+    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
+    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
+    NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
+    global_sentiment_polarity + global_rate_positive_words + 
+    global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
+      weekRation + twoWeekRation, data=under_sampled4, importance=T, 
+    ntree=400, mtry = 25)
+
+rf.binarymodelDown
+
+# 这边不知道为什么会抽风，去再搞一下不平衡就会好
+getResDown5(rf.binarymodelDown)
+getResDown5(rf.binarymodelDownWithOutT)
+
 plot(rf.binarymodelDown)
+
+plotTestROC(rf.binarymodelDownWithOutT,"")
+plotTestROC(rf.binarymodelDown,"")
 ```
 
 #### 调参
 [随机森林调参](https://zhuanlan.zhihu.com/p/352793220)
 ```{r}
-train.df <- select(under_sampled4, -c("result2", "shares", "result",
-                                      "result3"))
+train.df <- select(under_sampled4, -c("result2", "shares", "result"))
 ```
 
 ##### 调整mtry 和 ntree
@@ -884,12 +718,12 @@ if(file.exists('rda/rf_manual1.rda')){
   trControl <- trainControl(method="repeatedcv", number=10, repeats=3, search="grid")
 
   # 用默认值固定mtry
-  tunegrid <- expand.grid(mtry=c(5,10,15,20))
+  tunegrid <- expand.grid(mtry=c(5,10,15,20,25,30))
 
   # 定义模型列表，存储每一个模型评估结果
   modellist <- list()
 
-  # 交叉验证，调参，耗时很久，同时误差率没啥参考价值，别跑
+  # 交叉验证，调参，耗时很久，同时误差率没啥参考价值(好吧，可能有点价值)，别跑
   for (ntree in c(100,150,200,250,300,350,400,450,500)) {
       fit <- train(x=train.df, y=under_sampled4$result, method="rf", 
                    metric="Accuracy", tuneGrid=tunegrid, 
@@ -905,7 +739,7 @@ if(file.exists('rda/rf_manual1.rda')){
 summary(results)
 dotplot(results)
 
-modellist[["400"]]
+modellist[["250"]]
 
 ```
 
@@ -956,6 +790,8 @@ importance.df <- importance.df[order(importance.df$MeanDecreaseGini,
                                    decreasing = T),]
 features <- rownames(importance.df[1:25,])
 
+importance.df
+
 formula <- paste0("result ~ ", paste(features, collapse = " + "))
 
 formula
@@ -964,45 +800,114 @@ formula
 #### 结果呈现
 ```{r 最终的结果}
 library(randomForest)
-rf.binarymodelDown2 <- randomForest(result ~ timedelta + noun_count + topicNo + n_tokens_content + global_subjectivity + wordRatioIn8000 + All.Possible.Meanings + novel.of.title + global_rate_positive_words + VWordRatio + ContentFleschReadingEase + num_hrefs + NWordRatio + global_sentiment_polarity + global_rate_negative_words + Flesch.Kincaid.Grade.of.Title + num_imgs + num_self_hrefs + data_channel_is_world + n_tokens_title + title_sentiment_polarity + data_channel_is_entertainment + title_subjectivity + is_weekend, data = under_sampled4, mtry=10, ntree=300,
+rf.binarymodelDown2 <- randomForest(result ~ timedelta + noun_count + average_token_length + topicNo + n_tokens_content + global_subjectivity + wordRatioIn8000 + All.Possible.Meanings + novel.of.title + global_rate_positive_words + VWordRatio + ContentFleschReadingEase + num_hrefs + NWordRatio + global_sentiment_polarity + global_rate_negative_words + Flesch.Kincaid.Grade.of.Title + num_imgs + num_self_hrefs + data_channel_is_world + n_tokens_title + title_sentiment_polarity + data_channel_is_entertainment + title_subjectivity + is_weekend, data = under_sampled4, mtry=10, ntree=300,
                                     importance=T, proximity=T)
 
-# 这个结果会抽风，就算0.68了，可能出不来0.68
+# 这个结果会抽风
 getResDown5(rf.binarymodelDown)
 getResDown5(rf.binarymodelDown2)
+
+plotTestROC(rf.binarymodelDown2)
+plotTestROC(rf.binarymodelDown)
 
 
 plot(rf.binarymodelDown2)
 ```
 
 
-### BP
-```{r 二分nnet}
-library(nnet)
-dichotomy.nnet <- nnet(result ~ timedelta + n_tokens_title + 
-                             n_tokens_content + 
-    num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
+### 2 SVM
+
+Generated by ZY
+
+```{r SVM 寻找最优}
+library(e1071)
+set.seed(20021119)
+cl=seq(-5,5,1)
+gl=seq(-5,5,1)
+for(i in cl){
+  for(j in gl){
+    svmmodel <- svm(result ~ is_weekend + data_channel_is_world + data_channel_is_entertainment + data_channel_is_socmed + num_imgs + timedelta + n_tokens_content + num_hrefs + global_rate_positive_words + average_token_length + global_subjectivity + global_sentiment_polarity + data_channel_is_tech + data_channel_is_bus + num_self_hrefs + global_rate_negative_words + num_videos + title_sentiment_polarity + title_subjectivity, data=train, kernel = "radial",cost=2^i,class.weights = c("2" = 1, "1" = 19),gamma=2^j)
+  #t1=table(predict(svmmodel, train, type = "class"), train$result,dnn=c("预测值","真实值"))
+  t2=table(predict(svmmodel, test, type = "class"), test$result,dnn=c("预测值","真实值"))
+  zhl = t2[1,1]/(t2[2,1]+t2[1,1])
+  zql = t2[2,2]/(t2[1,2]+t2[2,2])
+  print(c(i,j,zhl,zql))
+  if(zhl>0.65 & zql>0.7){
+    print("this")
+  }
+  else if(zhl<0.2){
+    break;
+  }
+  }
+}
+```
+
+```{r svm训练与预测}
+library(e1071)
+svmmodel <- svm(result ~ is_weekend + data_channel_is_world + data_channel_is_entertainment + data_channel_is_socmed + num_imgs + timedelta + n_tokens_content + num_hrefs + global_rate_positive_words + average_token_length + global_subjectivity + global_sentiment_polarity + data_channel_is_tech + data_channel_is_bus + num_self_hrefs + global_rate_negative_words + num_videos + title_sentiment_polarity + title_subjectivity, data=train, kernel = "radial",cost=2^-5,class.weights = c("2" = 1, "1" = 19),gamma=2^-4 ,decay=0.01,probability = TRUE)
+  #t1=table(predict(svmmodel, train, type = "class"), train$result,dnn=c("预测值","真实值"))
+ t2=table(predict(svmmodel, test, type = "class"), test$result,dnn=c("预测值","真实值"))
+ t2
+ t2[1,1]/(t2[2,1]+t2[1,1])
+(t2[1,1]+t2[2,2])/(t2[2,1]+t2[1,1]+t2[2,2]+t2[1,2])
+```
+
+```{r svm roc}
+library(pROC)
+plotTestROCSVM <- function(model, theme) {
+  # 求得概率值
+  output <- predict(svmmodel, newdata=test, probability=T)
+prob <- attr(output, "probabilities")[,'1'] 
+
+pre_ran <- predict(model, newdata=test, type = "prob")
+  ran_roc <- roc(test$result,prob)
+
+plot(ran_roc,col="black",#颜色
+     legacy.axes=T,#y轴格式更改
+     print.auc=T,#显示AUC面积
+     print.thres=F,#添加截点和95%CI
+     grid=c(0.2,0.2),grid.col=c("blue","yellow"))#网格线设置
+}
+plotTestROCSVM(svmmodel,"SVM")
+getResDown5(svmmodel)
+```
+### 3 NB
+```{r}
+library(e1071)
+nb.model <- naiveBayes(result ~ n_tokens_title + 
+                             n_tokens_content + num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + 
     data_channel_is_lifestyle + data_channel_is_entertainment + 
     data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + 
     data_channel_is_world + is_weekend + topicNo + Comparatives.Count + 
-    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + 
-    Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
-    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + 
-    title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
+    Superlatives.Count + Count.Intensifiers + Flesch.Kincaid.Grade.of.Title + Count.Downtoners + SyntaxTree.Height + All.Possible.Meanings + 
+    noun_count + verb_count + adverb_count + punc_count + title_subjectivity + title_sentiment_polarity + isHoliday + ContentFleschReadingEase + 
     NWordRatio + VWordRatio + wordRatioIn8000 + global_subjectivity + 
     global_sentiment_polarity + global_rate_positive_words + 
     global_rate_negative_words + novel.of.title+ dayRatio + threeDayRatio +
-      weekRation + twoWeekRation, data=under_sampled4,maxit=10000,size=20,rang=0.01,linout=F,MaxNWts=7000)
-```
-```{r}
+      weekRation + twoWeekRation, data=train, laplace = 0,  subset, na.action = na.pass)
 
-pred <- predict(dichotomy.nnet, test, type = "class")
-table(predict(dichotomy.nnet, train, type = "class"), train$result,dnn=c("预测值","真实值"))
-t <- table(pred, test$result,dnn=c("预测值","真实值"))
+nb.pred <- predict(object=nb.model,newdata =test, type="raw")
+nb.pred[,1]
+getResDown5(nb.model)
 
-getScoresDown5(t)
-getAUCDown5(dichotomy.nnet)
+plotTestROCNaiveBayes <- function(model, theme) {
+  # 求得概率值
+  output <- predict(model, newdata=test, type="raw")
+  prob <- output[,1]
+
+  ran_roc <- roc(test$result,prob)
+
+plot(ran_roc,col="black",#颜色
+     legacy.axes=T,#y轴格式更改
+     print.auc=T,#显示AUC面积
+     print.thres=F,#添加截点和95%CI
+     grid=c(0.2,0.2),grid.col=c("blue","yellow"))#网格线设置
+}
+
+plotTestROCNaiveBayes(nb.model, "")
+save.image()
 ```
+
 
 ## 3.6 二分类-Top 5
 ```{r}
@@ -1037,8 +942,105 @@ getResDown5(rf.binarymodelTop)
 
 https://zhuanlan.zhihu.com/p/354108603?utm_id=0
 
-result ~ timedelta + noun_count + average_token_length + topicNo + n_tokens_content + global_subjectivity + wordRatioIn8000 + All.Possible.Meanings + novel.of.title + global_rate_positive_words + VWordRatio + ContentFleschReadingEase + num_hrefs + NWordRatio + global_sentiment_polarity + global_rate_negative_words + Flesch.Kincaid.Grade.of.Title + num_imgs + num_self_hrefs + data_channel_is_world + n_tokens_title + title_sentiment_polarity + data_channel_is_entertainment + title_subjectivity + is_weekend
+http://e.betheme.net/article/show-1266723.aspx?action=onClick
 
+
+
+
+```{r}
+library(iml)
+library(randomForest)
+library(partykit)
+library(glmnet)
+```
+```{r}
+test.df <- dplyr::select(test, -c("result", "result2"))
+```
+
+## ALE
+```{r}
+predictor <- Predictor$new(rf.binarymodelDown2, data = test.df, y = test$result)
+
+plotALE <- function(feature) {
+  ALE <- FeatureEffects$new(predictor, feature=feature)
+  plot(ALE)
+}
+```
+
+```{r}
+plotALE("average_token_length")
+```
+
+```{r}
+plotALE("n_tokens_content")
+```
+```{r}
+plotALE("global_subjectivity")
+```
+
+```{r}
+plotALE("wordRatioIn8000")
+```
+
+```{r}
+plotALE("All.Possible.Meanings")
+```
+```{r}
+plotALE("novel.of.title")
+```
+
+```{r}
+plotALE("global_rate_positive_words")
+```
+```{r}
+plotALE("VWordRatio")
+```
+```{r}
+plotALE("ContentFleschReadingEase")
+```
+```{r}
+plotALE("num_hrefs")
+```
+```{r}
+plotALE("NWordRatio")
+```
+```{r}
+plotALE("global_sentiment_polarity")
+```
+```{r}
+plotALE("global_rate_negative_words")
+```
+
+```{r}
+plotALE("Flesch.Kincaid.Grade.of.Title")
+```
+```{r}
+plotALE("num_imgs")
+```
+```{r}
+plotALE("num_self_hrefs")
+```
+```{r}
+plotALE("title_sentiment_polarity")
+```
+```{r}
+plotALE("title_subjectivity")
+```
+
+## LIME
+```{r}
+# LIME使用距离度量来计算加权glm的接近权值
+# 使用LocalModel方法解释数据集的实例:
+lime.explain <- LocalModel$new(predictor, x.interest = test[3000,], k = 10)
+lime.explain
+lime.explain$results
+plot(lime.explain)
+```
+
+
+## PDP
+
+因为正负类趋势已知，所以很难用PDP，改用上文的ALE
 
 ```{r}
 library(DALEX)
@@ -1050,13 +1052,13 @@ test$response <- ifelse(test$result == 1, "Positive", "Negative")
 
 test$response <- as.factor(test$response)
 
-explainer_rf <- DALEX::explain(rf.binarymodelDown2, label = "rf", data = test, y = test$result)
+explainer_rf <- DALEX::explain(rf.binarymodelDown2, label = "rf", data = test, y = test$response)
 
 plotPDPPos <- function(variable) {
   pdp_rf1<-model_profile(explainer_rf,
                           variable = variable,
                           type = "partial",
-                      target="1")
+                      target="Positive")
   plot(pdp_rf1)
 }
 
@@ -1064,48 +1066,12 @@ plotPDPNeg <- function(variable) {
   pdp_rf1<-model_profile(explainer_rf,
                           variable = variable,
                           type = "partial",
-                      target="2")
+                      target="Negative")
   plot(pdp_rf1)
 }
 
-plotPDPPos("global_subjectivity")
-plotPDPNeg("global_subjectivity")
-
+plotPDPPos("title_subjectivity")
+plotPDPNeg("title_subjectivity")
+save.image()
 ```
 
-```{r}
-library(randomForest)
-set.seed(20021119)
-
-rf.binarymodelDown2 <- randomForest(result ~ noun_count + topicNo + n_tokens_content + global_subjectivity + wordRatioIn8000 + All.Possible.Meanings + novel.of.title + global_rate_positive_words + VWordRatio + ContentFleschReadingEase + num_hrefs + NWordRatio + global_sentiment_polarity + global_rate_negative_words + Flesch.Kincaid.Grade.of.Title + num_imgs + num_self_hrefs + data_channel_is_world + n_tokens_title + title_sentiment_polarity + data_channel_is_entertainment + title_subjectivity + is_weekend, data = under_sampled4, mtry=10, ntree=300,
-                                    importance=T, proximity=T)
-
-# 这个结果会抽风，就算0.68了，可能出不来0.68
-getResDown5(rf.binarymodelDown2)
-
-# timedelta : [1] 0.7104191 0.6455479 0.7138011 0.6798977
-```
-ICE
-```{r}
-library(ICEbox)
-test.df <- select(test, -c("result"))
-
-prob <- predict(rf.binarymodelDown2, newdata = test, type = "prob")
-preds <- data.frame(prob)
-
-
-pred_class <- ifelse(preds$X1 > 0.5, 1, 2)
-preds$class <- pred_class
-t <- table(preds$class, test$result, dnn = c("预测值","真实值"))
-t
-getScoresDown5(t)
-tableDown5(rf.binarymodelDown2)
-getResDown5(rf.binarymodelDown2)
-hist(preds$X1)
-
-
-
-# ICEbox::ice(rf.binarymodelDown2,test.df, predictor = "Flesch.Kincaid.Grade.of.Title", nlines=100, preProbs = preds)
-
-
-```
