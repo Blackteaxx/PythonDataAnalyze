@@ -844,8 +844,7 @@ for(i in cl){
 
 ```{r svm训练与预测}
 library(e1071)
-train$result = as.factor(train$result)
-svmmodel <- svm(result ~ is_weekend + data_channel_is_world + data_channel_is_entertainment + data_channel_is_socmed + num_imgs + timedelta + n_tokens_content + num_hrefs + global_rate_positive_words + average_token_length + global_subjectivity + global_sentiment_polarity + data_channel_is_tech + data_channel_is_bus + num_self_hrefs + global_rate_negative_words + num_videos + title_sentiment_polarity + title_subjectivity, data=train, kernel ="radial",cost=2^-5,class.weights = c("1" = 1, "0" = 19),gamma=2^-4 ,decay=0.01,probability = TRUE)
+svmmodel <- svm(result ~ is_weekend + data_channel_is_world + data_channel_is_entertainment + data_channel_is_socmed + num_imgs + timedelta + n_tokens_content + num_hrefs + global_rate_positive_words + average_token_length + global_subjectivity + global_sentiment_polarity + data_channel_is_tech + data_channel_is_bus + num_self_hrefs + global_rate_negative_words + num_videos + title_sentiment_polarity + title_subjectivity, data=train, kernel ="radial",cost=2^-5,class.weights = c("1" = 19, "2" = 1),gamma=2^-4 ,decay=0.01,probability = TRUE)
   #t1=table(predict(svmmodel, train, type = "class"), train$result,dnn=c("预测值","真实值"))
  t2=table(predict(svmmodel, test, type = "class"), test$result,dnn=c("预测值","真实值"))
  t2
@@ -960,11 +959,18 @@ for (i in 1:len) {
     newclass = c(newclass,0)
   }
 }
+t = test$result
+t[t==1]=0
+t[t==2]=1
 newclass = as.factor(newclass)
-newt = table(newclass, test$result,dnn=c("预测值","真实值"))
+newt = table(newclass, t,dnn=c("预测值","真实值"))
 newt
 newt[1,1]/(newt[2,1]+newt[1,1])
 (newt[2,2]+newt[1,1])/(newt[2,1]+newt[1,1]+newt[2,2]+newt[1,2])
+```
+```{r}
+table(newclass)
+table(test$result)
 ```
 
 
