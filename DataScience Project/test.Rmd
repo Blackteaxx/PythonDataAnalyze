@@ -24,7 +24,7 @@ getwd()
 
 # 0  对结果处理
 ```{r load}
-sample.df <- read.csv(file="E:/paper/大二下学期/数据科学/大作业/News2.csv", header = T,
+sample.df <- read.csv(file="./Data/News2.csv", header = T,
                      na.strings=c("","NA","NULL",NULL), sep = ",")
 
 # 查看结果
