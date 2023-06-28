@@ -24,7 +24,7 @@ getwd()
 
 # 0  对结果处理
 ```{r load}
-sample.df <- read.csv(file="./Data/News2.csv", header = T,
+sample.df <- read.csv(file="E:/paper/大二下学期/数据科学/大作业/News2.csv", header = T,
                      na.strings=c("","NA","NULL",NULL), sep = ",")
 
 # 查看结果
@@ -366,6 +366,7 @@ library(C50)
 library(dplyr)
 
 train.df <- dplyr::select(train, -c("Date", "HolidayName"))
+table(train.df$result)
 table(train.df$result)
 
 # 混淆矩阵
@@ -842,8 +843,9 @@ for(i in cl){
 
 ```{r svm训练与预测}
 library(e1071)
-svmmodel <- svm(result ~ is_weekend + data_channel_is_world + data_channel_is_entertainment + data_channel_is_socmed + num_imgs + timedelta + n_tokens_content + num_hrefs + global_rate_positive_words + average_token_length + global_subjectivity + global_sentiment_polarity + data_channel_is_tech + data_channel_is_bus + num_self_hrefs + global_rate_negative_words + num_videos + title_sentiment_polarity + title_subjectivity, data=train, kernel = "radial",cost=2^-5,class.weights = c("2" = 1, "1" = 19),gamma=2^-4 ,decay=0.01,probability = TRUE)
-
+train$result = as.factor(train$result)
+svmmodel <- svm(result ~ is_weekend + data_channel_is_world + data_channel_is_entertainment + data_channel_is_socmed + num_imgs + timedelta + n_tokens_content + num_hrefs + global_rate_positive_words + average_token_length + global_subjectivity + global_sentiment_polarity + data_channel_is_tech + data_channel_is_bus + num_self_hrefs + global_rate_negative_words + num_videos + title_sentiment_polarity + title_subjectivity, data=train, kernel ="radial",cost=2^-5,class.weights = c("1" = 1, "0" = 19),gamma=2^-4 ,decay=0.01,probability = TRUE)
+  #t1=table(predict(svmmodel, train, type = "class"), train$result,dnn=c("预测值","真实值"))
  t2=table(predict(svmmodel, test, type = "class"), test$result,dnn=c("预测值","真实值"))
  t2
  t2[1,1]/(t2[2,1]+t2[1,1])
@@ -869,7 +871,20 @@ plot(ran_roc,col="black",#颜色
 plotTestROCSVM(svmmodel,"SVM")
 getResDown5(svmmodel)
 ```
-### 3 NB
+### 3 NNET
+```{r 二分nnet}
+library(nnet)
+library(ROSE)
+twobothsample = ovun.sample(result~ . ,p=0.5, data = train,,method = "both")$data
+table(twobothsample$result)
+dichotomy.nnet <- nnet(result ~ is_weekend + data_channel_is_world + data_channel_is_entertainment + data_channel_is_socmed + num_imgs + timedelta + n_tokens_content + num_hrefs + global_rate_positive_words + average_token_length + global_subjectivity + global_sentiment_polarity + data_channel_is_tech + data_channel_is_bus + num_self_hrefs + global_rate_negative_words + num_videos + title_sentiment_polarity + title_subjectivity, data=twobothsample,maxit=10000,size=8,rang=0.001,linout=F,MaxNWts=7000,decay=4,weights=10/log(twobothsample$shares))
+t1=table(pred, test$result,dnn=c("预测值","真实值"))
+ t1
+ t1[1,1]/(t1[2,1]+t1[1,1])
+(t1[1,1]+t1[2,2])/(t1[2,1]+t1[1,1]+t1[2,2]+t1[1,2])
+```
+
+### 4 NB
 ```{r}
 library(e1071)
 nb.model <- naiveBayes(result ~ n_tokens_title + 
@@ -885,8 +900,8 @@ nb.model <- naiveBayes(result ~ n_tokens_title +
       weekRation + twoWeekRation, data=train, laplace = 0,  subset, na.action = na.pass)
 
 nb.pred <- predict(object=nb.model,newdata =test, type="raw")
-nb.pred[,1]
-getResDown5(nb.model)
+# nb.pred[,1]
+# getResDown5(nb.model)
 
 plotTestROCNaiveBayes <- function(model, theme) {
   # 求得概率值
@@ -911,38 +926,8 @@ library(ROSE)
 twobothsample = ovun.sample(result~ . ,p=0.5, data = train,,method = "both")$data
 table(twobothsample$result)
 ```
-
-```{r 二分nnet}
-library(nnet)
-dichotomy.nnet <- nnet(result ~ is_weekend + data_channel_is_world + data_channel_is_entertainment + data_channel_is_socmed + num_imgs + timedelta + n_tokens_content + num_hrefs + global_rate_positive_words + average_token_length + global_subjectivity + global_sentiment_polarity + data_channel_is_tech + data_channel_is_bus + num_self_hrefs + global_rate_negative_words + num_videos + title_sentiment_polarity + title_subjectivity, data=twobothsample,maxit=500,size=8,rang=0.001,linout=F,MaxNWts=7000,decay=4,weights=10/log(twobothsample$shares))
-pred <- predict(dichotomy.nnet, test, type = "class")
-table(predict(dichotomy.nnet, train, type = "class"), train$result,dnn=c("预测值","真实值"))
-table(pred, test$result,dnn=c("预测值","真实值"))
-```
-```{r nnet预测}
-nnetpred <- predict(dichotomy.nnet, test, type = "class")
-pred <- predict(dichotomy.nnet, test, type = "class")
-table(predict(dichotomy.nnet, train, type = "class"), train$result,dnn=c("预测值","真实值"))
-t1=table(pred, test$result,dnn=c("预测值","真实值"))
- t1
- t1[1,1]/(t1[2,1]+t1[1,1])
-(t1[1,1]+t1[2,2])/(t1[2,1]+t1[1,1]+t1[2,2]+t1[1,2])
- 
-nnetpred <- predict(dichotomy.nnet, test, type = "raw")
-
-
-ran_roc <- roc(test$result,as.numeric(nnetpred))
-
-plot(ran_roc,col="black",#颜色
-     legacy.axes=T,#y轴格式更改
-     print.auc=T,#显示AUC面积
-     print.thres=F,#添加截点和95%CI
-     grid=c(0.2,0.2),grid.col=c("blue","yellow"))#网格线设置
-
-```
-
-### 5 Voting
-```{r 投票}
+### 5 投票
+```{r}
 nnetpred <- predict(dichotomy.nnet, test, type = "class")
 svmpred = predict(svmmodel, test, type = "class")
 bayespred <- predict(nb.model, test, type = "class")
@@ -960,20 +945,20 @@ for (i in 1:len) {
   nnetclass = c(nnetclass,as.integer(nnetpred[i]))
   treeclass = c(treeclass,as.integer(treepred[i]))
 }
-#svmclass[svmclass==1] = 0
-#svmclass[svmclass==2] = 1
-#bayesclass[bayesclass==1] = 0
-#bayesclass[bayesclass==2] = 1
-#treeclass[treeclass==1] = 1
-#treeclass[treeclass==2] = 0
 
+svmclass[svmclass==1] = 0
+svmclass[svmclass==2] = 1
+bayesclass[bayesclass==1] = 0
+bayesclass[bayesclass==2] = 1
+treeclass[treeclass==1] = 1
+treeclass[treeclass==2] = 0
 
 for (i in 1:len) {
   s = svmclass[i]+bayesclass[i]+nnetclass[i]+treeclass[i]
-  if(s>6){
+  if(s>2){
     newclass = c(newclass,1)
   }
- else if(s==6){ # 如果是投票平票的情况下，选择相信随机森林模型的预测结果
+ else if(s==2){ # 如果是投票平票的情况下，选择相信随机森林模型的预测结果
     newclass = c(newclass,treeclass[i])
 }
   else{
@@ -983,9 +968,10 @@ for (i in 1:len) {
 newclass = as.factor(newclass)
 newt = table(newclass, test$result,dnn=c("预测值","真实值"))
 newt
-newt[2,1]/(newt[2,1]+newt[1,1])
+newt[1,1]/(newt[2,1]+newt[1,1])
 (newt[2,2]+newt[1,1])/(newt[2,1]+newt[1,1]+newt[2,2]+newt[1,2])
 ```
+
 
 ## 3.6 二分类-Top 5
 ```{r}
