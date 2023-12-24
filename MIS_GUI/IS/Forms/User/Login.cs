@@ -16,7 +16,7 @@ namespace IS
     public partial class Login : Form
     {
         private readonly User user = new User();
-        private bool exit = false;
+        private bool exit = true;
         public Login()
         {
             InitializeComponent();
@@ -36,7 +36,7 @@ namespace IS
             if (r.Status)
             {
                 Main.uid = Convert.ToInt32(r.Data);
-                exit = true;
+                exit = false;
                 new UserTeam().Show();
                 this.Close();
             }
@@ -60,6 +60,7 @@ namespace IS
 
         private void button2_Click(object sender, EventArgs e)
         {
+            exit = false;
             var register = new Forms.User.Register();
             register.Show();
             this.Close();
@@ -67,7 +68,7 @@ namespace IS
 
         private void Login_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!exit) Application.Exit();
+            if (exit) Application.Exit();
         }
     }
 }

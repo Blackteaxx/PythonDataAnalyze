@@ -14,6 +14,7 @@ namespace IS.Forms.User
     public partial class Register : Form
     {
         private readonly IS.Services.User user = new IS.Services.User();
+        private bool exit = true;
 
         public Register()
         {
@@ -57,13 +58,14 @@ namespace IS.Forms.User
 
         private void button2_Click(object sender, EventArgs e)
         {
+            exit = false;
             new Login().Show();
             this.Close();
         }
 
         private void Register_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            if(exit) Application.Exit();
         }
     }
 }
