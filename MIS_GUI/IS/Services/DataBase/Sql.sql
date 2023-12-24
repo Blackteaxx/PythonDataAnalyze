@@ -35,6 +35,13 @@ CREATE VIEW TeamMemberView AS
     FROM TeamMember TM LEFT JOIN [USER] U on U.Uid = TM.Tid;
 GO;
 
+CREATE PROCEDURE CreateTeam(@uid INT,@n NVARCHAR(20),@d NVARCHAR(140),@joinCode NVARCHAR(9)) AS 
+    DECLARE @tid int;
+    INSERT INTO Team(name, joincode, peoplenumber, description) VALUES (@n,@joinCode,1,@d);
+    SET @tid = @@identity;
+    INSERT INTO TeamMember(tid, uid, role) VALUES (@tid,@uid,'Owner');
+GO;
+
 -- 获取团队信息
 CREATE PROCEDURE GetTeamInfo(@tid INT) AS 
     DECLARE @OwnerUid INT;

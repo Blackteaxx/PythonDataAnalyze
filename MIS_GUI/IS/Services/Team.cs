@@ -43,14 +43,13 @@ public class Team
         
             // 插入团队信息
             var r1 = Sql.ExecuteNonQuery(
-                @"Insert into Team (name,description,joinCode,PeopleNumber) values (@name,@description,@joinCode,1);Insert into TeamMember (Tid,Uid,Role) values (@@identity, @uid ,'Owner')",
+                @"EXEC CreateTeam @uid, @name, @description, @joinCode",
                 new Dictionary<string, object?>
                 {
-                    { "Tid", 0 },
-                    { "name", name },
-                    { "uid", uid },
-                    { "description", description },
-                    { "joinCode", joinCode }
+                    { "@name", name },
+                    { "@uid", uid },
+                    { "@description", description },
+                    { "@joinCode", joinCode }
                 }
             );
             return new ReturnValue(true, "创建成功",null);
@@ -69,7 +68,7 @@ public class Team
     public List<List<string>>? GetTeams(int uid)
     {
         var reader = Sql.ExecuteReader(
-            "SELECT Tid,Name,Description,PeopleNumber FROM UserTeamsView WHERE Tid = @uid",
+            "SELECT Tid,Name,Description,PeopleNumber FROM UserTeamsView WHERE Uid = @uid",
             new Dictionary<string, object?>
             {
                 { "uid", uid }

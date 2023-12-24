@@ -40,7 +40,7 @@ namespace IS.Forms.Team
             if (data is null) return;
 
             // 先添加列
-            var columns = new List<string>() { "名称", "介绍", "人数", "操作","操作1" };
+            var columns = new List<string>() { "名称", "介绍", "人数", "查看", "进入", "置顶" };
             foreach (var column in columns)
             {
                 this.dataGridView1.Columns.Add(column, column);
@@ -57,27 +57,38 @@ namespace IS.Forms.Team
                 btn.Value = "查看";
                 var btn1 = new DataGridViewButtonCell();
                 btn1.Value = "进入";
+                var btn2 = new DataGridViewButtonCell();
+                btn2.Value = "置顶";
                 this.dataGridView1.Rows[index].Cells[3] = btn;
-                this.dataGridView1.Rows[index].Cells[4] = btn1;           
-             }
+                this.dataGridView1.Rows[index].Cells[4] = btn1;
+                this.dataGridView1.Rows[index].Cells[5] = btn2;
+            }
+
+            this.dataGridView1.ScrollBars = ScrollBars.Vertical;
 
             // 设置列宽
             var width = this.dataGridView1.Width;
-            this.dataGridView1.Columns[0].Width = 180;
-            this.dataGridView1.Columns[1].Width = width - 380;
+            this.dataGridView1.Columns[0].Width = 120;
+            this.dataGridView1.Columns[1].Width = width - 370 - 20;
             this.dataGridView1.Columns[2].Width = 50;
-            this.dataGridView1.Columns[2].Width = 100;
+            this.dataGridView1.Columns[3].Width = 50;
+            this.dataGridView1.Columns[4].Width = 50;
+            this.dataGridView1.Columns[5].Width = 50;
+            this.dataGridView1.Columns[5].Width = 100;
+
 
             // 设置为只读
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if(e.RowIndex < 0 || e.ColumnIndex < 0) return; // 判断是否点击到了表格
             //点击button按钮事件
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "" && e.RowIndex >= 0)
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "查看")
             {
                 var flag = true;
                 if (flag)
@@ -88,7 +99,7 @@ namespace IS.Forms.Team
                 {
                     MessageBox.Show("更新失败！");
                 }
-            } 
+            }
         }
     }
 

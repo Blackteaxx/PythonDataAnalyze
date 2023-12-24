@@ -49,7 +49,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.RowTemplate.Height = 29;
-            dataGridView1.Size = new Size(804, 342);
+            dataGridView1.Size = new Size(869, 342);
             dataGridView1.TabIndex = 1;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
@@ -67,12 +67,12 @@
             // 
             textBox1.Location = new Point(110, 366);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(206, 27);
+            textBox1.Size = new Size(279, 27);
             textBox1.TabIndex = 3;
             // 
             // button1
             // 
-            button1.Location = new Point(322, 363);
+            button1.Location = new Point(395, 363);
             button1.Name = "button1";
             button1.Size = new Size(91, 33);
             button1.TabIndex = 4;
@@ -88,7 +88,7 @@
             groupBox1.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             groupBox1.Location = new Point(15, 401);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(398, 75);
+            groupBox1.Size = new Size(471, 75);
             groupBox1.TabIndex = 5;
             groupBox1.TabStop = false;
             groupBox1.Text = "搜索选项";
@@ -128,7 +128,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(639, 401);
+            button2.Location = new Point(734, 401);
             button2.Name = "button2";
             button2.Size = new Size(113, 41);
             button2.TabIndex = 6;
@@ -137,7 +137,7 @@
             // 
             // button3
             // 
-            button3.Location = new Point(485, 401);
+            button3.Location = new Point(556, 401);
             button3.Name = "button3";
             button3.Size = new Size(131, 41);
             button3.TabIndex = 7;
@@ -148,7 +148,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(828, 488);
+            ClientSize = new Size(893, 483);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(groupBox1);
