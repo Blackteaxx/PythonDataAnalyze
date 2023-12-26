@@ -30,22 +30,23 @@
         {
             label1 = new Label();
             label2 = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
+            TeamNameTextBox = new TextBox();
+            TeamDescriptionTextBox = new TextBox();
             label3 = new Label();
-            label4 = new Label();
+            TeamOwnerLabel = new Label();
             label5 = new Label();
             label6 = new Label();
-            label7 = new Label();
+            TeamPeopleNumberLabel = new Label();
             label8 = new Label();
-            comboBox1 = new ComboBox();
+            JoinRightComboBox = new ComboBox();
             button1 = new Button();
-            label9 = new Label();
+            TeamJoinCodeLabel = new Label();
             label10 = new Label();
             label11 = new Label();
-            comboBox2 = new ComboBox();
-            button2 = new Button();
+            JoinCodeRigthComboBox = new ComboBox();
+            CloseButton = new Button();
             button3 = new Button();
+            UpdateButton = new Button();
             SuspendLayout();
             // 
             // label1
@@ -68,22 +69,24 @@
             label2.TabIndex = 1;
             label2.Text = "团队描述";
             // 
-            // textBox1
+            // TeamNameTextBox
             // 
-            textBox1.Location = new Point(130, 75);
-            textBox1.MaxLength = 20;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(177, 27);
-            textBox1.TabIndex = 2;
+            TeamNameTextBox.Location = new Point(130, 75);
+            TeamNameTextBox.MaxLength = 20;
+            TeamNameTextBox.Name = "TeamNameTextBox";
+            TeamNameTextBox.Size = new Size(177, 27);
+            TeamNameTextBox.TabIndex = 2;
+            TeamNameTextBox.TabStop = false;
             // 
-            // textBox2
+            // TeamDescriptionTextBox
             // 
-            textBox2.Location = new Point(130, 127);
-            textBox2.MaxLength = 140;
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(468, 128);
-            textBox2.TabIndex = 3;
+            TeamDescriptionTextBox.Location = new Point(43, 166);
+            TeamDescriptionTextBox.MaxLength = 140;
+            TeamDescriptionTextBox.Multiline = true;
+            TeamDescriptionTextBox.Name = "TeamDescriptionTextBox";
+            TeamDescriptionTextBox.Size = new Size(555, 89);
+            TeamDescriptionTextBox.TabIndex = 3;
+            TeamDescriptionTextBox.TabStop = false;
             // 
             // label3
             // 
@@ -95,15 +98,15 @@
             label3.TabIndex = 4;
             label3.Text = "创建者";
             // 
-            // label4
+            // TeamOwnerLabel
             // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            label4.Location = new Point(402, 75);
-            label4.Name = "label4";
-            label4.Size = new Size(92, 27);
-            label4.TabIndex = 5;
-            label4.Text = "未知用户";
+            TeamOwnerLabel.AutoSize = true;
+            TeamOwnerLabel.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            TeamOwnerLabel.Location = new Point(402, 75);
+            TeamOwnerLabel.Name = "TeamOwnerLabel";
+            TeamOwnerLabel.Size = new Size(92, 27);
+            TeamOwnerLabel.TabIndex = 5;
+            TeamOwnerLabel.Text = "未知用户";
             // 
             // label5
             // 
@@ -125,15 +128,15 @@
             label6.TabIndex = 7;
             label6.Text = "团队人数";
             // 
-            // label7
+            // TeamPeopleNumberLabel
             // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label7.Location = new Point(130, 275);
-            label7.Name = "label7";
-            label7.Size = new Size(92, 27);
-            label7.TabIndex = 8;
-            label7.Text = "团队人数";
+            TeamPeopleNumberLabel.AutoSize = true;
+            TeamPeopleNumberLabel.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            TeamPeopleNumberLabel.Location = new Point(130, 275);
+            TeamPeopleNumberLabel.Name = "TeamPeopleNumberLabel";
+            TeamPeopleNumberLabel.Size = new Size(92, 27);
+            TeamPeopleNumberLabel.TabIndex = 8;
+            TeamPeopleNumberLabel.Text = "团队人数";
             // 
             // label8
             // 
@@ -145,35 +148,37 @@
             label8.TabIndex = 9;
             label8.Text = "加入限制";
             // 
-            // comboBox1
+            // JoinRightComboBox
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "允许所有方式", "禁止搜索加入", "禁止加入码加入" });
-            comboBox1.Location = new Point(402, 274);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(149, 28);
-            comboBox1.TabIndex = 10;
-            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            JoinRightComboBox.FormattingEnabled = true;
+            JoinRightComboBox.Items.AddRange(new object[] { "允许所有方式", "禁止搜索加入", "禁止加入码加入" });
+            JoinRightComboBox.Location = new Point(402, 274);
+            JoinRightComboBox.Name = "JoinRightComboBox";
+            JoinRightComboBox.Size = new Size(149, 28);
+            JoinRightComboBox.TabIndex = 10;
+            JoinRightComboBox.TabStop = false;
+            JoinRightComboBox.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // button1
             // 
             button1.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(110, 372);
+            button1.Location = new Point(81, 372);
             button1.Name = "button1";
             button1.Size = new Size(94, 33);
             button1.TabIndex = 11;
             button1.Text = "进入";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
-            // label9
+            // TeamJoinCodeLabel
             // 
-            label9.AutoSize = true;
-            label9.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label9.Location = new Point(132, 321);
-            label9.Name = "label9";
-            label9.Size = new Size(72, 27);
-            label9.TabIndex = 13;
-            label9.Text = "加入码";
+            TeamJoinCodeLabel.AutoSize = true;
+            TeamJoinCodeLabel.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            TeamJoinCodeLabel.Location = new Point(132, 321);
+            TeamJoinCodeLabel.Name = "TeamJoinCodeLabel";
+            TeamJoinCodeLabel.Size = new Size(72, 27);
+            TeamJoinCodeLabel.TabIndex = 13;
+            TeamJoinCodeLabel.Text = "加入码";
             // 
             // label10
             // 
@@ -195,60 +200,74 @@
             label11.TabIndex = 14;
             label11.Text = "加入码权限";
             // 
-            // comboBox2
+            // JoinCodeRigthComboBox
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Items.AddRange(new object[] { "允许所有人查看", "只允许管理员查看", "禁止所有人查看" });
-            comboBox2.Location = new Point(402, 320);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(149, 28);
-            comboBox2.TabIndex = 15;
+            JoinCodeRigthComboBox.FormattingEnabled = true;
+            JoinCodeRigthComboBox.Items.AddRange(new object[] { "允许所有人查看", "只允许管理员查看", "禁止所有人查看" });
+            JoinCodeRigthComboBox.Location = new Point(402, 320);
+            JoinCodeRigthComboBox.Name = "JoinCodeRigthComboBox";
+            JoinCodeRigthComboBox.Size = new Size(149, 28);
+            JoinCodeRigthComboBox.TabIndex = 15;
+            JoinCodeRigthComboBox.TabStop = false;
             // 
-            // button2
+            // CloseButton
             // 
-            button2.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button2.Location = new Point(254, 372);
-            button2.Name = "button2";
-            button2.Size = new Size(94, 33);
-            button2.TabIndex = 16;
-            button2.Text = "关闭";
-            button2.UseVisualStyleBackColor = true;
+            CloseButton.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            CloseButton.Location = new Point(213, 372);
+            CloseButton.Name = "CloseButton";
+            CloseButton.Size = new Size(94, 33);
+            CloseButton.TabIndex = 16;
+            CloseButton.Text = "关闭";
+            CloseButton.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
             button3.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button3.Location = new Point(402, 372);
+            button3.Location = new Point(476, 372);
             button3.Name = "button3";
             button3.Size = new Size(105, 33);
-            button3.TabIndex = 17;
+            button3.TabIndex = 18;
             button3.Text = "退出团队";
             button3.UseVisualStyleBackColor = true;
+            // 
+            // UpdateButton
+            // 
+            UpdateButton.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            UpdateButton.Location = new Point(347, 372);
+            UpdateButton.Name = "UpdateButton";
+            UpdateButton.Size = new Size(95, 33);
+            UpdateButton.TabIndex = 17;
+            UpdateButton.Text = "更新";
+            UpdateButton.UseVisualStyleBackColor = true;
+            UpdateButton.Click += UpdateButton_Click;
             // 
             // TeamInfo
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(640, 429);
+            Controls.Add(UpdateButton);
             Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(comboBox2);
+            Controls.Add(CloseButton);
+            Controls.Add(JoinCodeRigthComboBox);
             Controls.Add(label11);
-            Controls.Add(label9);
+            Controls.Add(TeamJoinCodeLabel);
             Controls.Add(label10);
             Controls.Add(button1);
-            Controls.Add(comboBox1);
+            Controls.Add(JoinRightComboBox);
             Controls.Add(label8);
-            Controls.Add(label7);
+            Controls.Add(TeamPeopleNumberLabel);
             Controls.Add(label6);
             Controls.Add(label5);
-            Controls.Add(label4);
+            Controls.Add(TeamOwnerLabel);
             Controls.Add(label3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(TeamDescriptionTextBox);
+            Controls.Add(TeamNameTextBox);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "TeamInfo";
             Text = "团队详情";
+            Load += TeamInfo_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -257,21 +276,22 @@
 
         private Label label1;
         private Label label2;
-        private TextBox textBox1;
-        private TextBox textBox2;
+        private TextBox TeamNameTextBox;
+        private TextBox TeamDescriptionTextBox;
         private Label label3;
-        private Label label4;
+        private Label TeamOwnerLabel;
         private Label label5;
         private Label label6;
-        private Label label7;
+        private Label TeamPeopleNumberLabel;
         private Label label8;
-        private ComboBox comboBox1;
+        private ComboBox JoinRightComboBox;
         private Button button1;
-        private Label label9;
+        private Label TeamJoinCodeLabel;
         private Label label10;
         private Label label11;
-        private ComboBox comboBox2;
-        private Button button2;
+        private ComboBox JoinCodeRigthComboBox;
+        private Button CloseButton;
         private Button button3;
+        private Button UpdateButton;
     }
 }

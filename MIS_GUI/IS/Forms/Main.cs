@@ -1,36 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿namespace IS.Forms;
 
-namespace IS.Forms
+public partial class Main : Form
 {
-    public partial class Main : Form
+    // 全局变量区域
+    public static int uid = 1;
+
+    public static readonly List<string> JoinRight = new()
     {
-        // 全局变量区域
-        public static int uid = 0;
+        "允许所有方式",
+        "禁止搜索加入",
+        "禁止加入码加入"
+    };
 
-        public Main()
-        {
-            InitializeComponent();
-        }
+    public static readonly List<string> JoinCodeRight = new()
+    {
+        "允许所有人查看",
+        "只允许管理员查看",
+        "禁止所有人查看"
+    };
+    // 全局变量定义结束
 
-        private void Main_Load(object sender, EventArgs e)
+    public Main()
+    {
+        InitializeComponent();
+    }
+
+    private void Main_Load(object sender, EventArgs e)
+    {
+        // 登录窗体
+        var login = new Login();
+        login.Show();
+        // 这个窗体是主窗体，不显示
+        BeginInvoke(() =>
         {
-            // 登录窗体
-            Login login = new Login();
-            login.Show();
-            // 这个窗体是主窗体，不显示
-            this.BeginInvoke(new Action(() =>
-            {
-                this.Hide();
-                this.Opacity = 1;
-            }));
-        }
+            Hide();
+            Opacity = 1;
+        });
     }
 }
