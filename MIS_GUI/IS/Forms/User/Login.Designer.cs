@@ -79,8 +79,10 @@
             // 
             textBox2.Location = new Point(263, 227);
             textBox2.Name = "textBox2";
+            textBox2.PasswordChar = '*';
             textBox2.Size = new Size(364, 27);
             textBox2.TabIndex = 4;
+            textBox2.KeyDown += textBox2_KeyDown;
             // 
             // button1
             // 
@@ -116,7 +118,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(782, 403);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
@@ -128,6 +130,7 @@
             Name = "Login";
             Text = "登录界面";
             FormClosing += Login_FormClosing;
+            Load += Login_Load;
             ResumeLayout(false);
             PerformLayout();
         }

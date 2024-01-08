@@ -8,12 +8,15 @@ CREATE TABLE [USER]
 
 CREATE TABLE Team
 (
-    Tid          INT IDENTITY (1,1) PRIMARY KEY,
-    Name         NVARCHAR(20),
-    JoinCode     NVARCHAR(9) UNIQUE, -- 加入码
-    PeopleNumber INT,
-    Description  NVARCHAR(120),      -- 团队介绍
-    [Join]       INT DEFAULT 0       -- 加入的设置，0为全部允许，1为允许加入码，2为只允许管理员邀请
+    Tid           INT IDENTITY (1,1) PRIMARY KEY,
+    Name          NVARCHAR(20),
+    JoinCode      NVARCHAR(9) UNIQUE,           -- 加入码
+    PeopleNumber  INT,
+    Description   NVARCHAR(120),                -- 团队介绍
+    [Join]        INT         DEFAULT 0,        -- 加入的设置，0为全部允许，1为允许加入码，2为只允许管理员邀请
+    JoinRight     INT         default 0,        -- 团队加入权限
+    JoinCodeRight INT         default 0,        -- 团队加入码的查看权限
+    Status        NVARCHAR(6) DEFAULT 'Normal', -- 标识团队的状态，如果是删除的为Delete，正常为Normal
 );
 
 CREATE TABLE TeamMember
@@ -28,7 +31,7 @@ CREATE TABLE TeamMember
 
 -- 用户的团队视图
 CREATE VIEW UserTeamsView AS
-SELECT TM.Uid, TM.Tid, T.Name, T.Description, T.PeopleNumber
+SELECT TM.Uid, TM.Tid, T.Name, T.Description, T.PeopleNumber, TM.Role, T.Status
 FROM TeamMember TM
          LEFT JOIN Team T on T.Tid = TM.Tid;
 GO;
@@ -60,7 +63,7 @@ WHERE Role = 'Owner'
 SELECT @OwnerName = Name
 FROM [USER]
 WHERE Uid = @OwnerUid;
-SELECT Name, Description, PeopleNumber, JoinCode, @OwnerUid Uid, @OwnerName UName
+SELECT Name, Description, PeopleNumber, JoinCode, @OwnerUid Uid, @OwnerName UName , JoinRight , JoinCodeRight
 FROM Team
 WHERE Tid = @Tid;
 GO;
@@ -127,7 +130,7 @@ INSERT INTO Task(name, description)
 VALUES (@name, @description);
     SET @TaskId = @@IDENTITY;
 INSERT INTO TaskMember(Tid, Uid, Role)
-VALUES (@TaskId, @tid, 'Admin');
+VALUES (@TaskId, @uid, 'Admin');
 INSERT INTO TeamTasks(TeamId, TaskId)
 VALUES (@tid, @TaskId);
 GO;

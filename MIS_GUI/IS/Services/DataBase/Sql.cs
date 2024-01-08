@@ -11,7 +11,7 @@ internal class Sql
         "TrustServerCertificate=true;";
 
     /// <summary>
-    ///     执行sql,返回reader
+    /// 执行sql,返回reader
     /// </summary>
     /// <param name="sql"></param>
     /// <param name="paras"></param>

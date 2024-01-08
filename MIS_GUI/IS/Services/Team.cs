@@ -5,7 +5,7 @@ namespace IS.Services;
 public class Team
 {
     /// <summary>
-    ///     创建团队
+    /// 创建团队
     /// </summary>
     /// <param name="name">团队的名字</param>
     /// <param name="description">团队的介绍</param>
@@ -54,7 +54,7 @@ public class Team
     }
 
     /// <summary>
-    ///     创建团队
+    /// 创建团队
     /// </summary>
     /// <param name="name">团队的名字</param>
     /// <param name="description">团队的介绍</param>
@@ -97,14 +97,14 @@ public class Team
     }
 
     /// <summary>
-    ///     获取团队
+    /// 获取团队
     /// </summary>
     /// <param name="uid">用户的uid</param>
     /// <returns></returns>
     public List<List<string>>? GetTeams(int uid)
     {
         var reader = Sql.ExecuteReader(
-            "SELECT Tid,Name,Description,PeopleNumber FROM UserTeamsView WHERE Uid = @uid",
+            "SELECT Tid,Name,Description,PeopleNumber,Role FROM UserTeamsView WHERE Uid = @uid",
             new Dictionary<string, object?>
             {
                 { "uid", uid }
@@ -116,10 +116,11 @@ public class Team
         while (reader.Read())
             result.Add(new List<string>
             {
-                reader.GetInt32(0).ToString(),
-                reader.GetString(1),
-                reader.GetString(2),
-                reader.GetInt32(3).ToString()
+                reader.GetInt32(0).ToString(), // tid
+                reader.GetString(1), // name
+                reader.GetString(2), //描述
+                reader.GetInt32(3).ToString(), // 人数
+                reader.GetString(4) // 角色
             });
         return result;
     }
@@ -148,7 +149,7 @@ public class Team
     }
 
     /// <summary>
-    ///     获取该团队的全部成员信息
+    /// 获取该团队的全部成员信息
     /// </summary>
     /// <param name="tid"></param>
     /// <returns></returns>
@@ -173,7 +174,7 @@ public class Team
     }
 
     /// <summary>
-    ///     获取团队的具体信息
+    /// 获取团队的具体信息
     /// </summary>
     /// <param name="tid"></param>
     /// <returns></returns>
@@ -199,8 +200,29 @@ public class Team
         };
     }
 
+    // 获取团队的成员信息，以uid，name和role的形式返回
+    public List<List<string>> GetTeamMembersInfo(int tid)
+    {
+        var reader = Sql.ExecuteReader(
+            "SELECT Uid,Name,Role FROM TeamMemberView WHERE Tid = @tid",
+            new Dictionary<string, object?>
+            {
+                { "tid", tid }
+            }
+        );
+        var result = new List<List<string>>();
+        while (reader.Read())
+            result.Add(new List<string>
+            {
+                reader.GetInt32(0).ToString(),
+                reader.GetString(1),
+                reader.GetString(2)
+            });
+        return result;
+    }
+
     /// <summary>
-    ///     根据用户输入的搜索词查找名字相似的团队
+    /// 根据用户输入的搜索词查找名字相似的团队
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
@@ -228,7 +250,7 @@ public class Team
     }
 
     /// <summary>
-    ///     通过团队的Uid来加入团队
+    /// 通过团队的Uid来加入团队
     /// </summary>
     /// <param name="uid"></param>
     /// <param name="tid"></param>
@@ -254,7 +276,7 @@ public class Team
     }
 
     /// <summary>
-    ///     根据加入码来加入对应的团队
+    /// 根据加入码来加入对应的团队
     /// </summary>
     /// <param name="uid"></param>
     /// <param name="joinCode"></param>
@@ -288,6 +310,33 @@ public class Team
         catch (Exception e)
         {
             return new ReturnValue(false, "加入失败", e.Message);
+        }
+    }
+    
+    // 用户退出团队
+    /// <summary>
+    /// 用户退出团队，自动判断是否会解散团队
+    /// </summary>
+    /// <param name="tid"></param>
+    /// <param name="uid"></param>
+    /// <returns></returns>
+    public string QuitTeam(int tid, int uid)
+    {
+        try
+        {
+            var r = Sql.ExecuteNonQuery(
+                "EXEC QuitTeam @tid ,@uid;",
+                new Dictionary<string, object?>
+                {
+                    { "tid", tid },
+                    { "uid", uid }
+                }
+            );
+            return "";
+        }
+        catch (Exception e)
+        {
+            return e.Message;
         }
     }
 }

@@ -47,6 +47,11 @@
             CloseButton = new Button();
             button3 = new Button();
             UpdateButton = new Button();
+            dataGridView1 = new DataGridView();
+            button2 = new Button();
+            button4 = new Button();
+            button5 = new Button();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -162,10 +167,10 @@
             // button1
             // 
             button1.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(81, 372);
+            button1.Location = new Point(32, 372);
             button1.Name = "button1";
             button1.Size = new Size(94, 33);
-            button1.TabIndex = 11;
+            button1.TabIndex = 1;
             button1.Text = "进入";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
@@ -213,7 +218,7 @@
             // CloseButton
             // 
             CloseButton.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            CloseButton.Location = new Point(213, 372);
+            CloseButton.Location = new Point(142, 372);
             CloseButton.Name = "CloseButton";
             CloseButton.Size = new Size(94, 33);
             CloseButton.TabIndex = 16;
@@ -223,7 +228,7 @@
             // button3
             // 
             button3.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button3.Location = new Point(476, 372);
+            button3.Location = new Point(369, 372);
             button3.Name = "button3";
             button3.Size = new Size(105, 33);
             button3.TabIndex = 18;
@@ -233,7 +238,7 @@
             // UpdateButton
             // 
             UpdateButton.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            UpdateButton.Location = new Point(347, 372);
+            UpdateButton.Location = new Point(255, 372);
             UpdateButton.Name = "UpdateButton";
             UpdateButton.Size = new Size(95, 33);
             UpdateButton.TabIndex = 17;
@@ -241,11 +246,56 @@
             UpdateButton.UseVisualStyleBackColor = true;
             UpdateButton.Click += UpdateButton_Click;
             // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(613, 19);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowHeadersWidth = 51;
+            dataGridView1.RowTemplate.Height = 29;
+            dataGridView1.Size = new Size(255, 347);
+            dataGridView1.TabIndex = 19;
+            // 
+            // button2
+            // 
+            button2.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            button2.Location = new Point(613, 372);
+            button2.Name = "button2";
+            button2.Size = new Size(102, 33);
+            button2.TabIndex = 20;
+            button2.Text = "添加成员";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            button4.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            button4.Location = new Point(721, 372);
+            button4.Name = "button4";
+            button4.Size = new Size(147, 33);
+            button4.TabIndex = 21;
+            button4.Text = "删除所选成员";
+            button4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            button5.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            button5.Location = new Point(493, 372);
+            button5.Name = "button5";
+            button5.Size = new Size(105, 33);
+            button5.TabIndex = 22;
+            button5.Text = "解散团队";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
+            // 
             // TeamInfo
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(640, 429);
+            ClientSize = new Size(880, 429);
+            Controls.Add(button5);
+            Controls.Add(button4);
+            Controls.Add(button2);
+            Controls.Add(dataGridView1);
             Controls.Add(UpdateButton);
             Controls.Add(button3);
             Controls.Add(CloseButton);
@@ -268,6 +318,7 @@
             Name = "TeamInfo";
             Text = "团队详情";
             Load += TeamInfo_Load;
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -293,5 +344,9 @@
         private Button CloseButton;
         private Button button3;
         private Button UpdateButton;
+        private DataGridView dataGridView1;
+        private Button button2;
+        private Button button4;
+        private Button button5;
     }
 }

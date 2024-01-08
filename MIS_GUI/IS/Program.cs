@@ -1,3 +1,4 @@
+using IS.Forms;
 using IS.Forms.Team;
 
 namespace IS;
@@ -13,6 +14,6 @@ internal static class Program
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
-        Application.Run(new UserTeam());
+        Application.Run(new Main());
     }
 }

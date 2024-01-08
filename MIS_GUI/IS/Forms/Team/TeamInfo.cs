@@ -1,8 +1,11 @@
-﻿namespace IS.Forms.Team;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IS.Forms.Team;
 
 public partial class TeamInfo : Form
 {
     private readonly int Tid;
+    private readonly string Role;
 
     private readonly List<string> JoinCodeRight = new()
     {
@@ -29,10 +32,11 @@ public partial class TeamInfo : Form
         Tid = 1;
     }
 
-    public TeamInfo(int tid)
+    public TeamInfo(int tid, string role)
     {
         InitializeComponent();
         Tid = tid;
+        Role = role;
     }
 
     private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -46,7 +50,7 @@ public partial class TeamInfo : Form
     private void TeamInfo_Load(object sender, EventArgs e)
     {
         // 应当先判断用户是否足够的权限来访问团队信息
-        // 暂时先不做
+        if (Role != "Owner") button5.Enabled = false; // 如果不是创建者，禁止解散团队
 
         // 获取团队信息
         var teamInfo = team.GetTeamInfo(Tid);
@@ -67,6 +71,8 @@ public partial class TeamInfo : Form
         JoinCodeRigthComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
         this.TeamNameTextBox.SelectionLength = 0;
+
+        // 初始化datagripview
     }
 
     // 更新按钮
@@ -80,5 +86,15 @@ public partial class TeamInfo : Form
             MessageBox.Show("更新成功");
         else
             MessageBox.Show("更新失败");
+    }
+
+    private void button5_Click(object sender, EventArgs e)
+    {
+        var r = MessageBox.Show("是否确定解散该团队", "提示", MessageBoxButtons.OKCancel);
+        if (r == DialogResult.OK)
+        {
+
+            MessageBox.Show("解散成功");
+        }
     }
 }

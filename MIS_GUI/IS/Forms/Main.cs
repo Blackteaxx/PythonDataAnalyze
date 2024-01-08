@@ -1,4 +1,7 @@
-﻿namespace IS.Forms;
+﻿using Microsoft.VisualBasic.Logging;
+using System.Windows.Forms;
+
+namespace IS.Forms;
 
 public partial class Main : Form
 {
@@ -28,13 +31,28 @@ public partial class Main : Form
     private void Main_Load(object sender, EventArgs e)
     {
         // 登录窗体
-        var login = new Login();
-        login.Show();
-        // 这个窗体是主窗体，不显示
-        BeginInvoke(() =>
-        {
-            Hide();
-            Opacity = 1;
-        });
+        FormShow(new Login());
+    }
+
+    /// <summary>
+    /// 成功登录，转到home界面
+    /// </summary>
+    public void LoginSuccess()
+    {
+        new Home().Show();
+        this.Hide();
+    }
+
+    /// <summary>
+    /// 展示指定的窗体
+    /// </summary>
+    /// <param name="f"></param>
+    public void FormShow(Form f)
+    {
+        f.TopLevel = false;//取消非顶级窗体
+        f.WindowState = FormWindowState.Maximized;//将窗体最大化
+        f.FormBorderStyle = FormBorderStyle.None;//设为无边框
+        f.Parent = this;//指定该窗体的父窗体
+        f.Show();//展示窗体
     }
 }

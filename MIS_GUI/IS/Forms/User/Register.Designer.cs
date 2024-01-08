@@ -67,7 +67,7 @@
             button1.Location = new Point(177, 335);
             button1.Name = "button1";
             button1.Size = new Size(103, 40);
-            button1.TabIndex = 13;
+            button1.TabIndex = 6;
             button1.Text = "注册";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
@@ -78,14 +78,14 @@
             textBox2.Name = "textBox2";
             textBox2.PasswordChar = '*';
             textBox2.Size = new Size(364, 27);
-            textBox2.TabIndex = 12;
+            textBox2.TabIndex = 3;
             // 
             // textBox1
             // 
             textBox1.Location = new Point(260, 132);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(364, 27);
-            textBox1.TabIndex = 11;
+            textBox1.TabIndex = 2;
             // 
             // label3
             // 
@@ -123,7 +123,7 @@
             textBox3.Name = "textBox3";
             textBox3.PasswordChar = '*';
             textBox3.Size = new Size(364, 27);
-            textBox3.TabIndex = 17;
+            textBox3.TabIndex = 4;
             // 
             // label4
             // 
@@ -141,7 +141,7 @@
             textBox4.Name = "textBox4";
             textBox4.PasswordChar = '*';
             textBox4.Size = new Size(364, 27);
-            textBox4.TabIndex = 19;
+            textBox4.TabIndex = 5;
             // 
             // label5
             // 

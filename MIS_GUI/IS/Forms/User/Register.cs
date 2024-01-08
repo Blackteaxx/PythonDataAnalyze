@@ -27,7 +27,12 @@ public partial class Register : Form
         var r = user.Register(loginName, password, name);
         // 进行注册
         if (r.Status)
+        {
             MessageBox.Show("注册成功");
+            exit = false;
+            new Login(loginName).Show();
+            this.Close();
+        }
         else
             MessageBox.Show(r.Message);
     }
@@ -44,7 +49,8 @@ public partial class Register : Form
     private void button2_Click(object sender, EventArgs e)
     {
         exit = false;
-        new Login().Show();
+        var m = this.Parent as Main;
+        m.FormShow(new Login());
         Close();
     }
 

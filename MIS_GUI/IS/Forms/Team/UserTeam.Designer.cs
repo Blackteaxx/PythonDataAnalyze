@@ -50,12 +50,13 @@
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(12, 12);
+            dataGridView1.Location = new Point(15, 15);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.RowTemplate.Height = 29;
             dataGridView1.Size = new Size(869, 342);
-            dataGridView1.TabIndex = 1;
+            dataGridView1.TabIndex = 10;
+            dataGridView1.TabStop = false;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // label1
@@ -73,14 +74,14 @@
             textBox1.Location = new Point(110, 366);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(315, 27);
-            textBox1.TabIndex = 3;
+            textBox1.TabIndex = 1;
             // 
             // button1
             // 
             button1.Location = new Point(431, 363);
             button1.Name = "button1";
             button1.Size = new Size(91, 33);
-            button1.TabIndex = 4;
+            button1.TabIndex = 2;
             button1.Text = "搜索";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
@@ -95,7 +96,7 @@
             groupBox1.Location = new Point(15, 401);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(410, 75);
-            groupBox1.TabIndex = 5;
+            groupBox1.TabIndex = 20;
             groupBox1.TabStop = false;
             groupBox1.Text = "搜索选项";
             // 
@@ -105,8 +106,7 @@
             radioButton4.Location = new Point(337, 29);
             radioButton4.Name = "radioButton4";
             radioButton4.Size = new Size(45, 24);
-            radioButton4.TabIndex = 3;
-            radioButton4.TabStop = true;
+            radioButton4.TabIndex = 100;
             radioButton4.Text = "无";
             radioButton4.UseVisualStyleBackColor = true;
             // 
@@ -117,7 +117,6 @@
             radioButton3.Name = "radioButton3";
             radioButton3.Size = new Size(90, 24);
             radioButton3.TabIndex = 2;
-            radioButton3.TabStop = true;
             radioButton3.Text = "我为成员";
             radioButton3.UseVisualStyleBackColor = true;
             // 
@@ -128,7 +127,6 @@
             radioButton2.Name = "radioButton2";
             radioButton2.Size = new Size(105, 24);
             radioButton2.TabIndex = 1;
-            radioButton2.TabStop = true;
             radioButton2.Text = "我为管理员";
             radioButton2.UseVisualStyleBackColor = true;
             // 
@@ -139,7 +137,6 @@
             radioButton1.Name = "radioButton1";
             radioButton1.Size = new Size(105, 24);
             radioButton1.TabIndex = 0;
-            radioButton1.TabStop = true;
             radioButton1.Text = "我为创建者";
             radioButton1.UseVisualStyleBackColor = true;
             // 
@@ -148,16 +145,17 @@
             button3.Location = new Point(697, 363);
             button3.Name = "button3";
             button3.Size = new Size(131, 49);
-            button3.TabIndex = 7;
-            button3.Text = "查看团队信息";
+            button3.TabIndex = 6;
+            button3.Text = "批量删除/退出";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button4
             // 
             button4.Location = new Point(560, 363);
             button4.Name = "button4";
             button4.Size = new Size(131, 49);
-            button4.TabIndex = 8;
+            button4.TabIndex = 5;
             button4.Text = "创建团队";
             button4.UseVisualStyleBackColor = true;
             button4.Click += button4_Click;
@@ -167,16 +165,17 @@
             button5.Location = new Point(431, 401);
             button5.Name = "button5";
             button5.Size = new Size(91, 33);
-            button5.TabIndex = 9;
+            button5.TabIndex = 3;
             button5.Text = "筛选";
             button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
             // 
             // button6
             // 
             button6.Location = new Point(431, 440);
             button6.Name = "button6";
             button6.Size = new Size(91, 33);
-            button6.TabIndex = 10;
+            button6.TabIndex = 4;
             button6.Text = "刷新";
             button6.UseVisualStyleBackColor = true;
             button6.Click += button6_Click;
@@ -186,7 +185,7 @@
             button2.Location = new Point(560, 424);
             button2.Name = "button2";
             button2.Size = new Size(131, 49);
-            button2.TabIndex = 11;
+            button2.TabIndex = 7;
             button2.Text = "切换到任务界面";
             button2.UseVisualStyleBackColor = true;
             // 
@@ -195,7 +194,7 @@
             button7.Location = new Point(697, 424);
             button7.Name = "button7";
             button7.Size = new Size(131, 49);
-            button7.TabIndex = 12;
+            button7.TabIndex = 8;
             button7.Text = "退出登录";
             button7.UseVisualStyleBackColor = true;
             button7.Click += button7_Click;
@@ -204,7 +203,8 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(893, 483);
+            ClientSize = new Size(900, 480);
+            ControlBox = false;
             Controls.Add(button7);
             Controls.Add(button2);
             Controls.Add(button6);
@@ -216,8 +216,10 @@
             Controls.Add(textBox1);
             Controls.Add(label1);
             Controls.Add(dataGridView1);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "UserTeam";
             Text = "UserTeam";
+            FormClosed += UserTeam_FormClosed;
             Load += UserTeam_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);

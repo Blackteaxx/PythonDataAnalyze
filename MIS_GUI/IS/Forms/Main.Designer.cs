@@ -34,7 +34,8 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(152, 21);
+            ClientSize = new Size(802, 453);
+            IsMdiContainer = true;
             Name = "Main";
             Text = "Main";
             Load += Main_Load;
