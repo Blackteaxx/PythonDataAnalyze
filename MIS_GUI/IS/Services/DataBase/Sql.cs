@@ -5,10 +5,10 @@ namespace IS.Services.DataBase;
 internal class Sql
 {
     private static readonly string connectionString =
-        "Server = localhost; " +
+        "Server = 101.43.94.40,5000; " +
         "Database = web; " +
-        "uid = IS; pwd = 5151; " +
-        "TrustServerCertificate=true;";
+        "uid = web; pwd = 202!@#QWEasd; " +
+        "TrustServerCertificate=true;"; // 设计的时候先用，方便统一数据集
 
     /// <summary>
     /// 执行sql,返回reader

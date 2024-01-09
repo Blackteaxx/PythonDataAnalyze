@@ -5,9 +5,9 @@ namespace IS.Services.DataBase;
 internal class Sql
 {
     private static readonly string connectionString =
-        "Server = localhost; " +
+        "Server = 101.43.94.40,5000; " +
         "Database = web; " +
-        "uid = IS; pwd = 5151; " +
+        "uid = web; pwd = 202!@#QWEasd; " +
         "TrustServerCertificate=true;";
 
     /// <summary>
