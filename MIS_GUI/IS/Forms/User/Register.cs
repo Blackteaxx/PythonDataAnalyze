@@ -30,7 +30,8 @@ public partial class Register : Form
         {
             MessageBox.Show("注册成功");
             exit = false;
-            new Login(loginName).Show();
+            var f = this.Parent as Main;
+            f.FormShow(new Login(loginName)); ;
             this.Close();
         }
         else

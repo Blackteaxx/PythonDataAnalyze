@@ -12,7 +12,7 @@ public partial class Main : Form
     {
         "允许所有方式",
         "禁止搜索加入",
-        "禁止加入码加入"
+        "禁止加入码和搜索加入"
     };
 
     public static readonly List<string> JoinCodeRight = new()

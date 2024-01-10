@@ -154,9 +154,11 @@ public partial class UserTeam : Form
         //点击button按钮事件
         if (dataGridView1.Columns[e.ColumnIndex].Name == "查看")
         {
+            var f = this.Parent.Parent as Home; // parent是panel，因此这里要Parent.Parent
             // 传入tid和用户身份
-            new TeamInfo(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[6].Value),
-                Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[7].Value) ?? "").ShowDialog();
+            var t = new TeamInfo(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[6].Value),
+                Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[7].Value) ?? "");
+            f.SetMainPanel(t);
         }
     }
 
@@ -266,5 +268,10 @@ public partial class UserTeam : Form
     private void UserTeam_FormClosed(object sender, FormClosedEventArgs e)
     {
         Application.Exit();
+    }
+
+    private void groupBox1_Enter(object sender, EventArgs e)
+    {
+
     }
 }

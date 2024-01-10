@@ -174,11 +174,27 @@ public class Team
     }
 
     /// <summary>
+    /// 团队信息
+    /// </summary>
+    public struct TeamInfo
+    {
+        public int tid;
+        public string name;
+        public string description;
+        public int peoplenumber;
+        public string joinCode;
+        public int uid;
+        public string username;
+        public int joinRight;
+        public int joinCodeRight;
+    }
+
+    /// <summary>
     /// 获取团队的具体信息
     /// </summary>
     /// <param name="tid"></param>
     /// <returns></returns>
-    public List<string>? GetTeamInfo(int tid)
+    public TeamInfo GetTeamInfo(int tid)
     {
         var reader = Sql.ExecuteReader(
             "EXEC GetTeamInfo @tid",
@@ -187,21 +203,34 @@ public class Team
                 { "tid", tid }
             }
         );
-        if (!reader.HasRows) return null;
         reader.Read();
-        return new List<string>
+        return new TeamInfo
         {
-            reader.GetString(0), // name
-            reader.GetString(1), // description
-            reader.GetInt32(2).ToString(), //  peoplenumber
-            reader.GetString(3), // joinCode
-            reader.GetInt32(4).ToString(), // uid
-            reader.GetString(5) // username
+            tid = tid,
+            name = reader.GetString(0),
+            description = reader.GetString(1),
+            peoplenumber = reader.GetInt32(2),
+            joinCode = reader.GetString(3),
+            uid = reader.GetInt32(4),
+            username = reader.GetString(5),
+            joinRight = reader.GetInt32(6),
+            joinCodeRight = reader.GetInt32(7)
         };
     }
 
+    /// <summary>
+    /// 团队成员信息
+    /// </summary>
+    public struct TeamMember
+    {
+        public int uid;
+        public string name;
+        public string role;
+    }
+
+
     // 获取团队的成员信息，以uid，name和role的形式返回
-    public List<List<string>> GetTeamMembersInfo(int tid)
+    public List<TeamMember> GetTeamMembersInfo(int tid)
     {
         var reader = Sql.ExecuteReader(
             "SELECT Uid,Name,Role FROM TeamMemberView WHERE Tid = @tid",
@@ -210,13 +239,12 @@ public class Team
                 { "tid", tid }
             }
         );
-        var result = new List<List<string>>();
+        var result = new List<TeamMember>();
         while (reader.Read())
-            result.Add(new List<string>
-            {
-                reader.GetInt32(0).ToString(),
-                reader.GetString(1),
-                reader.GetString(2)
+            result.Add(new TeamMember{
+                uid = reader.GetInt32(0),
+                name = reader.GetString(1),
+                role = reader.GetString(2)
             });
         return result;
     }
