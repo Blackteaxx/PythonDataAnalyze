@@ -877,6 +877,7 @@ library(ROSE)
 twobothsample = ovun.sample(result~ . ,p=0.5, data = train,,method = "both")$data
 table(twobothsample$result)
 dichotomy.nnet <- nnet(result ~ is_weekend + data_channel_is_world + data_channel_is_entertainment + data_channel_is_socmed + num_imgs + timedelta + n_tokens_content + num_hrefs + global_rate_positive_words + average_token_length + global_subjectivity + global_sentiment_polarity + data_channel_is_tech + data_channel_is_bus + num_self_hrefs + global_rate_negative_words + num_videos + title_sentiment_polarity + title_subjectivity, data=twobothsample,maxit=10000,size=8,rang=0.001,linout=F,MaxNWts=7000,decay=4,weights=10/log(twobothsample$shares))
+pred <- predict(dichotomy.nnet, test, type = "class")
 t1=table(pred, test$result,dnn=c("预测值","真实值"))
  t1
  t1[1,1]/(t1[2,1]+t1[1,1])
