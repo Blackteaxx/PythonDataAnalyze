@@ -31,8 +31,8 @@
             SIderPanel = new Panel();
             button1 = new Button();
             HeaderPanel = new Panel();
-            label1 = new Label();
-            button2 = new Button();
+            NextButton = new Button();
+            ForwardButton = new Button();
             MainPanel = new Panel();
             SIderPanel.SuspendLayout();
             HeaderPanel.SuspendLayout();
@@ -71,8 +71,8 @@
             // 
             // HeaderPanel
             // 
-            HeaderPanel.Controls.Add(label1);
-            HeaderPanel.Controls.Add(button2);
+            HeaderPanel.Controls.Add(NextButton);
+            HeaderPanel.Controls.Add(ForwardButton);
             HeaderPanel.Dock = DockStyle.Top;
             HeaderPanel.Location = new Point(200, 0);
             HeaderPanel.Name = "HeaderPanel";
@@ -80,31 +80,23 @@
             HeaderPanel.TabIndex = 9;
             HeaderPanel.Paint += HeaderPanel_Paint;
             // 
-            // label1
+            // NextButton
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Microsoft YaHei UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(42, 9);
-            label1.Margin = new Padding(0);
-            label1.Name = "label1";
-            label1.Size = new Size(23, 23);
-            label1.TabIndex = 1;
-            label1.Text = ">";
+            NextButton.Image = Properties.Resources.向右;
+            NextButton.Location = new Point(46, 2);
+            NextButton.Name = "NextButton";
+            NextButton.Size = new Size(36, 36);
+            NextButton.TabIndex = 3;
+            NextButton.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // ForwardButton
             // 
-            button2.Cursor = Cursors.Hand;
-            button2.FlatAppearance.BorderSize = 0;
-            button2.FlatStyle = FlatStyle.Flat;
-            button2.ForeColor = SystemColors.HotTrack;
-            button2.Location = new Point(0, 5);
-            button2.Margin = new Padding(0);
-            button2.Name = "button2";
-            button2.Size = new Size(55, 30);
-            button2.TabIndex = 0;
-            button2.Text = "首页";
-            button2.TextAlign = ContentAlignment.MiddleLeft;
-            button2.UseVisualStyleBackColor = true;
+            ForwardButton.Image = Properties.Resources.向左;
+            ForwardButton.Location = new Point(5, 2);
+            ForwardButton.Name = "ForwardButton";
+            ForwardButton.Size = new Size(36, 36);
+            ForwardButton.TabIndex = 2;
+            ForwardButton.UseVisualStyleBackColor = true;
             // 
             // MainPanel
             // 
@@ -115,6 +107,7 @@
             MainPanel.Name = "MainPanel";
             MainPanel.Size = new Size(900, 493);
             MainPanel.TabIndex = 10;
+            MainPanel.Paint += MainPanel_Paint;
             // 
             // Home
             // 
@@ -131,7 +124,6 @@
             Load += Home_Load;
             SIderPanel.ResumeLayout(false);
             HeaderPanel.ResumeLayout(false);
-            HeaderPanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -142,7 +134,7 @@
         private Button button1;
         private Panel HeaderPanel;
         private Panel MainPanel;
-        private Button button2;
-        private Label label1;
+        private Button ForwardButton;
+        private Button NextButton;
     }
 }

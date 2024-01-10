@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             label1 = new Label();
             label2 = new Label();
-            TeamNameTextBox = new TextBox();
-            TeamDescriptionTextBox = new TextBox();
+            NameTextBox = new TextBox();
+            DescriptionTextBox = new TextBox();
             label3 = new Label();
             TeamOwnerLabel = new Label();
             label5 = new Label();
@@ -44,14 +45,26 @@
             label10 = new Label();
             label11 = new Label();
             JoinCodeRigthComboBox = new ComboBox();
-            CloseButton = new Button();
             button3 = new Button();
             UpdateButton = new Button();
-            dataGridView1 = new DataGridView();
+            TeamMemberList = new DataGridView();
+            Column1 = new DataGridViewTextBoxColumn();
+            Column2 = new DataGridViewTextBoxColumn();
+            Column3 = new DataGridViewTextBoxColumn();
+            DataVIewMenu = new ContextMenuStrip(components);
+            设置身份ToolStripMenuItem = new ToolStripMenuItem();
+            所有者ToolStripMenuItem = new ToolStripMenuItem();
+            管理员ToolStripMenuItem = new ToolStripMenuItem();
+            成员ToolStripMenuItem = new ToolStripMenuItem();
+            查看个人信息ToolStripMenuItem = new ToolStripMenuItem();
             button2 = new Button();
             button4 = new Button();
-            button5 = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            button6 = new Button();
+            button7 = new Button();
+            DissolveButton = new Button();
+            Tips = new ToolTip(components);
+            ((System.ComponentModel.ISupportInitialize)TeamMemberList).BeginInit();
+            DataVIewMenu.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -74,24 +87,24 @@
             label2.TabIndex = 1;
             label2.Text = "团队描述";
             // 
-            // TeamNameTextBox
+            // NameTextBox
             // 
-            TeamNameTextBox.Location = new Point(130, 75);
-            TeamNameTextBox.MaxLength = 20;
-            TeamNameTextBox.Name = "TeamNameTextBox";
-            TeamNameTextBox.Size = new Size(177, 27);
-            TeamNameTextBox.TabIndex = 2;
-            TeamNameTextBox.TabStop = false;
+            NameTextBox.Location = new Point(130, 75);
+            NameTextBox.MaxLength = 20;
+            NameTextBox.Name = "NameTextBox";
+            NameTextBox.Size = new Size(177, 27);
+            NameTextBox.TabIndex = 2;
+            NameTextBox.TabStop = false;
             // 
-            // TeamDescriptionTextBox
+            // DescriptionTextBox
             // 
-            TeamDescriptionTextBox.Location = new Point(43, 166);
-            TeamDescriptionTextBox.MaxLength = 140;
-            TeamDescriptionTextBox.Multiline = true;
-            TeamDescriptionTextBox.Name = "TeamDescriptionTextBox";
-            TeamDescriptionTextBox.Size = new Size(555, 89);
-            TeamDescriptionTextBox.TabIndex = 3;
-            TeamDescriptionTextBox.TabStop = false;
+            DescriptionTextBox.Location = new Point(43, 155);
+            DescriptionTextBox.MaxLength = 140;
+            DescriptionTextBox.Multiline = true;
+            DescriptionTextBox.Name = "DescriptionTextBox";
+            DescriptionTextBox.Size = new Size(555, 149);
+            DescriptionTextBox.TabIndex = 3;
+            DescriptionTextBox.TabStop = false;
             // 
             // label3
             // 
@@ -127,7 +140,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label6.Location = new Point(32, 275);
+            label6.Location = new Point(32, 324);
             label6.Name = "label6";
             label6.Size = new Size(92, 27);
             label6.TabIndex = 7;
@@ -137,7 +150,7 @@
             // 
             TeamPeopleNumberLabel.AutoSize = true;
             TeamPeopleNumberLabel.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            TeamPeopleNumberLabel.Location = new Point(130, 275);
+            TeamPeopleNumberLabel.Location = new Point(130, 324);
             TeamPeopleNumberLabel.Name = "TeamPeopleNumberLabel";
             TeamPeopleNumberLabel.Size = new Size(92, 27);
             TeamPeopleNumberLabel.TabIndex = 8;
@@ -147,7 +160,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label8.Location = new Point(304, 275);
+            label8.Location = new Point(304, 324);
             label8.Name = "label8";
             label8.Size = new Size(92, 27);
             label8.TabIndex = 9;
@@ -157,7 +170,7 @@
             // 
             JoinRightComboBox.FormattingEnabled = true;
             JoinRightComboBox.Items.AddRange(new object[] { "允许所有方式", "禁止搜索加入", "禁止加入码加入" });
-            JoinRightComboBox.Location = new Point(402, 274);
+            JoinRightComboBox.Location = new Point(402, 323);
             JoinRightComboBox.Name = "JoinRightComboBox";
             JoinRightComboBox.Size = new Size(149, 28);
             JoinRightComboBox.TabIndex = 10;
@@ -167,7 +180,7 @@
             // button1
             // 
             button1.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(32, 372);
+            button1.Location = new Point(66, 421);
             button1.Name = "button1";
             button1.Size = new Size(94, 33);
             button1.TabIndex = 1;
@@ -179,7 +192,7 @@
             // 
             TeamJoinCodeLabel.AutoSize = true;
             TeamJoinCodeLabel.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            TeamJoinCodeLabel.Location = new Point(132, 321);
+            TeamJoinCodeLabel.Location = new Point(132, 370);
             TeamJoinCodeLabel.Name = "TeamJoinCodeLabel";
             TeamJoinCodeLabel.Size = new Size(72, 27);
             TeamJoinCodeLabel.TabIndex = 13;
@@ -189,7 +202,7 @@
             // 
             label10.AutoSize = true;
             label10.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label10.Location = new Point(43, 321);
+            label10.Location = new Point(43, 370);
             label10.Name = "label10";
             label10.Size = new Size(72, 27);
             label10.TabIndex = 12;
@@ -199,7 +212,7 @@
             // 
             label11.AutoSize = true;
             label11.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label11.Location = new Point(284, 321);
+            label11.Location = new Point(284, 370);
             label11.Name = "label11";
             label11.Size = new Size(112, 27);
             label11.TabIndex = 14;
@@ -209,26 +222,16 @@
             // 
             JoinCodeRigthComboBox.FormattingEnabled = true;
             JoinCodeRigthComboBox.Items.AddRange(new object[] { "允许所有人查看", "只允许管理员查看", "禁止所有人查看" });
-            JoinCodeRigthComboBox.Location = new Point(402, 320);
+            JoinCodeRigthComboBox.Location = new Point(402, 369);
             JoinCodeRigthComboBox.Name = "JoinCodeRigthComboBox";
             JoinCodeRigthComboBox.Size = new Size(149, 28);
             JoinCodeRigthComboBox.TabIndex = 15;
             JoinCodeRigthComboBox.TabStop = false;
             // 
-            // CloseButton
-            // 
-            CloseButton.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            CloseButton.Location = new Point(142, 372);
-            CloseButton.Name = "CloseButton";
-            CloseButton.Size = new Size(94, 33);
-            CloseButton.TabIndex = 16;
-            CloseButton.Text = "关闭";
-            CloseButton.UseVisualStyleBackColor = true;
-            // 
             // button3
             // 
             button3.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button3.Location = new Point(369, 372);
+            button3.Location = new Point(335, 421);
             button3.Name = "button3";
             button3.Size = new Size(105, 33);
             button3.TabIndex = 18;
@@ -238,7 +241,7 @@
             // UpdateButton
             // 
             UpdateButton.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            UpdateButton.Location = new Point(255, 372);
+            UpdateButton.Location = new Point(198, 421);
             UpdateButton.Name = "UpdateButton";
             UpdateButton.Size = new Size(95, 33);
             UpdateButton.TabIndex = 17;
@@ -246,59 +249,151 @@
             UpdateButton.UseVisualStyleBackColor = true;
             UpdateButton.Click += UpdateButton_Click;
             // 
-            // dataGridView1
+            // TeamMemberList
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(613, 19);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.RowTemplate.Height = 29;
-            dataGridView1.Size = new Size(255, 347);
-            dataGridView1.TabIndex = 19;
+            TeamMemberList.AllowUserToAddRows = false;
+            TeamMemberList.AllowUserToDeleteRows = false;
+            TeamMemberList.AllowUserToResizeColumns = false;
+            TeamMemberList.AllowUserToResizeRows = false;
+            TeamMemberList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            TeamMemberList.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2, Column3 });
+            TeamMemberList.ContextMenuStrip = DataVIewMenu;
+            TeamMemberList.Location = new Point(613, 19);
+            TeamMemberList.Name = "TeamMemberList";
+            TeamMemberList.RowHeadersVisible = false;
+            TeamMemberList.RowHeadersWidth = 51;
+            TeamMemberList.RowTemplate.Height = 29;
+            TeamMemberList.ScrollBars = ScrollBars.Vertical;
+            TeamMemberList.Size = new Size(263, 378);
+            TeamMemberList.TabIndex = 19;
+            TeamMemberList.CellContentClick += TeamMemberList_CellContentClick;
+            // 
+            // Column1
+            // 
+            Column1.HeaderText = "名字";
+            Column1.MinimumWidth = 6;
+            Column1.Name = "Column1";
+            Column1.ReadOnly = true;
+            Column1.Width = 180;
+            // 
+            // Column2
+            // 
+            Column2.HeaderText = "身份";
+            Column2.MinimumWidth = 6;
+            Column2.Name = "Column2";
+            Column2.ReadOnly = true;
+            Column2.Width = 80;
+            // 
+            // Column3
+            // 
+            Column3.HeaderText = "uid";
+            Column3.MinimumWidth = 6;
+            Column3.Name = "Column3";
+            Column3.Width = 125;
+            // 
+            // DataVIewMenu
+            // 
+            DataVIewMenu.ImageScalingSize = new Size(20, 20);
+            DataVIewMenu.Items.AddRange(new ToolStripItem[] { 设置身份ToolStripMenuItem, 查看个人信息ToolStripMenuItem });
+            DataVIewMenu.Name = "contextMenuStrip1";
+            DataVIewMenu.Size = new Size(169, 52);
+            // 
+            // 设置身份ToolStripMenuItem
+            // 
+            设置身份ToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 所有者ToolStripMenuItem, 管理员ToolStripMenuItem, 成员ToolStripMenuItem });
+            设置身份ToolStripMenuItem.Enabled = false;
+            设置身份ToolStripMenuItem.Name = "设置身份ToolStripMenuItem";
+            设置身份ToolStripMenuItem.Size = new Size(168, 24);
+            设置身份ToolStripMenuItem.Text = "设置身份";
+            // 
+            // 所有者ToolStripMenuItem
+            // 
+            所有者ToolStripMenuItem.Name = "所有者ToolStripMenuItem";
+            所有者ToolStripMenuItem.Size = new Size(224, 26);
+            所有者ToolStripMenuItem.Text = "所有者";
+            // 
+            // 管理员ToolStripMenuItem
+            // 
+            管理员ToolStripMenuItem.Name = "管理员ToolStripMenuItem";
+            管理员ToolStripMenuItem.Size = new Size(224, 26);
+            管理员ToolStripMenuItem.Text = "管理员";
+            // 
+            // 成员ToolStripMenuItem
+            // 
+            成员ToolStripMenuItem.Name = "成员ToolStripMenuItem";
+            成员ToolStripMenuItem.Size = new Size(224, 26);
+            成员ToolStripMenuItem.Text = "成员";
+            // 
+            // 查看个人信息ToolStripMenuItem
+            // 
+            查看个人信息ToolStripMenuItem.Name = "查看个人信息ToolStripMenuItem";
+            查看个人信息ToolStripMenuItem.Size = new Size(168, 24);
+            查看个人信息ToolStripMenuItem.Text = "查看个人信息";
             // 
             // button2
             // 
-            button2.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button2.Location = new Point(613, 372);
+            button2.Image = Properties.Resources.邀请;
+            button2.Location = new Point(613, 421);
             button2.Name = "button2";
-            button2.Size = new Size(102, 33);
-            button2.TabIndex = 20;
-            button2.Text = "添加成员";
+            button2.Size = new Size(40, 40);
+            button2.TabIndex = 23;
+            Tips.SetToolTip(button2, "邀请新成员");
             button2.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
-            button4.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button4.Location = new Point(721, 372);
+            button4.Image = Properties.Resources.删除;
+            button4.Location = new Point(685, 421);
             button4.Name = "button4";
-            button4.Size = new Size(147, 33);
-            button4.TabIndex = 21;
-            button4.Text = "删除所选成员";
+            button4.Size = new Size(40, 40);
+            button4.TabIndex = 24;
+            Tips.SetToolTip(button4, "删除所选成员");
             button4.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // button6
             // 
-            button5.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button5.Location = new Point(493, 372);
-            button5.Name = "button5";
-            button5.Size = new Size(105, 33);
-            button5.TabIndex = 22;
-            button5.Text = "解散团队";
-            button5.UseVisualStyleBackColor = true;
-            button5.Click += button5_Click;
+            button6.Image = Properties.Resources.刷新;
+            button6.Location = new Point(757, 421);
+            button6.Name = "button6";
+            button6.Size = new Size(40, 40);
+            button6.TabIndex = 25;
+            Tips.SetToolTip(button6, "刷新列表");
+            button6.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            button7.Image = Properties.Resources.正确;
+            button7.Location = new Point(828, 421);
+            button7.Name = "button7";
+            button7.Size = new Size(40, 40);
+            button7.TabIndex = 26;
+            Tips.SetToolTip(button7, "确认修改");
+            button7.UseVisualStyleBackColor = true;
+            // 
+            // DissolveButton
+            // 
+            DissolveButton.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            DissolveButton.Location = new Point(472, 421);
+            DissolveButton.Name = "DissolveButton";
+            DissolveButton.Size = new Size(105, 33);
+            DissolveButton.TabIndex = 22;
+            DissolveButton.Text = "解散团队";
+            DissolveButton.UseVisualStyleBackColor = true;
+            DissolveButton.Click += button5_Click;
             // 
             // TeamInfo
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(880, 429);
-            Controls.Add(button5);
+            ClientSize = new Size(900, 480);
+            Controls.Add(button7);
+            Controls.Add(button6);
             Controls.Add(button4);
             Controls.Add(button2);
-            Controls.Add(dataGridView1);
+            Controls.Add(DissolveButton);
+            Controls.Add(TeamMemberList);
             Controls.Add(UpdateButton);
             Controls.Add(button3);
-            Controls.Add(CloseButton);
             Controls.Add(JoinCodeRigthComboBox);
             Controls.Add(label11);
             Controls.Add(TeamJoinCodeLabel);
@@ -311,14 +406,16 @@
             Controls.Add(label5);
             Controls.Add(TeamOwnerLabel);
             Controls.Add(label3);
-            Controls.Add(TeamDescriptionTextBox);
-            Controls.Add(TeamNameTextBox);
+            Controls.Add(DescriptionTextBox);
+            Controls.Add(NameTextBox);
             Controls.Add(label2);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "TeamInfo";
             Text = "团队详情";
             Load += TeamInfo_Load;
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)TeamMemberList).EndInit();
+            DataVIewMenu.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -327,8 +424,8 @@
 
         private Label label1;
         private Label label2;
-        private TextBox TeamNameTextBox;
-        private TextBox TeamDescriptionTextBox;
+        private TextBox NameTextBox;
+        private TextBox DescriptionTextBox;
         private Label label3;
         private Label TeamOwnerLabel;
         private Label label5;
@@ -341,12 +438,23 @@
         private Label label10;
         private Label label11;
         private ComboBox JoinCodeRigthComboBox;
-        private Button CloseButton;
         private Button button3;
         private Button UpdateButton;
-        private DataGridView dataGridView1;
+        private DataGridView TeamMemberList;
         private Button button2;
         private Button button4;
-        private Button button5;
+        private Button button6;
+        private Button button7;
+        private Button DissolveButton;
+        private DataGridViewTextBoxColumn Column1;
+        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn Column3;
+        private ToolTip Tips;
+        private ContextMenuStrip DataVIewMenu;
+        private ToolStripMenuItem 设置身份ToolStripMenuItem;
+        private ToolStripMenuItem 所有者ToolStripMenuItem;
+        private ToolStripMenuItem 管理员ToolStripMenuItem;
+        private ToolStripMenuItem 成员ToolStripMenuItem;
+        private ToolStripMenuItem 查看个人信息ToolStripMenuItem;
     }
 }

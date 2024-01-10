@@ -1,4 +1,4 @@
-CREATE TABLE [USER]
+CREATE TABLE [user]
 (
     Uid       INT IDENTITY (1,1) PRIMARY KEY,
     LoginName NVARCHAR(20) UNIQUE,
@@ -28,6 +28,7 @@ CREATE TABLE TeamMember
     FOREIGN KEY (Uid) REFERENCES [USER] (Uid),
     PRIMARY KEY (Tid, Uid)
 );
+GO;
 
 -- 用户的团队视图
 CREATE VIEW UserTeamsView AS
@@ -46,7 +47,7 @@ GO;
 CREATE PROCEDURE CreateTeam(@uid INT, @n NVARCHAR(20), @d NVARCHAR(140), @joinCode NVARCHAR(9)) AS
 DECLARE @tid int;
 INSERT INTO Team(name, joincode, peoplenumber, description)
-VALUES (@n, @joinCode, 1, @d);
+VALUES (@n, @joinCode, 0, @d);
     SET @tid = @@identity;
 INSERT INTO TeamMember(tid, uid, role)
 VALUES (@tid, @uid, 'Owner');
@@ -69,7 +70,7 @@ WHERE Tid = @Tid;
 GO;
 
 -- 插入团队成员的时候将人数+1
-CREATE TRIGGER UpdatePeopleNumber
+CREATE TRIGGER UpdateTeamPeopleNumber
     ON TeamMember
     AFTER INSERT
     AS
@@ -108,9 +109,10 @@ CREATE TABLE TaskMember
     FOREIGN KEY (Uid) REFERENCES [USER] (Uid),
     PRIMARY KEY (Tid, Uid)
 );
+GO;
 
 -- 插入项目成员的时候将人数+1
-CREATE TRIGGER UpdatePeopleNumber
+CREATE TRIGGER UpdateTaskPeopleNumber
     ON TaskMember
     AFTER INSERT
     AS
