@@ -1,5 +1,4 @@
 using IS.Forms;
-using IS.Forms.Team;
 
 namespace IS;
 

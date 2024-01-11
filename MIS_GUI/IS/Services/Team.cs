@@ -254,7 +254,8 @@ public class Team
         );
         var result = new List<TeamMember>();
         while (reader.Read())
-            result.Add(new TeamMember{
+            result.Add(new TeamMember
+            {
                 uid = reader.GetInt32(0),
                 name = reader.GetString(1),
                 role = reader.GetString(2)
@@ -353,7 +354,7 @@ public class Team
             return new ReturnValue(false, "加入失败", e.Message);
         }
     }
-    
+
     // 用户退出团队
     /// <summary>
     /// 用户退出团队，自动判断是否会解散团队

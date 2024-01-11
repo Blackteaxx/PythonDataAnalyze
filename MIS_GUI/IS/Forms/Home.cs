@@ -1,16 +1,6 @@
 ﻿using IS.Forms.Task;
 using IS.Forms.Team;
-using Microsoft.VisualBasic.Devices;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace IS.Forms
 {
@@ -22,6 +12,8 @@ namespace IS.Forms
         private int CurrentFormIndex = 0; // 标识当前的子窗体index
         private List<string> HeaderLabelList = new List<string>(); // 存储header的标题
         private Dictionary<string, Form> FormNameDict = new Dictionary<string, Form>();
+        private List<Button> buttons = new List<Button>();
+        private List<Label> labels = new List<Label>();
 
         public Home()
         {
@@ -67,9 +59,7 @@ namespace IS.Forms
             NextButton.Enabled = false;
 
             // 测试setheader
-            HeaderLabelList.Add("团队列表");
-            HeaderLabelList.Add("一句很长的话");
-            SetHeader();
+            FlushHeader();
         }
 
         /// <summary>
@@ -115,9 +105,9 @@ namespace IS.Forms
             button.Cursor = Cursors.Hand;
             button.FlatStyle = FlatStyle.Flat;
             button.FlatAppearance.BorderSize = 0;
-
             button.Parent = HeaderPanel;
             // button.Click = LoadMainPanel(form);
+            buttons.Add(button);
             return button;
         }
 
@@ -132,29 +122,39 @@ namespace IS.Forms
             label.Font = new Font("Microsoft YaHei UI", 10);
             label.Parent = HeaderPanel;
             label.Size = new Size(26, 26);
+            labels.Add(label);
             return label;
         }
 
         /// <summary>
-        /// 设置标题栏跳转
+        /// 刷新标题栏
         /// </summary>
-        public void SetHeader()
+        public void FlushHeader()
         {
+            // 清除掉原先的子控件们
+            foreach (var item in buttons)
+            {
+                HeaderPanel.Controls.Remove(item);
+            }
+            foreach (var item in labels)
+            {
+                HeaderPanel.Controls.Remove(item);
+            }
             // 排除掉前进和后退的按钮，首页的位置为85，5
             var startPosition = 85;
             // 遍历HeaderLabelList
             for (int i = 0; i < HeaderLabelList.Count; i++)
             {
                 var b = CreateHeaderButton(HeaderLabelList[i]);
-                b.Location = new Point(startPosition,5);
-                b.Click += new EventHandler(TestMsg);
+                b.Location = new Point(startPosition, 5);
+                b.Click += new EventHandler(HeaderButtonClicked);
                 HeaderPanel.Controls.Add(b);
                 startPosition += (b.Width - 5);
 
                 if (i != HeaderLabelList.Count - 1)
                 {
                     Label l = CreateHeaderLabel();
-                    l.Location = new Point(startPosition,7);
+                    l.Location = new Point(startPosition, 7);
                     l.Click += new EventHandler(LabelTestMsg);
                     l.BringToFront();
                     HeaderPanel.Controls.Add(l);
@@ -163,10 +163,59 @@ namespace IS.Forms
             }
         }
 
-        private void TestMsg(object sender, EventArgs e)
+        /// <summary>
+        /// 添加新的form到序列的末尾
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="form"></param>
+        public void AddHeaderLabel(string text, Form form)
+        {
+            HeaderLabelList.Add(text);
+            if(FormNameDict.ContainsKey(text)) FormNameDict.Remove(text);
+            FormNameDict.Add(text, form);
+            FlushHeader();
+        }
+
+        /// <summary>
+        /// 在sider切换的时候应该重置根标签
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="form"></param>
+        public void ResetHeaderLabel(string text, Form form)
+        {
+            HeaderLabelList.Clear();
+            HeaderLabelList.Add(text);
+            FormNameDict.Add(text, form);
+            FlushHeader();
+        }
+
+        /// <summary>
+        /// 移除header的最后一个标签
+        /// </summary>
+        /// <param name="text"></param>
+        public void RemoveHeaderLabel()
+        {
+            HeaderLabelList.RemoveAt(HeaderLabelList.Count - 1);
+            FlushHeader();
+        }
+
+        private void HeaderButtonClicked(object sender, EventArgs e)
         {
             var b = (Button)sender;
-            MessageBox.Show(b.Location.ToString() + "\n" + b.Size.ToString());
+            var name = b.Text;
+            // 如果点击最后一个标签，则无反应
+            if (name == HeaderLabelList[HeaderLabelList.Count() - 1]) return;
+
+            SetMainPanel(FormNameDict[name]);
+            for (int i = HeaderLabelList.Count() - 1; i >= 0; i--)
+            {
+                if (name == HeaderLabelList[i])
+                {
+                    break;
+                }
+                HeaderLabelList.RemoveAt(HeaderLabelList.Count - 1);
+            }
+            FlushHeader();
         }
 
         private void LabelTestMsg(object sender, EventArgs e)
@@ -180,9 +229,10 @@ namespace IS.Forms
             Application.Exit();
         }
 
-        private void MainPanel_Paint(object sender, PaintEventArgs e)
+        private void button1_Click_1(object sender, EventArgs e)
         {
-
+            SetMainPanel(new UserTeam());
+            ResetHeaderLabel("我的团队", new UserTeam());
         }
     }
 }
