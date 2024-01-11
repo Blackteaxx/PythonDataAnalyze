@@ -33,4 +33,32 @@ public class Task
             return e.Message;
         }
     }
+
+    /// <summary>
+    /// 获取任务
+    /// </summary>
+    /// <param name="uid">用户的uid</param>
+    /// <returns></returns>
+    public List<List<string>>? GetTasks(int uid)
+    {
+        var reader = Sql.ExecuteReader(
+            "SELECT Tid,TaskName,TeamName,PeopleNumber FROM TaskTeamView WHERE Uid = @uid",
+            new Dictionary<string, object?>
+            {
+                { "uid", uid }
+            }
+        );
+        if (!reader.HasRows) return null;
+
+        var result = new List<List<string>>();
+        while (reader.Read())
+            result.Add(new List<string>
+            {
+                reader.GetInt32(0).ToString(), // tid
+                reader.GetString(1), // TaskName
+                reader.GetString(2), //TeamName
+                reader.GetInt32(3).ToString(), // 人数
+            });
+        return result;
+    }
 }

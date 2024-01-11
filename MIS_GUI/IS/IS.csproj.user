@@ -2,10 +2,19 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="Forms\Hello.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Home.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\Task\CreateTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\Task\UserTask.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\Team\CreateTeam.cs">

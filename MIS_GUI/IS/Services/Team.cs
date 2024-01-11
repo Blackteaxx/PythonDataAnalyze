@@ -125,6 +125,19 @@ public class Team
         return result;
     }
 
+    public int GetTeamId(string teamName)
+    {
+        var reader = Sql.ExecuteReader(
+                       "SELECT Tid FROM Team WHERE Name = @teamName",
+                                  new Dictionary<string, object?>
+                                  {
+                { "teamName", teamName }
+            }
+                                         );
+        reader.Read();
+        return reader.GetInt32(0);
+    }
+
     public string? UpdateTeamInfo(int tid, string name, string description, int joinRight, int joinCodeRight)
     {
         try

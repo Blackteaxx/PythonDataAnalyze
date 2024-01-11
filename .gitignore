@@ -82,6 +82,7 @@ Blakcteaxx/信息分析/PCA&Clustered/YT_Videos_Comments.csv
 /MIS_GUI/IS/bin/Debug/net6.0-windows/System.Memory.Data.dll
 /MIS_GUI/IS/bin/Debug/net6.0-windows/System.Runtime.Caching.dll
 /MIS_GUI/IS/obj
+/MIS_GUI/.vs
 Blackteaxx/信息分析/PCA&Clustered/bertlabel.csv
 Blackteaxx/信息分析/PCA&Clustered/bertlabel.zip
 Blackteaxx/信息分析/PCA&Clustered/bertlabelPCA.csv
@@ -89,3 +90,7 @@ Blackteaxx/信息分析/PCA&Clustered/finalData.csv
 Blackteaxx/信息分析/PCA&Clustered/preProcessdata.csv
 Blackteaxx/信息分析/PCA&Clustered/trainDataSet.csv
 Blackteaxx/信息分析/PCA&Clustered/YT_Videos_Comments.csv
+MIS_GUI/.vs/IS/v17/.suo
+MIS_GUI/.vs/IS/v17/.suo
+MIS_GUI/.vs/IS/FileContentIndex/28a24d3d-ac44-4257-955b-1184cedf8042.vsidx
+MIS_GUI/.vs/IS/DesignTimeBuild/.dtbcache.v2

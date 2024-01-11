@@ -1,4 +1,5 @@
-﻿using IS.Forms.Team;
+﻿using IS.Forms.Task;
+using IS.Forms.Team;
 using Microsoft.VisualBasic.Devices;
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,7 @@ namespace IS.Forms
         private void Home_Load(object sender, EventArgs e)
         {
             // 初始化界面
-            var h = new Hello();
+            var h = new UserTask(1);
             SetMainPanel(h);
             Forms.Add("首页");
             HeaderLabelList.Add("首页");
