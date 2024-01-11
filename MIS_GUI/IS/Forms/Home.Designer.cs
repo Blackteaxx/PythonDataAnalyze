@@ -67,7 +67,7 @@
             button1.TabIndex = 0;
             button1.Text = "团队";
             button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            button1.Click += button1_Click_1;
             // 
             // HeaderPanel
             // 
@@ -107,7 +107,6 @@
             MainPanel.Name = "MainPanel";
             MainPanel.Size = new Size(900, 493);
             MainPanel.TabIndex = 10;
-            MainPanel.Paint += MainPanel_Paint;
             // 
             // Home
             // 

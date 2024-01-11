@@ -96,7 +96,6 @@
             groupBox1.TabIndex = 20;
             groupBox1.TabStop = false;
             groupBox1.Text = "搜索选项";
-            groupBox1.Enter += groupBox1_Enter;
             // 
             // radioButton4
             // 

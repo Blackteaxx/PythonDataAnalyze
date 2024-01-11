@@ -45,7 +45,7 @@
             label10 = new Label();
             label11 = new Label();
             JoinCodeRigthComboBox = new ComboBox();
-            button3 = new Button();
+            QuitButton = new Button();
             UpdateButton = new Button();
             TeamMemberList = new DataGridView();
             Column1 = new DataGridViewTextBoxColumn();
@@ -60,7 +60,6 @@
             button2 = new Button();
             button4 = new Button();
             button6 = new Button();
-            button7 = new Button();
             DissolveButton = new Button();
             Tips = new ToolTip(components);
             ((System.ComponentModel.ISupportInitialize)TeamMemberList).BeginInit();
@@ -228,15 +227,15 @@
             JoinCodeRigthComboBox.TabIndex = 15;
             JoinCodeRigthComboBox.TabStop = false;
             // 
-            // button3
+            // QuitButton
             // 
-            button3.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button3.Location = new Point(335, 421);
-            button3.Name = "button3";
-            button3.Size = new Size(105, 33);
-            button3.TabIndex = 18;
-            button3.Text = "退出团队";
-            button3.UseVisualStyleBackColor = true;
+            QuitButton.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            QuitButton.Location = new Point(335, 421);
+            QuitButton.Name = "QuitButton";
+            QuitButton.Size = new Size(105, 33);
+            QuitButton.TabIndex = 18;
+            QuitButton.Text = "退出团队";
+            QuitButton.UseVisualStyleBackColor = true;
             // 
             // UpdateButton
             // 
@@ -309,19 +308,19 @@
             // 所有者ToolStripMenuItem
             // 
             所有者ToolStripMenuItem.Name = "所有者ToolStripMenuItem";
-            所有者ToolStripMenuItem.Size = new Size(224, 26);
+            所有者ToolStripMenuItem.Size = new Size(137, 26);
             所有者ToolStripMenuItem.Text = "所有者";
             // 
             // 管理员ToolStripMenuItem
             // 
             管理员ToolStripMenuItem.Name = "管理员ToolStripMenuItem";
-            管理员ToolStripMenuItem.Size = new Size(224, 26);
+            管理员ToolStripMenuItem.Size = new Size(137, 26);
             管理员ToolStripMenuItem.Text = "管理员";
             // 
             // 成员ToolStripMenuItem
             // 
             成员ToolStripMenuItem.Name = "成员ToolStripMenuItem";
-            成员ToolStripMenuItem.Size = new Size(224, 26);
+            成员ToolStripMenuItem.Size = new Size(137, 26);
             成员ToolStripMenuItem.Text = "成员";
             // 
             // 查看个人信息ToolStripMenuItem
@@ -339,36 +338,29 @@
             button2.TabIndex = 23;
             Tips.SetToolTip(button2, "邀请新成员");
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // button4
             // 
             button4.Image = Properties.Resources.删除;
-            button4.Location = new Point(685, 421);
+            button4.Location = new Point(726, 421);
             button4.Name = "button4";
             button4.Size = new Size(40, 40);
             button4.TabIndex = 24;
             Tips.SetToolTip(button4, "删除所选成员");
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // button6
             // 
             button6.Image = Properties.Resources.刷新;
-            button6.Location = new Point(757, 421);
+            button6.Location = new Point(836, 419);
             button6.Name = "button6";
             button6.Size = new Size(40, 40);
             button6.TabIndex = 25;
             Tips.SetToolTip(button6, "刷新列表");
             button6.UseVisualStyleBackColor = true;
-            // 
-            // button7
-            // 
-            button7.Image = Properties.Resources.正确;
-            button7.Location = new Point(828, 421);
-            button7.Name = "button7";
-            button7.Size = new Size(40, 40);
-            button7.TabIndex = 26;
-            Tips.SetToolTip(button7, "确认修改");
-            button7.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
             // 
             // DissolveButton
             // 
@@ -386,14 +378,13 @@
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(900, 480);
-            Controls.Add(button7);
             Controls.Add(button6);
             Controls.Add(button4);
             Controls.Add(button2);
             Controls.Add(DissolveButton);
             Controls.Add(TeamMemberList);
             Controls.Add(UpdateButton);
-            Controls.Add(button3);
+            Controls.Add(QuitButton);
             Controls.Add(JoinCodeRigthComboBox);
             Controls.Add(label11);
             Controls.Add(TeamJoinCodeLabel);
@@ -438,13 +429,12 @@
         private Label label10;
         private Label label11;
         private ComboBox JoinCodeRigthComboBox;
-        private Button button3;
+        private Button QuitButton;
         private Button UpdateButton;
         private DataGridView TeamMemberList;
         private Button button2;
         private Button button4;
         private Button button6;
-        private Button button7;
         private Button DissolveButton;
         private DataGridViewTextBoxColumn Column1;
         private DataGridViewTextBoxColumn Column2;

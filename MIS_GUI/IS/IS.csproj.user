@@ -5,6 +5,9 @@
     <Compile Update="Forms\Hello.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\Hello.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Home.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -17,10 +20,19 @@
     <Compile Update="Forms\Task\UserTask.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\Task\CreateTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\Task\UserTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Team\CreateTeam.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\Team\TeamInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\Team\TeamInviteMember.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\Team\UserTeam.cs">

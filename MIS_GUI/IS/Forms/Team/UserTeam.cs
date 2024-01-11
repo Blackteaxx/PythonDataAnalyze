@@ -1,7 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows.Forms;
-
-namespace IS.Forms.Team;
+﻿namespace IS.Forms.Team;
 
 public partial class UserTeam : Form
 {
@@ -158,6 +155,8 @@ public partial class UserTeam : Form
             // 传入tid和用户身份
             var t = new TeamInfo(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[6].Value),
                 Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[7].Value) ?? "");
+            var teamName = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[0].Value) ?? "";
+            f.AddHeaderLabel(teamName, t);
             f.SetMainPanel(t);
         }
     }
@@ -268,10 +267,5 @@ public partial class UserTeam : Form
     private void UserTeam_FormClosed(object sender, FormClosedEventArgs e)
     {
         Application.Exit();
-    }
-
-    private void groupBox1_Enter(object sender, EventArgs e)
-    {
-
     }
 }

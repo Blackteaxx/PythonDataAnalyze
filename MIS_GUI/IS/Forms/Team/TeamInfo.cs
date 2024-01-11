@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace IS.Forms.Team;
 
@@ -57,6 +56,15 @@ public partial class TeamInfo : Form
             JoinCodeRigthComboBox.Enabled = false;
             UpdateButton.Enabled = false;
             DissolveButton.Enabled = false;
+        }
+        else if (Role == "Admin")
+        {
+            // 管理员用户可以对团队信息进行操作
+            DissolveButton.Enabled = false;
+        }
+        else
+        {
+            QuitButton.Enabled = false; // 禁止退出团队
         }
 
         // 更新团队信息
@@ -124,5 +132,52 @@ public partial class TeamInfo : Form
     private void TeamMemberList_CellContentClick(object sender, DataGridViewCellEventArgs e)
     {
 
+    }
+
+    private void button2_Click(object sender, EventArgs e)
+    {
+        var i = new TeamInviteMember(Tid);
+        var f = this.Parent.Parent as Home;
+        f.AddHeaderLabel("邀请成员", i);
+        f.SetMainPanel(i);
+    }
+
+    private void button4_Click(object sender, EventArgs e)
+    {
+        var selectedCellCount =
+        TeamMemberList.GetCellCount(DataGridViewElementStates.Selected);
+        if (selectedCellCount == 0)
+        {
+            MessageBox.Show("请选择要删除的成员!");
+            return;
+        }
+
+        var sb = new System.Text.StringBuilder("你已选择以下成员:\n");
+        var uids = new List<int>();
+
+        for (int i = 0; i < selectedCellCount; i++)
+        {
+            var row = TeamMemberList.SelectedCells[i].RowIndex;
+            sb.Append(TeamMemberList.Rows[row].Cells[0].Value);
+            uids.Add(Convert.ToInt32(TeamMemberList.Rows[row].Cells[2].Value));
+            sb.Append(Environment.NewLine);
+        }
+
+        sb.Append("共" + selectedCellCount.ToString() + "个成员\n");
+        var r = MessageBox.Show(sb.ToString(), "你确定删除所选成员吗？", MessageBoxButtons.OKCancel);
+        if (r == DialogResult.OK)
+        {
+            foreach (var uid in uids)
+            {
+                team.QuitTeam(Tid, uid);
+            }
+            SetTeamMembersList();
+            MessageBox.Show("操作完成");
+        }
+    }
+
+    private void button6_Click(object sender, EventArgs e)
+    {
+        SetTeamMembersList();
     }
 }

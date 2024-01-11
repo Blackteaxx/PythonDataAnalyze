@@ -1,7 +1,4 @@
-﻿using Microsoft.VisualBasic.Logging;
-using System.Windows.Forms;
-
-namespace IS.Forms;
+﻿namespace IS.Forms;
 
 public partial class Main : Form
 {

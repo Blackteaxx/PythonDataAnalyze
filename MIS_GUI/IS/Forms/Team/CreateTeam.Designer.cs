@@ -49,7 +49,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Microsoft YaHei UI", 24F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(202, 19);
+            label1.Location = new Point(355, 9);
             label1.Name = "label1";
             label1.Size = new Size(182, 52);
             label1.TabIndex = 0;
@@ -59,7 +59,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(31, 93);
+            label2.Location = new Point(145, 110);
             label2.Name = "label2";
             label2.Size = new Size(52, 27);
             label2.TabIndex = 1;
@@ -67,7 +67,7 @@
             // 
             // NameTextBox
             // 
-            NameTextBox.Location = new Point(106, 93);
+            NameTextBox.Location = new Point(243, 112);
             NameTextBox.MaxLength = 20;
             NameTextBox.Name = "NameTextBox";
             NameTextBox.Size = new Size(185, 27);
@@ -77,7 +77,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(31, 146);
+            label3.Location = new Point(145, 165);
             label3.Name = "label3";
             label3.Size = new Size(52, 27);
             label3.TabIndex = 3;
@@ -85,7 +85,7 @@
             // 
             // DescriptionTextBox
             // 
-            DescriptionTextBox.Location = new Point(106, 146);
+            DescriptionTextBox.Location = new Point(243, 165);
             DescriptionTextBox.MaxLength = 140;
             DescriptionTextBox.Multiline = true;
             DescriptionTextBox.Name = "DescriptionTextBox";
@@ -96,7 +96,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(8, 260);
+            label4.Location = new Point(145, 279);
             label4.Name = "label4";
             label4.Size = new Size(92, 27);
             label4.TabIndex = 5;
@@ -105,7 +105,7 @@
             // JoinRightComboBox
             // 
             JoinRightComboBox.FormattingEnabled = true;
-            JoinRightComboBox.Location = new Point(106, 260);
+            JoinRightComboBox.Location = new Point(243, 279);
             JoinRightComboBox.Name = "JoinRightComboBox";
             JoinRightComboBox.Size = new Size(151, 28);
             JoinRightComboBox.TabIndex = 6;
@@ -113,7 +113,7 @@
             // JoinCodeRightComboBox
             // 
             JoinCodeRightComboBox.FormattingEnabled = true;
-            JoinCodeRightComboBox.Location = new Point(405, 259);
+            JoinCodeRightComboBox.Location = new Point(542, 278);
             JoinCodeRightComboBox.Name = "JoinCodeRightComboBox";
             JoinCodeRightComboBox.Size = new Size(151, 28);
             JoinCodeRightComboBox.TabIndex = 8;
@@ -122,7 +122,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label5.Location = new Point(288, 260);
+            label5.Location = new Point(425, 279);
             label5.Name = "label5";
             label5.Size = new Size(112, 27);
             label5.TabIndex = 7;
@@ -132,7 +132,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label6.Location = new Point(31, 312);
+            label6.Location = new Point(145, 331);
             label6.Name = "label6";
             label6.Size = new Size(72, 27);
             label6.TabIndex = 9;
@@ -140,7 +140,7 @@
             // 
             // JoinCodeTextBox
             // 
-            JoinCodeTextBox.Location = new Point(106, 312);
+            JoinCodeTextBox.Location = new Point(243, 331);
             JoinCodeTextBox.MaxLength = 9;
             JoinCodeTextBox.Name = "JoinCodeTextBox";
             JoinCodeTextBox.Size = new Size(151, 27);
@@ -148,9 +148,9 @@
             // 
             // AffirmButton
             // 
-            AffirmButton.Location = new Point(93, 359);
+            AffirmButton.Location = new Point(168, 391);
             AffirmButton.Name = "AffirmButton";
-            AffirmButton.Size = new Size(94, 29);
+            AffirmButton.Size = new Size(120, 60);
             AffirmButton.TabIndex = 11;
             AffirmButton.Text = "确认";
             AffirmButton.UseVisualStyleBackColor = true;
@@ -158,9 +158,9 @@
             // 
             // ClearButton
             // 
-            ClearButton.Location = new Point(250, 359);
+            ClearButton.Location = new Point(370, 391);
             ClearButton.Name = "ClearButton";
-            ClearButton.Size = new Size(94, 29);
+            ClearButton.Size = new Size(120, 60);
             ClearButton.TabIndex = 12;
             ClearButton.Text = "清空";
             ClearButton.UseVisualStyleBackColor = true;
@@ -168,9 +168,9 @@
             // 
             // ExitButton
             // 
-            ExitButton.Location = new Point(406, 359);
+            ExitButton.Location = new Point(573, 391);
             ExitButton.Name = "ExitButton";
-            ExitButton.Size = new Size(94, 29);
+            ExitButton.Size = new Size(120, 60);
             ExitButton.TabIndex = 13;
             ExitButton.Text = "退出";
             ExitButton.UseVisualStyleBackColor = true;
@@ -179,7 +179,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(278, 299);
+            label7.Location = new Point(415, 318);
             label7.Name = "label7";
             label7.Size = new Size(309, 40);
             label7.TabIndex = 14;
@@ -189,7 +189,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(599, 407);
+            ClientSize = new Size(900, 480);
             Controls.Add(label7);
             Controls.Add(ExitButton);
             Controls.Add(ClearButton);
@@ -205,6 +205,7 @@
             Controls.Add(NameTextBox);
             Controls.Add(label2);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "CreateTeam";
             Text = "创建团队";
             Load += CreateTeam_Load;
