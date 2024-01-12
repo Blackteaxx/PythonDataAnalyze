@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using IS.Services.DataBase;
 
 namespace IS.Services;
@@ -104,7 +105,7 @@ public class Team
     public List<List<string>>? GetTeams(int uid)
     {
         var reader = Sql.ExecuteReader(
-            "SELECT Tid,Name,Description,PeopleNumber,Role FROM UserTeamsView WHERE Uid = @uid",
+            "SELECT Tid,Name,Description,PeopleNumber,Role FROM UserTeamsView WHERE Uid = @uid and Role != 'Delete'",
             new Dictionary<string, object?>
             {
                 { "uid", uid }
@@ -264,40 +265,12 @@ public class Team
     }
 
     /// <summary>
-    /// 根据用户输入的搜索词查找名字相似的团队
-    /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    public List<List<string>> SearchTeams(string name)
-    {
-        var reader = Sql.ExecuteReader(
-            "SELECT Tid,Name,Description,PeopleNumber FROM UserTeamsView WHERE Name like @name",
-            new Dictionary<string, object?>
-            {
-                { "name", "%" + name + "%" }
-            }
-        );
-        var result = new List<List<string>>();
-        while (reader.Read())
-            result.Add(new List<string>
-            {
-                reader.GetInt32(0).ToString(),
-                reader.GetString(1),
-                reader.GetString(2),
-                reader.GetInt32(3).ToString()
-            });
-
-        // 把搜索结果按照相似度来排序,依据最小编辑距离
-        return result;
-    }
-
-    /// <summary>
     /// 通过团队的Uid来加入团队
     /// </summary>
     /// <param name="uid"></param>
     /// <param name="tid"></param>
     /// <returns></returns>
-    public ReturnValue JoinTeam(int uid, int tid)
+    public string JoinTeam(int uid, int tid)
     {
         try
         {
@@ -309,11 +282,11 @@ public class Team
                     { "uid", uid }
                 }
             );
-            return new ReturnValue(true, "加入成功", null);
+            return "加入成功";
         }
         catch (Exception e)
         {
-            return new ReturnValue(false, "加入失败", e.Message);
+            return "加入失败";
         }
     }
 
@@ -374,11 +347,70 @@ public class Team
                     { "uid", uid }
                 }
             );
-            return "";
+            return "成功退出";
         }
         catch (Exception e)
         {
             return e.Message;
         }
+    }
+    
+    public struct SearchTeamItem
+    {
+        public int Tid;
+        public string Name;
+        public string Description;
+    }
+
+    /// <summary>
+    /// 搜索满足条件的团队
+    /// </summary>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    public List<SearchTeamItem> SearchTeam(string s)
+    {
+        // 先判断是不是加入码
+        string pattern = @"^[A-Z0-9]{9}$";
+        var result = new List<SearchTeamItem>();
+        if (Regex.IsMatch(s, pattern))
+        {
+            var r1 = Sql.ExecuteReader(
+                "SELECT Tid,Name,Description FROM Team WHERE JoinCode = @joinCode",
+                new Dictionary<string, object?>
+                    {
+                        { "joinCode", s }
+                    }
+                );
+            if (r1.HasRows) 
+                while (r1.Read())
+                {
+                    result.Add(new SearchTeamItem
+                    {
+                        Tid = r1.GetInt32(0),
+                        Name = r1.GetString(1),
+                        Description = r1.GetString(2)
+                    });
+                }
+        }
+        // 不管是不是加入码，都要按照名字搜索一下
+
+        var r2 = Sql.ExecuteReader(
+            "SELECT Tid,Name,Description FROM Team WHERE Name like @name",
+            new Dictionary<string, object?>
+                {
+                    { "name", "%" + s + "%" }
+                }
+            );
+        if (r2.HasRows)
+            while (r2.Read())
+            {
+                result.Add(new SearchTeamItem
+                {
+                    Tid = r2.GetInt32(0),
+                    Name = r2.GetString(1),
+                    Description = r2.GetString(2)
+                });
+            }
+        return result;
     }
 }

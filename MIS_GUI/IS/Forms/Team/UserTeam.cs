@@ -268,4 +268,25 @@ public partial class UserTeam : Form
     {
         Application.Exit();
     }
+
+    /// <summary>
+    /// 创建团队
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void CreateTeamButton_Click(object sender, EventArgs e)
+    {
+        var f = this.Parent.Parent as Home;
+        var t = new CreateTeam();
+        f.AddHeaderLabel("创建团队", t);
+        f.SetMainPanel(t);
+    }
+
+    private void SearchTeamButton_Click(object sender, EventArgs e)
+    {
+        var f = this.Parent.Parent as Home;
+        var t = new SearchTeam();
+        f.AddHeaderLabel("搜索团队", t);
+        f.SetMainPanel(t);
+    }
 }

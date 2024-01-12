@@ -40,6 +40,8 @@
             button3 = new Button();
             button5 = new Button();
             button6 = new Button();
+            CreateTeamButton = new Button();
+            SearchTeamButton = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
             SuspendLayout();
@@ -92,7 +94,7 @@
             groupBox1.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             groupBox1.Location = new Point(15, 399);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(866, 75);
+            groupBox1.Size = new Size(730, 75);
             groupBox1.TabIndex = 20;
             groupBox1.TabStop = false;
             groupBox1.Text = "搜索选项";
@@ -139,7 +141,7 @@
             // 
             // button3
             // 
-            button3.Location = new Point(751, 362);
+            button3.Location = new Point(751, 366);
             button3.Name = "button3";
             button3.Size = new Size(130, 30);
             button3.TabIndex = 6;
@@ -149,7 +151,7 @@
             // 
             // button5
             // 
-            button5.Location = new Point(665, 362);
+            button5.Location = new Point(665, 366);
             button5.Name = "button5";
             button5.Size = new Size(80, 30);
             button5.TabIndex = 3;
@@ -159,7 +161,7 @@
             // 
             // button6
             // 
-            button6.Location = new Point(579, 362);
+            button6.Location = new Point(579, 366);
             button6.Name = "button6";
             button6.Size = new Size(80, 30);
             button6.TabIndex = 4;
@@ -167,12 +169,36 @@
             button6.UseVisualStyleBackColor = true;
             button6.Click += button6_Click;
             // 
+            // CreateTeamButton
+            // 
+            CreateTeamButton.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            CreateTeamButton.Location = new Point(751, 399);
+            CreateTeamButton.Name = "CreateTeamButton";
+            CreateTeamButton.Size = new Size(130, 35);
+            CreateTeamButton.TabIndex = 21;
+            CreateTeamButton.Text = "创建团队";
+            CreateTeamButton.UseVisualStyleBackColor = true;
+            CreateTeamButton.Click += CreateTeamButton_Click;
+            // 
+            // SearchTeamButton
+            // 
+            SearchTeamButton.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            SearchTeamButton.Location = new Point(751, 439);
+            SearchTeamButton.Name = "SearchTeamButton";
+            SearchTeamButton.Size = new Size(130, 35);
+            SearchTeamButton.TabIndex = 22;
+            SearchTeamButton.Text = "搜索团队";
+            SearchTeamButton.UseVisualStyleBackColor = true;
+            SearchTeamButton.Click += SearchTeamButton_Click;
+            // 
             // UserTeam
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(900, 480);
             ControlBox = false;
+            Controls.Add(SearchTeamButton);
+            Controls.Add(CreateTeamButton);
             Controls.Add(button6);
             Controls.Add(button5);
             Controls.Add(button3);
@@ -207,5 +233,7 @@
         private Button button5;
         private Button button6;
         private RadioButton radioButton4;
+        private Button CreateTeamButton;
+        private Button SearchTeamButton;
     }
 }

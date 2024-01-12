@@ -180,4 +180,19 @@ public partial class TeamInfo : Form
     {
         SetTeamMembersList();
     }
+
+    private void QuitButton_Click(object sender, EventArgs e)
+    {
+        var m = team.QuitTeam(Tid, Main.uid);
+        if (m == "成功退出")
+        {
+            MessageBox.Show("退出成功");
+            // 返回到界面UserTeam
+            var f = this.Parent.Parent as Home;
+            f.ResetHeaderLabel("我的团队",new UserTeam());
+        }
+        else
+            MessageBox.Show(m);
+
+    }
 }

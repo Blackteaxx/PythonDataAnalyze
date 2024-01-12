@@ -55,4 +55,15 @@ internal class Sql
         foreach (var key in paras.Keys) command.Parameters.AddWithValue(key, paras[key]);
         return command.ExecuteScalar();
     }
+
+    public static int GetPrimaryKey(string tableName)
+    {
+        // IDENT_CURRENT(table_name)
+        var connection = new SqlConnection(connectionString);
+        connection.Open();
+        var sql = "Select IDENT_CURRENT(@name)";
+        var command = new SqlCommand(sql, connection);
+        command.Parameters.AddWithValue("name", tableName);
+        return Convert.ToInt32(command.ExecuteScalar());
+    }
 }

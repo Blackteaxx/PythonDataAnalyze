@@ -29,6 +29,9 @@
     <Compile Update="Forms\Team\CreateTeam.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\Team\SearchTeam.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Team\TeamInfo.cs">
       <SubType>Form</SubType>
     </Compile>

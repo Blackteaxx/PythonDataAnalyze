@@ -179,11 +179,11 @@
             // button1
             // 
             button1.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(66, 421);
+            button1.Location = new Point(43, 421);
             button1.Name = "button1";
-            button1.Size = new Size(94, 33);
+            button1.Size = new Size(149, 33);
             button1.TabIndex = 1;
-            button1.Text = "进入";
+            button1.Text = "查看任务列表";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
@@ -236,11 +236,12 @@
             QuitButton.TabIndex = 18;
             QuitButton.Text = "退出团队";
             QuitButton.UseVisualStyleBackColor = true;
+            QuitButton.Click += QuitButton_Click;
             // 
             // UpdateButton
             // 
             UpdateButton.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            UpdateButton.Location = new Point(198, 421);
+            UpdateButton.Location = new Point(212, 421);
             UpdateButton.Name = "UpdateButton";
             UpdateButton.Size = new Size(95, 33);
             UpdateButton.TabIndex = 17;

@@ -65,14 +65,14 @@ namespace IS.Forms.Task
             // 添加行数据
             foreach (var item in data)
             {
-                if(this.comboBox1.SelectedIndex == 0)
+                if (this.comboBox1.SelectedIndex == 0)
                 {
                     if (!item[1].Contains(filter)) continue;
-                } 
-                else if(this.comboBox1.SelectedIndex == 1)
+                }
+                else if (this.comboBox1.SelectedIndex == 1)
                 {
                     if (!item[2].Contains(filter)) continue;
-                } 
+                }
                 var index = dataGridView1.Rows.Add();
                 dataGridView1.Rows[index].Cells[0].Value = item[1];
                 dataGridView1.Rows[index].Cells[1].Value = item[2];
@@ -125,7 +125,7 @@ namespace IS.Forms.Task
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return; // 判断是否点击到了表格
                                                              //点击button按钮事件
-            
+
             int tid = (int)dataGridView1.Rows[e.RowIndex].Cells[5].Value;
             if (dataGridView1.Columns[e.ColumnIndex].Name == "查看")
             {

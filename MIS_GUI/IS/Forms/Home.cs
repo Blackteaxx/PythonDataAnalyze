@@ -185,7 +185,9 @@ namespace IS.Forms
         {
             HeaderLabelList.Clear();
             HeaderLabelList.Add(text);
+            if (FormNameDict.ContainsKey(text)) FormNameDict.Remove(text);
             FormNameDict.Add(text, form);
+            SetMainPanel(form);
             FlushHeader();
         }
 
@@ -231,7 +233,6 @@ namespace IS.Forms
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            SetMainPanel(new UserTeam());
             ResetHeaderLabel("我的团队", new UserTeam());
         }
     }
