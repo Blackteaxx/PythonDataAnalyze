@@ -121,26 +121,6 @@ namespace IS.Forms.Task
             LoadData();
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return; // 判断是否点击到了表格
-                                                             //点击button按钮事件
-
-            int tid = (int)dataGridView1.Rows[e.RowIndex].Cells[5].Value;
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "查看")
-            {
-                //var f = this.Parent.Parent as Home; // parent是panel，因此这里要Parent.Parent
-                //                                    // 传入tid和用户身份
-                //var t
-                //f.SetMainPanel(t);
-            }
-            else if (dataGridView1.Columns[e.ColumnIndex].Name == "审核")
-            {
-                // 
-            }
-        }
-
-
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -157,6 +137,27 @@ namespace IS.Forms.Task
         private void button6_Click(object sender, EventArgs e)
         {
             this.LoadData();
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return; // 判断是否点击到了表格
+                                                             //点击button按钮事件
+
+            int tid = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[5].Value);
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "查看")
+            {
+                //var f = this.Parent.Parent as Home; // parent是panel，因此这里要Parent.Parent
+                //                                    // 传入tid和用户身份
+                //var t
+                //f.SetMainPanel(t);
+                MessageBox.Show("1");
+            }
+            else if (dataGridView1.Columns[e.ColumnIndex].Name == "审核")
+            {
+                // \
+                MessageBox.Show("2");
+            }
         }
     }
 }
