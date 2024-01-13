@@ -47,7 +47,6 @@ public partial class CreateTeam : Form
         var tid = Sql.GetPrimaryKey("Team");
         var t = new TeamInfo(tid,"Owner");
         f.AddHeaderLabel(name, t);
-        f.SetMainPanel(t);
     }
 
     private void CreateTeam_Load(object sender, EventArgs e)

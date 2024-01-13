@@ -354,7 +354,7 @@ public class Team
             return e.Message;
         }
     }
-    
+
     public struct SearchTeamItem
     {
         public int Tid;
@@ -381,7 +381,7 @@ public class Team
                         { "joinCode", s }
                     }
                 );
-            if (r1.HasRows) 
+            if (r1.HasRows)
                 while (r1.Read())
                 {
                     result.Add(new SearchTeamItem
@@ -412,5 +412,88 @@ public class Team
                 });
             }
         return result;
+    }
+
+    // 设置用户的身份为管理员
+    /// <summary>
+    /// 设置用户的身份为管理员
+    /// </summary>
+    /// <param name="tid"></param>
+    /// <param name="uid"></param>
+    /// <returns></returns>
+    public string SetAdmin(int tid, int uid)
+    {
+        try
+        {
+            var r = Sql.ExecuteNonQuery(
+                "UPDATE TeamMember SET Role = 'Admin' WHERE Tid = @tid and Uid = @uid",
+                new Dictionary<string, object?>
+                {
+                    { "uid", uid },
+                    { "tid", tid }
+                }
+            );
+            return "设置成功";
+        }
+        catch (Exception e)
+        {
+            return e.Message;
+        }
+    }
+
+    // 设置用户的身份为普通成员
+    /// <summary>
+    /// 设置用户的身份为普通成员
+    /// </summary>
+    /// <param name="tid"></param>
+    /// <param name="uid"></param>
+    /// <returns></returns>
+    public string SetMember(int tid, int uid)
+    {
+        try
+        {
+            var r = Sql.ExecuteNonQuery(
+                "UPDATE TeamMember SET Role = 'Member' WHERE Tid = @tid and Uid = @uid",
+                new Dictionary<string, object?>
+                {
+                    { "uid", uid },
+                    { "tid", tid }
+                }
+            );
+            return "设置成功";
+        }
+        catch (Exception e)
+        {
+            return e.Message;
+        }
+    }
+
+    // 设置成员为所有者，同时自己降级为管理员
+    /// <summary>
+    /// 设置成员为所有者，同时自己降级为管理员
+    /// </summary>
+    /// <param name="tid"></param>
+    /// <param name="uid"></param>
+    /// <returns></returns>
+    public string SetOwner(int tid, int memverUid, int OwnerUid)
+    {
+        try
+        {
+            var r = Sql.ExecuteNonQuery(
+                "UPDATE TeamMember SET Role = 'Owner' WHERE Tid = @tid and Uid = @memverUid;" +
+                "UPDATE TeamMember SET Role = 'Admin' WHERE Tid = @tid and Uid = @OwnerUid;",
+                new Dictionary<string, object?>
+                {
+                    { "memverUid", memverUid },
+                    { "tid", tid },
+                    { "OwnerUid" , OwnerUid }
+                }
+            );
+            return "设置成功";
+        }
+        catch (Exception e)
+        {
+            return e.Message;
+        }
     }
 }
