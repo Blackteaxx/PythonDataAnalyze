@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using IS.Forms.Task;
+using System.Data;
 using System.Windows.Forms;
 
 namespace IS.Forms.Team;
@@ -40,6 +41,8 @@ public partial class TeamInfo : Form
 
     private void button1_Click(object sender, EventArgs e)
     {
+        var f = this.Parent.Parent as Home;
+        f.AddHeaderLabel("任务列表", new TeamTask(Tid));
     }
 
     private void TeamInfo_Load(object sender, EventArgs e)

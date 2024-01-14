@@ -496,4 +496,64 @@ public class Team
             return e.Message;
         }
     }
+
+    public struct TeamTaskItem
+    {
+        public  int Taskid;
+        public  string Name;
+        public  string Description;
+        public  string MasterName;
+        public int Status;
+    }
+
+    public List<TeamTaskItem> GetTeamTasks(int tid)
+    {
+        var result = new List<TeamTaskItem>();
+        var r = Sql.ExecuteReader(
+            "SELECT TaskId, Name, Description,MasterName,Status FROM TeamTaskView WHERE TeamId = @tid",
+            new Dictionary<string, object?>
+            {
+                { "tid", tid }
+            }
+        );
+        if (r.HasRows)
+            while (r.Read())
+            {
+                result.Add(new TeamTaskItem
+                {
+                    Taskid = r.GetInt32(0),
+                    Name = r.GetString(1),
+                    Description = r.GetString(2),
+                    MasterName = r.GetString(3),
+                    Status = r.GetInt32(4),
+                });
+            }
+        return result;
+    }
+
+    /// <summary>
+    /// 获取用户在该团队内参与的任务
+    /// </summary>
+    /// <param name="uid"></param>
+    /// <param name="tid"></param>
+    /// <returns></returns>
+    public List<int> GetTasksParticipating(int uid, int tid)
+    {
+        var result = new List<int>();
+        var r = Sql.ExecuteReader(
+            "SELECT TaskId FROM TeamTasks WHERE TeamId = @tid " +
+            "and EXISTS(SELECT * FROM TaskMember WHERE Tid = TaskId and Uid = @uid)",
+            new Dictionary<string, object?>
+            {
+                { "tid", tid },
+                { "uid", uid }
+            }
+        );
+        if (r.HasRows)
+            while (r.Read())
+            {
+                result.Add(r.GetInt32(0));
+            }
+        return result;
+    }
 }

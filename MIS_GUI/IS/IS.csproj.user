@@ -17,6 +17,9 @@
     <Compile Update="Forms\Task\CreateTask.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\Task\TeamTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Task\UserTask.cs">
       <SubType>Form</SubType>
     </Compile>

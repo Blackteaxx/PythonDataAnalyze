@@ -5,7 +5,7 @@ namespace IS.Services;
 public class Task
 {
     /// <summary>
-    ///     在给定的团队下创建对应的项目
+    /// 在给定的团队下创建对应的项目
     /// </summary>
     /// <param name="teamId"></param>
     /// <param name="uid"></param>
