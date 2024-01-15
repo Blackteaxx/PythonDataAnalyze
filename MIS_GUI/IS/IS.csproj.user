@@ -20,6 +20,9 @@
     <Compile Update="Forms\Task\TaskInfo.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\Task\TeamTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Task\UserTask.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -32,6 +35,9 @@
     <Compile Update="Forms\Team\CreateTeam.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\Team\SearchTeam.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Team\TeamInfo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -39,6 +45,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\Team\UserTeam.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\UserInfoChange\UserUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\User\Login.cs">

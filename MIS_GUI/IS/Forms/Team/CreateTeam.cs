@@ -1,4 +1,6 @@
-﻿namespace IS.Forms.Team;
+﻿using IS.Services.DataBase;
+
+namespace IS.Forms.Team;
 
 public partial class CreateTeam : Form
 {
@@ -38,6 +40,13 @@ public partial class CreateTeam : Form
             MessageBox.Show("创建成功");
         else
             MessageBox.Show("");
+
+        // 创建成功后弹出团队详情界面
+        var f = this.Parent.Parent as Home;
+        f.RemoveHeaderLabel();
+        var tid = Sql.GetPrimaryKey("Team");
+        var t = new TeamInfo(tid,"Owner");
+        f.AddHeaderLabel(name, t);
     }
 
     private void CreateTeam_Load(object sender, EventArgs e)

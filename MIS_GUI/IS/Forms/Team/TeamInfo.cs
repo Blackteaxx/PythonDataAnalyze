@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using IS.Forms.Task;
+using System.Data;
+using System.Windows.Forms;
 
 namespace IS.Forms.Team;
 
@@ -39,6 +41,8 @@ public partial class TeamInfo : Form
 
     private void button1_Click(object sender, EventArgs e)
     {
+        var f = this.Parent.Parent as Home;
+        f.AddHeaderLabel("任务列表", new TeamTask(Tid));
     }
 
     private void TeamInfo_Load(object sender, EventArgs e)
@@ -86,6 +90,7 @@ public partial class TeamInfo : Form
 
         // 显示团队成员信息
         SetTeamMembersList();
+        this.TeamMemberList.Rows[0].Selected = false;
 
         // 为按钮设置提示
 
@@ -96,6 +101,7 @@ public partial class TeamInfo : Form
     /// </summary>
     private void SetTeamMembersList()
     {
+        TeamMemberList.Rows.Clear();
         var members = team.GetTeamMembersInfo(Tid);
         foreach (var member in members)
         {
@@ -180,4 +186,127 @@ public partial class TeamInfo : Form
     {
         SetTeamMembersList();
     }
+
+    private void QuitButton_Click(object sender, EventArgs e)
+    {
+        var m = team.QuitTeam(Tid, Main.uid);
+        if (m == "成功退出")
+        {
+            MessageBox.Show("退出成功");
+            // 返回到界面UserTeam
+            var f = this.Parent.Parent as Home;
+            f.ResetHeaderLabel("我的团队", new UserTeam());
+        }
+        else
+            MessageBox.Show(m);
+    }
+
+    /// <summary>
+    /// 获取选中的行，同时设置可用性
+    /// </summary>
+    /// <returns></returns>
+    private int GetSelectRow()
+    {
+        if (TeamMemberList.GetCellCount(DataGridViewElementStates.Selected) < 1)
+        {
+            MessageBox.Show("请用右键选择一个成员");
+            return -1;
+        }
+        if (TeamMemberList.SelectedCells[0].RowIndex > 1)
+        {
+            MessageBox.Show("请只选择一个成员");
+            return -1;
+        }
+
+        var row = TeamMemberList.SelectedCells[0].RowIndex;
+        return row;
+    }
+
+    private void SetAdminItem_Click(object sender, EventArgs e)
+    {
+
+        var row = GetSelectRow(); // 获取选中的行数
+        if (row == -1) return;
+        var uid = Convert.ToInt32(TeamMemberList.Rows[row].Cells[2].Value);
+        var name = TeamMemberList.Rows[row].Cells[0].Value.ToString();
+        var m = MessageBox.Show($"你确定要把{name}设为管理员吗？", "确认界面", MessageBoxButtons.OKCancel);
+        if (m == DialogResult.OK)
+        {
+            team.SetAdmin(Tid, uid);
+            SetTeamMembersList();
+        }
+    }
+
+
+
+    private void CancelAdminItem_Click(object sender, EventArgs e)
+    {
+        var row = GetSelectRow(); // 获取选中的行数
+        if (row == -1) return;
+        var uid = Convert.ToInt32(TeamMemberList.Rows[row].Cells[2].Value);
+        var name = TeamMemberList.Rows[row].Cells[0].Value.ToString();
+        var m = MessageBox.Show($"你确定要取消{name}的管理员身份吗？", "确认界面", MessageBoxButtons.OKCancel);
+        if (m == DialogResult.OK)
+        {
+            team.SetMember(Tid, uid);
+            SetTeamMembersList();
+        }
+    }
+    private void TransferOwnerItem_Click(object sender, EventArgs e)
+    {
+        var row = GetSelectRow(); // 获取选中的行数
+        if (row == -1) return;
+        var uid = Convert.ToInt32(TeamMemberList.Rows[row].Cells[2].Value);
+        var name = TeamMemberList.Rows[row].Cells[0].Value.ToString();
+        var m = MessageBox.Show($"你确定要将所有者身份转移给{name}吗？\n请注意：此过程不可逆，请确认清楚", "确认界面", MessageBoxButtons.OKCancel);
+        if (m == DialogResult.OK)
+        {
+            team.SetOwner(Tid,uid,Main.uid);
+            SetTeamMembersList();
+            DissolveButton.Enabled = false;
+            QuitButton.Enabled = true;
+        }
+    }
+
+    /// <summary>
+    /// 右键点击的同时选择列
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TeamMemberList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+    {
+        if (e.RowIndex >= 0)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                TeamMemberList.ClearSelection();
+                TeamMemberList.CurrentCell = TeamMemberList.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            }
+        }
+        if (TeamMemberList.GetCellCount(DataGridViewElementStates.Selected) == 1)
+        {
+            var row = TeamMemberList.SelectedCells[0].RowIndex;
+            var role = TeamMemberList.Rows[row].Cells[1].Value.ToString();
+            if (role == "创建者")
+            {
+                SetAdminItem.Enabled = false;
+                CancelAdminItem.Enabled = false;
+                TransferOwnerItem.Enabled = false;
+            }
+            else if (role == "管理员")
+            {
+                SetAdminItem.Enabled = false;
+                CancelAdminItem.Enabled = true;
+                TransferOwnerItem.Enabled = false;
+            }
+            else
+            {
+                SetAdminItem.Enabled = true;
+                CancelAdminItem.Enabled = false;
+                TransferOwnerItem.Enabled = true;
+            }
+        }
+    }
+
+    
 }

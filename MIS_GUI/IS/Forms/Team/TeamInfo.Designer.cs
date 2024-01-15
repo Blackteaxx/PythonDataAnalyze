@@ -52,11 +52,9 @@
             Column2 = new DataGridViewTextBoxColumn();
             Column3 = new DataGridViewTextBoxColumn();
             DataVIewMenu = new ContextMenuStrip(components);
-            设置身份ToolStripMenuItem = new ToolStripMenuItem();
-            所有者ToolStripMenuItem = new ToolStripMenuItem();
-            管理员ToolStripMenuItem = new ToolStripMenuItem();
-            成员ToolStripMenuItem = new ToolStripMenuItem();
-            查看个人信息ToolStripMenuItem = new ToolStripMenuItem();
+            SetAdminItem = new ToolStripMenuItem();
+            CancelAdminItem = new ToolStripMenuItem();
+            TransferOwnerItem = new ToolStripMenuItem();
             button2 = new Button();
             button4 = new Button();
             button6 = new Button();
@@ -179,11 +177,11 @@
             // button1
             // 
             button1.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(66, 421);
+            button1.Location = new Point(43, 421);
             button1.Name = "button1";
-            button1.Size = new Size(94, 33);
+            button1.Size = new Size(149, 33);
             button1.TabIndex = 1;
-            button1.Text = "进入";
+            button1.Text = "查看任务列表";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
@@ -236,11 +234,12 @@
             QuitButton.TabIndex = 18;
             QuitButton.Text = "退出团队";
             QuitButton.UseVisualStyleBackColor = true;
+            QuitButton.Click += QuitButton_Click;
             // 
             // UpdateButton
             // 
             UpdateButton.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            UpdateButton.Location = new Point(198, 421);
+            UpdateButton.Location = new Point(212, 421);
             UpdateButton.Name = "UpdateButton";
             UpdateButton.Size = new Size(95, 33);
             UpdateButton.TabIndex = 17;
@@ -266,6 +265,7 @@
             TeamMemberList.Size = new Size(263, 378);
             TeamMemberList.TabIndex = 19;
             TeamMemberList.CellContentClick += TeamMemberList_CellContentClick;
+            TeamMemberList.CellMouseDown += TeamMemberList_CellMouseDown;
             // 
             // Column1
             // 
@@ -293,41 +293,30 @@
             // DataVIewMenu
             // 
             DataVIewMenu.ImageScalingSize = new Size(20, 20);
-            DataVIewMenu.Items.AddRange(new ToolStripItem[] { 设置身份ToolStripMenuItem, 查看个人信息ToolStripMenuItem });
+            DataVIewMenu.Items.AddRange(new ToolStripItem[] { SetAdminItem, CancelAdminItem, TransferOwnerItem });
             DataVIewMenu.Name = "contextMenuStrip1";
-            DataVIewMenu.Size = new Size(169, 52);
+            DataVIewMenu.Size = new Size(184, 76);
             // 
-            // 设置身份ToolStripMenuItem
+            // SetAdminItem
             // 
-            设置身份ToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 所有者ToolStripMenuItem, 管理员ToolStripMenuItem, 成员ToolStripMenuItem });
-            设置身份ToolStripMenuItem.Enabled = false;
-            设置身份ToolStripMenuItem.Name = "设置身份ToolStripMenuItem";
-            设置身份ToolStripMenuItem.Size = new Size(168, 24);
-            设置身份ToolStripMenuItem.Text = "设置身份";
+            SetAdminItem.Name = "SetAdminItem";
+            SetAdminItem.Size = new Size(183, 24);
+            SetAdminItem.Text = "设置为管理员";
+            SetAdminItem.Click += SetAdminItem_Click;
             // 
-            // 所有者ToolStripMenuItem
+            // CancelAdminItem
             // 
-            所有者ToolStripMenuItem.Name = "所有者ToolStripMenuItem";
-            所有者ToolStripMenuItem.Size = new Size(137, 26);
-            所有者ToolStripMenuItem.Text = "所有者";
+            CancelAdminItem.Name = "CancelAdminItem";
+            CancelAdminItem.Size = new Size(183, 24);
+            CancelAdminItem.Text = "取消管理员";
+            CancelAdminItem.Click += CancelAdminItem_Click;
             // 
-            // 管理员ToolStripMenuItem
+            // TransferOwnerItem
             // 
-            管理员ToolStripMenuItem.Name = "管理员ToolStripMenuItem";
-            管理员ToolStripMenuItem.Size = new Size(137, 26);
-            管理员ToolStripMenuItem.Text = "管理员";
-            // 
-            // 成员ToolStripMenuItem
-            // 
-            成员ToolStripMenuItem.Name = "成员ToolStripMenuItem";
-            成员ToolStripMenuItem.Size = new Size(137, 26);
-            成员ToolStripMenuItem.Text = "成员";
-            // 
-            // 查看个人信息ToolStripMenuItem
-            // 
-            查看个人信息ToolStripMenuItem.Name = "查看个人信息ToolStripMenuItem";
-            查看个人信息ToolStripMenuItem.Size = new Size(168, 24);
-            查看个人信息ToolStripMenuItem.Text = "查看个人信息";
+            TransferOwnerItem.Name = "TransferOwnerItem";
+            TransferOwnerItem.Size = new Size(183, 24);
+            TransferOwnerItem.Text = "转让所有者身份";
+            TransferOwnerItem.Click += TransferOwnerItem_Click;
             // 
             // button2
             // 
@@ -441,10 +430,8 @@
         private DataGridViewTextBoxColumn Column3;
         private ToolTip Tips;
         private ContextMenuStrip DataVIewMenu;
-        private ToolStripMenuItem 设置身份ToolStripMenuItem;
-        private ToolStripMenuItem 所有者ToolStripMenuItem;
-        private ToolStripMenuItem 管理员ToolStripMenuItem;
-        private ToolStripMenuItem 成员ToolStripMenuItem;
-        private ToolStripMenuItem 查看个人信息ToolStripMenuItem;
+        private ToolStripMenuItem SetAdminItem;
+        private ToolStripMenuItem CancelAdminItem;
+        private ToolStripMenuItem TransferOwnerItem;
     }
 }

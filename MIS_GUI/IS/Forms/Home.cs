@@ -6,14 +6,22 @@ namespace IS.Forms
 {
     public partial class Home : Form
     {
-        private List<string> Forms = new List<string>(); // 用于存储所有的子窗体
-                                                         // 通过页面的text来获取对应的子窗体
-
-        private int CurrentFormIndex = 0; // 标识当前的子窗体index
         private List<string> HeaderLabelList = new List<string>(); // 存储header的标题
         private Dictionary<string, Form> FormNameDict = new Dictionary<string, Form>();
         private List<Button> buttons = new List<Button>();
         private List<Label> labels = new List<Label>();
+
+        // 用于存储之前界面和当时的导航栏列表
+        struct PreviousNode
+        {
+            public List<string> headerList { get; set; }
+            public string name { get; set; }
+        }
+        
+        /// <summary>
+        /// 后进先出
+        /// </summary>
+        private Stack<PreviousNode> previewStack = new Stack<PreviousNode>();
 
         public Home()
         {
@@ -32,8 +40,7 @@ namespace IS.Forms
             MainPanel.Controls.Add(form);
             form.Show();
         }
-
-
+        
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -47,19 +54,11 @@ namespace IS.Forms
         private void Home_Load(object sender, EventArgs e)
         {
             // 初始化界面
-            var h = new UserTask(1);
-            SetMainPanel(h);
-            Forms.Add("首页");
-            HeaderLabelList.Add("首页");
-            FormNameDict.Add("首页", h);
-
-
+            ResetHeaderLabel("首页",new Hello());
+            
             // 刚开始应该禁用前一步和下一步按钮
             ForwardButton.Enabled = false;
             NextButton.Enabled = false;
-
-            // 测试setheader
-            FlushHeader();
         }
 
         /// <summary>
@@ -155,11 +154,27 @@ namespace IS.Forms
                 {
                     Label l = CreateHeaderLabel();
                     l.Location = new Point(startPosition, 7);
-                    l.Click += new EventHandler(LabelTestMsg);
                     l.BringToFront();
                     HeaderPanel.Controls.Add(l);
                     startPosition += 20;
                 }
+            }
+            
+            
+            // 在这里判断是否运行按钮可用
+            if (HeaderLabelList.Count > 1)
+            {
+                ForwardButton.Enabled = true;
+            }else
+            {
+                ForwardButton.Enabled = false;
+            }
+
+            if (previewStack.Count > 1)
+            {
+                NextButton.Enabled = true;
+            }else{
+                NextButton.Enabled = false;
             }
         }
 
@@ -173,6 +188,7 @@ namespace IS.Forms
             HeaderLabelList.Add(text);
             if(FormNameDict.ContainsKey(text)) FormNameDict.Remove(text);
             FormNameDict.Add(text, form);
+            SetMainPanel(form); // 自动设置为该界面
             FlushHeader();
         }
 
@@ -185,7 +201,9 @@ namespace IS.Forms
         {
             HeaderLabelList.Clear();
             HeaderLabelList.Add(text);
+            if (FormNameDict.ContainsKey(text)) FormNameDict.Remove(text);
             FormNameDict.Add(text, form);
+            SetMainPanel(form);
             FlushHeader();
         }
 
@@ -195,8 +213,42 @@ namespace IS.Forms
         /// <param name="text"></param>
         public void RemoveHeaderLabel()
         {
+            // 先将当前的数组存储起来
+            previewStack.Push(new PreviousNode
+            {
+                headerList =  HeaderLabelList,
+                name = HeaderLabelList[^1]
+            });
             HeaderLabelList.RemoveAt(HeaderLabelList.Count - 1);
             FlushHeader();
+        }
+        
+        /// <summary>
+        /// 跳转到指定的form，如果没有则会抛出错误
+        /// </summary>
+        /// <param name="name"></param>
+        public void GoToForm(string name)
+        {
+            // 先在HeaderLabelList中寻找是否存在界面
+            if (HeaderLabelList.Contains(name))
+            {
+                // 清除掉在这个界面后的元素
+                for (int i = HeaderLabelList.Count() - 1; i >= 0; i--)
+                {
+                    if (name == HeaderLabelList[i])
+                    {
+                        HeaderLabelList.RemoveAt(i);
+                    }
+                }
+                
+                // 显示该界面
+                SetMainPanel(FormNameDict[name]);
+                FlushHeader();
+            }
+            else
+            {
+                throw new Exception("找不到该界面");
+            }
         }
 
         private void HeaderButtonClicked(object sender, EventArgs e)
@@ -204,7 +256,7 @@ namespace IS.Forms
             var b = (Button)sender;
             var name = b.Text;
             // 如果点击最后一个标签，则无反应
-            if (name == HeaderLabelList[HeaderLabelList.Count() - 1]) return;
+            if (name == HeaderLabelList[^1]) return;
 
             SetMainPanel(FormNameDict[name]);
             for (int i = HeaderLabelList.Count() - 1; i >= 0; i--)
@@ -217,12 +269,8 @@ namespace IS.Forms
             }
             FlushHeader();
         }
-
-        private void LabelTestMsg(object sender, EventArgs e)
-        {
-            var b = (Label)sender;
-            MessageBox.Show(b.Location.ToString());
-        }
+        
+        // 
 
         private void Home_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -231,7 +279,6 @@ namespace IS.Forms
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            SetMainPanel(new UserTeam());
             ResetHeaderLabel("我的团队", new UserTeam());
         }
     }

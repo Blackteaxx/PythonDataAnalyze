@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using IS.Services.DataBase;
 
 namespace IS.Services;
@@ -104,7 +105,7 @@ public class Team
     public List<List<string>>? GetTeams(int uid)
     {
         var reader = Sql.ExecuteReader(
-            "SELECT Tid,Name,Description,PeopleNumber,Role FROM UserTeamsView WHERE Uid = @uid",
+            "SELECT Tid,Name,Description,PeopleNumber,Role FROM UserTeamsView WHERE Uid = @uid and Role != 'Delete'",
             new Dictionary<string, object?>
             {
                 { "uid", uid }
@@ -264,40 +265,12 @@ public class Team
     }
 
     /// <summary>
-    /// 根据用户输入的搜索词查找名字相似的团队
-    /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    public List<List<string>> SearchTeams(string name)
-    {
-        var reader = Sql.ExecuteReader(
-            "SELECT Tid,Name,Description,PeopleNumber FROM UserTeamsView WHERE Name like @name",
-            new Dictionary<string, object?>
-            {
-                { "name", "%" + name + "%" }
-            }
-        );
-        var result = new List<List<string>>();
-        while (reader.Read())
-            result.Add(new List<string>
-            {
-                reader.GetInt32(0).ToString(),
-                reader.GetString(1),
-                reader.GetString(2),
-                reader.GetInt32(3).ToString()
-            });
-
-        // 把搜索结果按照相似度来排序,依据最小编辑距离
-        return result;
-    }
-
-    /// <summary>
     /// 通过团队的Uid来加入团队
     /// </summary>
     /// <param name="uid"></param>
     /// <param name="tid"></param>
     /// <returns></returns>
-    public ReturnValue JoinTeam(int uid, int tid)
+    public string JoinTeam(int uid, int tid)
     {
         try
         {
@@ -309,11 +282,11 @@ public class Team
                     { "uid", uid }
                 }
             );
-            return new ReturnValue(true, "加入成功", null);
+            return "加入成功";
         }
         catch (Exception e)
         {
-            return new ReturnValue(false, "加入失败", e.Message);
+            return "加入失败";
         }
     }
 
@@ -374,11 +347,213 @@ public class Team
                     { "uid", uid }
                 }
             );
-            return "";
+            return "成功退出";
         }
         catch (Exception e)
         {
             return e.Message;
         }
+    }
+
+    public struct SearchTeamItem
+    {
+        public int Tid;
+        public string Name;
+        public string Description;
+    }
+
+    /// <summary>
+    /// 搜索满足条件的团队
+    /// </summary>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    public List<SearchTeamItem> SearchTeam(string s)
+    {
+        // 先判断是不是加入码
+        string pattern = @"^[A-Z0-9]{9}$";
+        var result = new List<SearchTeamItem>();
+        if (Regex.IsMatch(s, pattern))
+        {
+            var r1 = Sql.ExecuteReader(
+                "SELECT Tid,Name,Description FROM Team WHERE JoinCode = @joinCode",
+                new Dictionary<string, object?>
+                    {
+                        { "joinCode", s }
+                    }
+                );
+            if (r1.HasRows)
+                while (r1.Read())
+                {
+                    result.Add(new SearchTeamItem
+                    {
+                        Tid = r1.GetInt32(0),
+                        Name = r1.GetString(1),
+                        Description = r1.GetString(2)
+                    });
+                }
+        }
+        // 不管是不是加入码，都要按照名字搜索一下
+
+        var r2 = Sql.ExecuteReader(
+            "SELECT Tid,Name,Description FROM Team WHERE Name like @name",
+            new Dictionary<string, object?>
+                {
+                    { "name", "%" + s + "%" }
+                }
+            );
+        if (r2.HasRows)
+            while (r2.Read())
+            {
+                result.Add(new SearchTeamItem
+                {
+                    Tid = r2.GetInt32(0),
+                    Name = r2.GetString(1),
+                    Description = r2.GetString(2)
+                });
+            }
+        return result;
+    }
+
+    // 设置用户的身份为管理员
+    /// <summary>
+    /// 设置用户的身份为管理员
+    /// </summary>
+    /// <param name="tid"></param>
+    /// <param name="uid"></param>
+    /// <returns></returns>
+    public string SetAdmin(int tid, int uid)
+    {
+        try
+        {
+            var r = Sql.ExecuteNonQuery(
+                "UPDATE TeamMember SET Role = 'Admin' WHERE Tid = @tid and Uid = @uid",
+                new Dictionary<string, object?>
+                {
+                    { "uid", uid },
+                    { "tid", tid }
+                }
+            );
+            return "设置成功";
+        }
+        catch (Exception e)
+        {
+            return e.Message;
+        }
+    }
+
+    // 设置用户的身份为普通成员
+    /// <summary>
+    /// 设置用户的身份为普通成员
+    /// </summary>
+    /// <param name="tid"></param>
+    /// <param name="uid"></param>
+    /// <returns></returns>
+    public string SetMember(int tid, int uid)
+    {
+        try
+        {
+            var r = Sql.ExecuteNonQuery(
+                "UPDATE TeamMember SET Role = 'Member' WHERE Tid = @tid and Uid = @uid",
+                new Dictionary<string, object?>
+                {
+                    { "uid", uid },
+                    { "tid", tid }
+                }
+            );
+            return "设置成功";
+        }
+        catch (Exception e)
+        {
+            return e.Message;
+        }
+    }
+
+    // 设置成员为所有者，同时自己降级为管理员
+    /// <summary>
+    /// 设置成员为所有者，同时自己降级为管理员
+    /// </summary>
+    /// <param name="tid"></param>
+    /// <param name="uid"></param>
+    /// <returns></returns>
+    public string SetOwner(int tid, int memverUid, int OwnerUid)
+    {
+        try
+        {
+            var r = Sql.ExecuteNonQuery(
+                "UPDATE TeamMember SET Role = 'Owner' WHERE Tid = @tid and Uid = @memverUid;" +
+                "UPDATE TeamMember SET Role = 'Admin' WHERE Tid = @tid and Uid = @OwnerUid;",
+                new Dictionary<string, object?>
+                {
+                    { "memverUid", memverUid },
+                    { "tid", tid },
+                    { "OwnerUid" , OwnerUid }
+                }
+            );
+            return "设置成功";
+        }
+        catch (Exception e)
+        {
+            return e.Message;
+        }
+    }
+
+    public struct TeamTaskItem
+    {
+        public  int Taskid;
+        public  string Name;
+        public  string Description;
+        public  string MasterName;
+        public int Status;
+    }
+
+    public List<TeamTaskItem> GetTeamTasks(int tid)
+    {
+        var result = new List<TeamTaskItem>();
+        var r = Sql.ExecuteReader(
+            "SELECT TaskId, Name, Description,MasterName,Status FROM TeamTaskView WHERE TeamId = @tid",
+            new Dictionary<string, object?>
+            {
+                { "tid", tid }
+            }
+        );
+        if (r.HasRows)
+            while (r.Read())
+            {
+                result.Add(new TeamTaskItem
+                {
+                    Taskid = r.GetInt32(0),
+                    Name = r.GetString(1),
+                    Description = r.GetString(2),
+                    MasterName = r.GetString(3),
+                    Status = r.GetInt32(4),
+                });
+            }
+        return result;
+    }
+
+    /// <summary>
+    /// 获取用户在该团队内参与的任务
+    /// </summary>
+    /// <param name="uid"></param>
+    /// <param name="tid"></param>
+    /// <returns></returns>
+    public List<int> GetTasksParticipating(int uid, int tid)
+    {
+        var result = new List<int>();
+        var r = Sql.ExecuteReader(
+            "SELECT TaskId FROM TeamTasks WHERE TeamId = @tid " +
+            "and EXISTS(SELECT * FROM TaskMember WHERE Tid = TaskId and Uid = @uid)",
+            new Dictionary<string, object?>
+            {
+                { "tid", tid },
+                { "uid", uid }
+            }
+        );
+        if (r.HasRows)
+            while (r.Read())
+            {
+                result.Add(r.GetInt32(0));
+            }
+        return result;
     }
 }
