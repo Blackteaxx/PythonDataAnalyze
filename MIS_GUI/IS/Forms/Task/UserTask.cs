@@ -43,12 +43,23 @@ namespace IS.Forms.Task
                 dataGridView1.Rows[index].Cells[3].Value = Convert.ToInt32(item[4])==1?"已完成":"未完成";
                 dataGridView1.Rows[index].Cells[6].Value = item[0]; // 隐藏的tid列
 
-                var btn = new DataGridViewButtonCell();
-                btn.Value = "查看";
-                var btn1 = new DataGridViewButtonCell();
-                btn1.Value = "审核";
-                dataGridView1.Rows[index].Cells[4] = btn;
-                dataGridView1.Rows[index].Cells[5] = btn1;
+                // 如果是已完成的任务，不显示审核按钮
+                if (Convert.ToInt32(item[4]) == 1)
+                {
+                    var btn = new DataGridViewButtonCell();
+                    btn.Value = "查看";
+                    dataGridView1.Rows[index].Cells[4] = btn;
+                    continue;
+                }
+                else
+                {
+                    var btn = new DataGridViewButtonCell();
+                    btn.Value = "查看";
+                    var btn1 = new DataGridViewButtonCell();
+                    btn1.Value = "审核";
+                    dataGridView1.Rows[index].Cells[4] = btn;
+                    dataGridView1.Rows[index].Cells[5] = btn1;
+                }
 
             }
         }
@@ -96,12 +107,25 @@ namespace IS.Forms.Task
                 dataGridView1.Rows[index].Cells[3].Value = item[4];
                 dataGridView1.Rows[index].Cells[6].Value = item[0]; // 隐藏的tid列
 
-                var btn = new DataGridViewButtonCell();
-                btn.Value = "查看";
-                var btn1 = new DataGridViewButtonCell();
-                btn1.Value = "审核";
-                dataGridView1.Rows[index].Cells[4] = btn;
-                dataGridView1.Rows[index].Cells[5] = btn1;
+
+                // 如果是已完成的任务，不显示审核按钮
+                if (Convert.ToInt32(item[4]) == 1)
+                {
+                    var btn = new DataGridViewButtonCell();
+                    btn.Value = "查看";
+                    dataGridView1.Rows[index].Cells[4] = btn;
+                    continue;
+                }
+                else
+                {
+                    var btn = new DataGridViewButtonCell();
+                    btn.Value = "查看";
+                    var btn1 = new DataGridViewButtonCell();
+                    btn1.Value = "审核";
+                    dataGridView1.Rows[index].Cells[4] = btn;
+                    dataGridView1.Rows[index].Cells[5] = btn1;
+                }
+                
 
             }
         }
@@ -113,15 +137,15 @@ namespace IS.Forms.Task
             this.radioButton1.Checked = true;
 
             // 先添加列
-            var columns = new List<string> { "TaskName", "TeamName", "人数", "状态", "查看", "审核", "tid" };
+            var columns = new List<string> { "任务名", "所属团队", "人数", "状态", "查看", "审核", "tid" };
             foreach (var column in columns) dataGridView1.Columns.Add(column, column);
 
             dataGridView1.ScrollBars = ScrollBars.Vertical;
 
             // 设置列宽
             var width = dataGridView1.Width;
-            dataGridView1.Columns[0].Width = 120;
-            dataGridView1.Columns[1].Width = 120;
+            dataGridView1.Columns[0].Width = 240;
+            dataGridView1.Columns[1].Width = this.dataGridView1.Width - 580;
             dataGridView1.Columns[2].Width = 120;
             dataGridView1.Columns[3].Width = 120;
             dataGridView1.Columns[4].Width = 50;
@@ -172,13 +196,18 @@ namespace IS.Forms.Task
                 var t = new TaskInfo(tid);
                 // 根据taskid获取taskname
                 var taskName = task.GetTask(tid)[0];
-                f.AddHeaderLabel(taskName, t);
+                f.AddHeaderLabel(taskName+"信息", t);
                 f.SetMainPanel(t);
             }
             else if (dataGridView1.Columns[e.ColumnIndex].Name == "审核")
-            {
-                // 
-                MessageBox.Show("2");
+            { 
+                var f = this.Parent.Parent as Home; // parent是panel，因此这里要Parent.Parent
+                // 传入tid
+                var t = new ReviewTask(tid);
+                // 根据taskid获取taskname
+                var taskName = task.GetTask(tid)[0];
+                f.AddHeaderLabel(taskName + "审阅", t);
+                f.SetMainPanel(t);
             }
         }
 

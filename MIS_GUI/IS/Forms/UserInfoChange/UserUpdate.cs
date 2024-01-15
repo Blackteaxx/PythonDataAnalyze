@@ -12,12 +12,12 @@ namespace UserInfo
 {
     public partial class UserUpdate : Form
     {
-        private readonly int Uid;
+        private readonly int uid = 1;
         private readonly UserChange userchange = new();
         public UserUpdate(int uid)
         {
             InitializeComponent();
-            Uid = uid;
+            uid = uid;
         }
         public UserUpdate()
         {
@@ -26,7 +26,7 @@ namespace UserInfo
 
         private void UserUpdate_Load(object sender, EventArgs e)
         {
-            var user = userchange.GetUserInfo(Uid);
+            var user = userchange.GetUserInfo(uid);
             textBox1.Text = user.loginName;
             textBox2.Text = user.Name;
             textBox3.Text = user.password;
@@ -34,7 +34,7 @@ namespace UserInfo
 
         private void UpdateButton_Click(object sender, EventArgs e)
         {
-            if (userchange.UpdateUserInfo(Uid, textBox1.Text, textBox2.Text, textBox3.Text) == "ok")
+            if (userchange.UpdateUserInfo(uid, textBox1.Text, textBox2.Text, textBox3.Text) == "ok")
             {
                 MessageBox.Show("更新成功");
             }
@@ -46,7 +46,7 @@ namespace UserInfo
 
         private void ReCheckButton_Click(object sender, EventArgs e)
         {
-            var user = userchange.GetUserInfo(Uid);
+            var user = userchange.GetUserInfo(uid);
             textBox1.Text = user.loginName;
             textBox2.Text = user.Name;
             textBox3.Text = user.password;

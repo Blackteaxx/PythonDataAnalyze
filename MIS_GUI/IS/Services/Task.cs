@@ -178,4 +178,26 @@ public class Task
             return e.Message;
         }
     }
+
+    public bool UpdateTaskStatus(int tid)
+    {
+        // 更改tid的status为1
+        try
+        {
+            Sql.ExecuteNonQuery(
+                               "UPDATE Task SET Status = 1 WHERE Tid = @tid",
+                                                  new Dictionary<string, object?>
+                                                  {
+                    { "@tid", tid },
+                });
+            return true;
+        }
+        catch(Exception e)
+        {
+               return false;
+        }
+        
+                                                                                                          
+
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using IS.Forms.Task;
 using IS.Forms.Team;
 using System.Text.RegularExpressions;
+using UserInfo;
 
 namespace IS.Forms
 {
@@ -282,17 +283,99 @@ namespace IS.Forms
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            ResetHeaderLabel("我的团队", new UserTeam());
+            ResetHeaderLabel("我的团队", new UserTeam(Main.uid));
+            TeamTimer.Start();
         }
 
-        private void MainPanel_Paint(object sender, PaintEventArgs e)
-        {
+        //控制Timer的布尔变量
+        bool TeamCollapse;
+        bool TaskCollapse;
+        bool PersonCollapse;
 
+        private void TeamTimer_Tick(object sender, EventArgs e)
+        {
+            if (TeamCollapse)
+            {
+                TeamContainer.Height += 10;
+                if (TeamContainer.Height == TeamContainer.MaximumSize.Height)
+                {
+                    TeamCollapse = false;
+                    TeamTimer.Stop();
+                }
+            }
+            else
+            {
+                TeamContainer.Height -= 10;
+                if (TeamContainer.Height == TeamContainer.MinimumSize.Height)
+                {
+                    TeamCollapse = true;
+                    TeamTimer.Stop();
+                }
+            }
         }
 
-        private void SIderPanel_Paint(object sender, PaintEventArgs e)
+        private void TaskTimer_Tick(object sender, EventArgs e)
         {
+            if (TaskCollapse)
+            {
+                TaskContainer.Height += 10;
+                if (TaskContainer.Height == TaskContainer.MaximumSize.Height)
+                {
+                    TaskCollapse = false;
+                    TaskTimer.Stop();
+                }
+            }
+            else
+            {
+                TaskContainer.Height -= 10;
+                if (TaskContainer.Height == TaskContainer.MinimumSize.Height)
+                {
+                    TaskCollapse = true;
+                    TaskTimer.Stop();
+                }
+            }
+        }
 
+        private void PersonTimer_Tick(object sender, EventArgs e)
+        {
+            if (PersonCollapse)
+            {
+                PersonContainer.Height += 10;
+                if (PersonContainer.Height == PersonContainer.MaximumSize.Height)
+                {
+                    PersonCollapse = false;
+                    PersonTimer.Stop();
+                }
+            }
+            else
+            {
+                PersonContainer.Height -= 10;
+                if (PersonContainer.Height == PersonContainer.MinimumSize.Height)
+                {
+                    PersonCollapse = true;
+                    PersonTimer.Stop();
+                }
+            }
+        }
+
+        private void TaskButton_Click(object sender, EventArgs e)
+        {
+            TaskTimer.Start();
+        }
+
+        private void PersonButton_Click(object sender, EventArgs e)
+        {
+            PersonTimer.Start();
+        }
+
+        private void UserInfoUpdateButton_Click(object sender, EventArgs e)
+        {
+            ResetHeaderLabel("修改个人信息", new UserUpdate(Main.uid));
+        }
+
+        private void CreateTeamButton_Click(object sender, EventArgs e)
+        {
+            ResetHeaderLabel("创建团队", new CreateTeam());
         }
     }
 }

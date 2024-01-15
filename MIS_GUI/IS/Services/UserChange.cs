@@ -28,9 +28,9 @@ namespace UserInfo
             return new UserInfo
             {
                 uid = uid,
-                loginName = reader.GetString(0),
-                password = reader.GetString(1),
-                Name = reader.GetString(2)
+                loginName = reader.GetString(1),
+                password = reader.GetString(2),
+                Name = reader.GetString(3)
             };
         }
 

@@ -8,16 +8,13 @@
     <Compile Update="Forms\Hello.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\Home.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Update="Forms\Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\NewHome\Home.cs">
+    <Compile Update="Forms\Task\CreateTask.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\Task\CreateTask.cs">
+    <Compile Update="Forms\Task\ReviewTask.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\Task\TaskInfo.cs">
@@ -57,6 +54,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\User\Register.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\Home.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
