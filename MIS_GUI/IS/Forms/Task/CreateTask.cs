@@ -33,7 +33,7 @@ namespace IS.Forms.Task
                 MessageBox.Show("请输入任务名称");
                 return;
             }
-            if(textBox2.Text == "")
+            if (textBox2.Text == "")
             {
                 MessageBox.Show("请输入任务描述");
                 return;

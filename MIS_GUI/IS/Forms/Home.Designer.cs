@@ -47,6 +47,7 @@
             SIderPanel.Name = "SIderPanel";
             SIderPanel.Size = new Size(200, 533);
             SIderPanel.TabIndex = 6;
+            SIderPanel.Paint += SIderPanel_Paint;
             // 
             // button1
             // 
@@ -107,6 +108,7 @@
             MainPanel.Name = "MainPanel";
             MainPanel.Size = new Size(900, 493);
             MainPanel.TabIndex = 10;
+            MainPanel.Paint += MainPanel_Paint;
             // 
             // Home
             // 

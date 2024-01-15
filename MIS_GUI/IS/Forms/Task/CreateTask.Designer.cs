@@ -126,7 +126,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(882, 433);
+            ClientSize = new Size(900, 480);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(textBox2);
@@ -136,6 +136,7 @@
             Controls.Add(label2);
             Controls.Add(comboBox1);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "CreateTask";
             Text = "CreateTask";
             Load += CreateTask_Load;

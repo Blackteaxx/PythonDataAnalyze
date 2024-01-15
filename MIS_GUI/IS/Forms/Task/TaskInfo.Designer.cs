@@ -39,6 +39,10 @@
             listBox2 = new ListBox();
             button1 = new Button();
             button2 = new Button();
+            button3 = new Button();
+            button4 = new Button();
+            label6 = new Label();
+            label7 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -56,9 +60,9 @@
             label2.AutoSize = true;
             label2.Location = new Point(37, 93);
             label2.Name = "label2";
-            label2.Size = new Size(53, 20);
+            label2.Size = new Size(54, 20);
             label2.TabIndex = 1;
-            label2.Text = "label2";
+            label2.Text = "任务名";
             // 
             // textBox1
             // 
@@ -72,9 +76,9 @@
             label3.AutoSize = true;
             label3.Location = new Point(37, 141);
             label3.Name = "label3";
-            label3.Size = new Size(53, 20);
+            label3.Size = new Size(39, 20);
             label3.TabIndex = 3;
-            label3.Text = "label3";
+            label3.Text = "描述";
             // 
             // textBox2
             // 
@@ -89,9 +93,9 @@
             label4.AutoSize = true;
             label4.Location = new Point(37, 248);
             label4.Name = "label4";
-            label4.Size = new Size(53, 20);
+            label4.Size = new Size(39, 20);
             label4.TabIndex = 5;
-            label4.Text = "label4";
+            label4.Text = "人数";
             // 
             // label5
             // 
@@ -128,6 +132,7 @@
             button1.TabIndex = 9;
             button1.Text = ">";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // button2
             // 
@@ -137,12 +142,55 @@
             button2.TabIndex = 10;
             button2.Text = "<";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(282, 338);
+            button3.Name = "button3";
+            button3.Size = new Size(94, 29);
+            button3.TabIndex = 11;
+            button3.Text = "提交";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(481, 338);
+            button4.Name = "button4";
+            button4.Size = new Size(94, 29);
+            button4.TabIndex = 12;
+            button4.Text = "退出";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(425, 67);
+            label6.Name = "label6";
+            label6.Size = new Size(84, 20);
+            label6.TabIndex = 13;
+            label6.Text = "非任务成员";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(686, 67);
+            label7.Name = "label7";
+            label7.Size = new Size(69, 20);
+            label7.TabIndex = 14;
+            label7.Text = "任务成员";
             // 
             // TaskInfo
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(882, 433);
+            Controls.Add(label7);
+            Controls.Add(label6);
+            Controls.Add(button4);
+            Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(listBox2);
@@ -175,5 +223,9 @@
         private ListBox listBox2;
         private Button button1;
         private Button button2;
+        private Button button3;
+        private Button button4;
+        private Label label6;
+        private Label label7;
     }
 }

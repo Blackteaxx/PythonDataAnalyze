@@ -42,7 +42,7 @@ public class Task
     public List<List<string>>? GetTasks(int uid)
     {
         var reader = Sql.ExecuteReader(
-            "SELECT Tid,TaskName,TeamName,PeopleNumber FROM TaskTeamView WHERE Uid = @uid",
+            "SELECT Tid,TaskName,TeamName, PeopleNumber, Status FROM TaskTeamView WHERE Uid = @uid",
             new Dictionary<string, object?>
             {
                 { "uid", uid }
@@ -58,6 +58,7 @@ public class Task
                 reader.GetString(1), // TaskName
                 reader.GetString(2), //TeamName
                 reader.GetInt32(3).ToString(), // 人数
+                reader.GetInt32(4).ToString(), // status
             });
         return result;
     }
@@ -122,5 +123,59 @@ public class Task
         while (reader.Read())
             result.Add(reader.GetString(0));
         return result;
+    }
+
+    public string? UpdateTask(int tid, string name, string description)
+    {
+        try
+        {
+            var r = Sql.ExecuteNonQuery(
+                "UPDATE Task SET Name = @name,Description = @description WHERE Tid = @tid",
+                new Dictionary<string, object?>
+                {
+                    { "@tid", tid },
+                    { "@name", name },
+                    { "@description", description },
+                }
+            );
+            return "ok";
+        }
+        catch (Exception e)
+        {
+            return e.Message;
+        }
+    }
+
+    public string UpdateTaskMembers(int taskid, List<int> membersUid)
+    {
+        try
+        {
+            // 根据membersUid更新task成员信息
+            // 先删除所有的成员信息
+            Sql.ExecuteNonQuery(
+                    "DELETE FROM TaskMember WHERE Tid = @tid",
+                    new Dictionary<string, object?>
+                {
+                    { "@tid", taskid },
+                }
+                                                         );
+            // 再添加成员信息
+            foreach (var item in membersUid)
+            {
+                Sql.ExecuteNonQuery(
+                    "INSERT INTO TaskMember VALUES(@tid,@uid,1)",
+                    new Dictionary<string, object?>
+                    {
+                        { "@tid", taskid },
+                        { "@uid", item },
+                    }
+                                                                                                                                                                   );
+            }
+            return "ok";
+        }
+        catch(Exception e)
+        {
+            return e.Message;
+        }
     }
 }
