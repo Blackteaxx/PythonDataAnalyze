@@ -147,11 +147,10 @@ namespace IS.Forms.Task
             int tid = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[5].Value);
             if (dataGridView1.Columns[e.ColumnIndex].Name == "查看")
             {
-                //var f = this.Parent.Parent as Home; // parent是panel，因此这里要Parent.Parent
-                //                                    // 传入tid和用户身份
-                //var t
-                //f.SetMainPanel(t);
-                MessageBox.Show("1");
+                var f = this.Parent.Parent as Home; // parent是panel，因此这里要Parent.Parent
+                // 传入tid
+                var t = new TaskInfo(tid);
+                f.SetMainPanel(t);
             }
             else if (dataGridView1.Columns[e.ColumnIndex].Name == "审核")
             {

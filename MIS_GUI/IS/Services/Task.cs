@@ -61,4 +61,66 @@ public class Task
             });
         return result;
     }
+
+
+    /// <summary>
+    /// 根据tid获取任务信息
+    /// </summary>
+    /// <param name="tid"></param>
+    /// <return></return>
+    public List<string>? GetTask(int tid)
+    {
+        var reader = Sql.ExecuteReader(
+                       "SELECT Name, Description, PeopleNumber FROM Task WHERE Tid = @tid",
+                                  new Dictionary<string, object?>
+                                  {
+                { "tid", tid }
+            }
+                                         );
+        if (!reader.HasRows) return null;
+
+        reader.Read();
+        var result = new List<string>
+        {           
+            reader.GetString(0), // TaskName
+            reader.GetString(1), //Description
+            reader.GetInt32(2).ToString(), // 人数
+        };
+        return result;
+    }
+
+
+    public int GetTeamId(int tid)
+    {
+        // 根据taskid获取teamid
+#pragma warning disable CS8605 // 取消装箱可能为 null 的值。
+        return
+            (int)Sql.ExecuteScalar(
+                       "SELECT * FROM TeamTasks WHERE TaskId = @tid",
+            new Dictionary<string, object?>
+            {
+                { "tid", tid }
+            }
+                                         );
+#pragma warning restore CS8605 // 取消装箱可能为 null 的值。
+
+    }
+
+    public List<string>? GetTaskMembers(int tid)
+    {
+        // 根据tid获取所有成员信息
+        var reader = Sql.ExecuteReader(
+                       "SELECT Name, [User].UID FROM TaskMember, [User] WHERE [User].UID = TaskMember.UID and Tid = @tid",
+                                  new Dictionary<string, object?>
+                                  {
+                { "tid", tid }
+            }
+                                         );
+        if (!reader.HasRows) return null;
+
+        var result = new List<string>();
+        while (reader.Read())
+            result.Add(reader.GetString(0));
+        return result;
+    }
 }
