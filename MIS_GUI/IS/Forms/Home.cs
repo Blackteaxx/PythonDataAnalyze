@@ -391,6 +391,13 @@ namespace IS.Forms
             HeaderLabelList.RemoveAt(HeaderLabelList.Count - 1);
             FlushHeader();
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ResetHeaderLabel("文件上传", new Upload());
+            PersonTimer.Start();
+        }
+
+
 
         private void UserTeamButton_Click(object sender, EventArgs e)
         {
