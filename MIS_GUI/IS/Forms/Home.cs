@@ -388,7 +388,13 @@ namespace IS.Forms
         private void ForwardButton_Click(object sender, EventArgs e)
         {
             SetMainPanel(FormNameDict[HeaderLabelList[^2]]);
+            HeaderLabelList.RemoveAt(HeaderLabelList.Count - 1);
             FlushHeader();
+        }
+
+        private void UserTeamButton_Click(object sender, EventArgs e)
+        {
+            ResetHeaderLabel("我的团队", new UserTeam(Main.uid));
         }
     }
 }

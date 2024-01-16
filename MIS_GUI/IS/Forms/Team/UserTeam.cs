@@ -267,7 +267,7 @@ public partial class UserTeam : Form
         {
             var row = dataGridView1.SelectedCells[i].RowIndex;
             sb.Append(dataGridView1.Rows[row].Cells[0].Value);
-            tids.Add(Convert.ToInt32(dataGridView1.Rows[row].Cells[6].Value));
+            tids.Add(Convert.ToInt32(dataGridView1.Rows[row].Cells[5].Value));
             sb.Append(Environment.NewLine);
         }
 
@@ -300,7 +300,6 @@ public partial class UserTeam : Form
         var f = this.Parent.Parent as Home;
         var t = new CreateTeam();
         f.AddHeaderLabel("创建团队", t);
-        f.SetMainPanel(t);
     }
 
     private void SearchTeamButton_Click(object sender, EventArgs e)
@@ -308,6 +307,5 @@ public partial class UserTeam : Form
         var f = this.Parent.Parent as Home;
         var t = new SearchTeam();
         f.AddHeaderLabel("搜索团队", t);
-        f.SetMainPanel(t);
     }
 }
