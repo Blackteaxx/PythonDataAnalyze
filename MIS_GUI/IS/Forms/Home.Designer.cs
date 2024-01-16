@@ -111,6 +111,7 @@
             button2.Text = "            文件上传";
             button2.TextAlign = ContentAlignment.MiddleLeft;
             button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
             // 
             // button1
             // 
@@ -134,6 +135,7 @@
             button1.Text = "               通知";
             button1.TextAlign = ContentAlignment.MiddleLeft;
             button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click_2;
             // 
             // UserInfoUpdateButton
             // 
@@ -227,6 +229,7 @@
             CreateTaskButton.TabIndex = 6;
             CreateTaskButton.Text = "创建任务";
             CreateTaskButton.UseVisualStyleBackColor = false;
+            CreateTaskButton.Click += CreateTaskButton_Click;
             // 
             // TaskButton
             // 
@@ -271,6 +274,7 @@
             UserTaskButton.TabIndex = 2;
             UserTaskButton.Text = "个人任务";
             UserTaskButton.UseVisualStyleBackColor = false;
+            UserTaskButton.Click += UserTaskButton_Click;
             // 
             // TeamTaskButton
             // 

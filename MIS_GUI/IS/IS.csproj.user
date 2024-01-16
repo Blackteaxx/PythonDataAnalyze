@@ -62,5 +62,8 @@
     <Compile Update="Forms\Home.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\User\Upload.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

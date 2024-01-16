@@ -397,11 +397,24 @@ namespace IS.Forms
             PersonTimer.Start();
         }
 
-
-
         private void UserTeamButton_Click(object sender, EventArgs e)
         {
             ResetHeaderLabel("我的团队", new UserTeam(Main.uid));
+        }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            ResetHeaderLabel("消息通知", new Notice());
+        }
+
+        private void CreateTaskButton_Click(object sender, EventArgs e)
+        {
+            ResetHeaderLabel("创建任务", new CreateTask(Main.uid));
+        }
+
+        private void UserTaskButton_Click(object sender, EventArgs e)
+        {
+            ResetHeaderLabel("我的任务", new UserTask(Main.uid));
         }
     }
 }

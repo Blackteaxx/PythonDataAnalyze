@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
+using System.Windows.Forms;
 using System.IO;
 using IS.Forms;
 using IS.Forms.User;
@@ -13,7 +15,7 @@ public partial class Upload : Form
     static string downloadrelativePath = "..\\..\\..\\Resource\\download\\";
     string downloadFolderPath = Path.GetFullPath(Path.Combine(Application.StartupPath, downloadrelativePath));
     static string uploadrelativePath = "..\\..\\..\\Resource\\yunpan\\";
-    string folderPath= Path.GetFullPath(Path.Combine(Application.StartupPath, uploadrelativePath));
+    string folderPath = Path.GetFullPath(Path.Combine(Application.StartupPath, uploadrelativePath));
 
 
     private string connectionString = "Server = 101.43.94.40,5000; " +
@@ -21,7 +23,7 @@ public partial class Upload : Form
     "uid = web; pwd = 202!@#QWEasd; " +
     "TrustServerCertificate=true;"; // 数据库连接字符串模板
     private string uploader = Main.uid.ToString();//更换为登录时的username;
-    
+
     public Upload()
     {
         Directory.CreateDirectory(folderPath);
@@ -80,7 +82,7 @@ public partial class Upload : Form
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                
+
                 string query;
                 SqlCommand command;
 
@@ -101,8 +103,8 @@ public partial class Upload : Form
                     MessageBox.Show("请输入团队号或者个人号");
                     return;
                 }
-                
-                
+
+
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     dataGridView1.Rows.Clear();
@@ -143,7 +145,7 @@ public partial class Upload : Form
                     // 将文件复制到本地文件夹
                     string localFolderPath = folderPath; // 替换为你的本地文件夹路径
                     string localFilePath = Path.Combine(localFolderPath, fileName);
-                    
+
                     File.Copy(filePath, localFilePath);
 
                     // 更新数据库
@@ -160,7 +162,7 @@ public partial class Upload : Form
                             command.Parameters.AddWithValue("@UploadTime", DateTime.Now);
                             command.Parameters.AddWithValue("@Uploader", uploader); // 替换为当前用户
                             command.Parameters.AddWithValue("@TeamNumber", teamNumber);
-                            command.Parameters.AddWithValue("@personalNumber", txtTeamNumber.Text);
+                            command.Parameters.AddWithValue("@personalNumber", personalNumber);
                             command.Parameters.AddWithValue("@FilePath", localFilePath);
 
                             command.ExecuteNonQuery();
@@ -189,8 +191,8 @@ public partial class Upload : Form
                 try
                 {
                     string fileName = row.Cells["FileName"].Value.ToString();
-                    
-                    string filePath = row.Cells["FilePath"].Value.ToString();
+
+                    string filePath = uploadrelativePath + fileName;
 
                     string localFilePath1 = Path.Combine(downloadFolderPath, fileName);
 
@@ -209,6 +211,6 @@ public partial class Upload : Form
     private void backtomain_Click(object sender, EventArgs e)
     {
         //返回上一级
-        
+
     }
 }
