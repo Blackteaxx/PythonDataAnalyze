@@ -1,6 +1,5 @@
 ﻿using IS.Forms.Task;
 using IS.Forms.Team;
-using IS.Forms.User;
 using System.Text.RegularExpressions;
 using UserInfo;
 
@@ -56,7 +55,7 @@ namespace IS.Forms
         private void Home_Load(object sender, EventArgs e)
         {
             // 初始化界面
-            ResetHeaderLabel("首页", new Notice());
+            ResetHeaderLabel("首页", new Hello());
 
             // 刚开始应该禁用前一步和下一步按钮
             ForwardButton.Enabled = false;
@@ -101,7 +100,7 @@ namespace IS.Forms
                     nonChineseCount++;
                 }
             }
-            button.Size = new Size(50 + 9 * chineseCount + 3 * nonChineseCount, 30);
+            button.Size = new Size(50 + 8 * chineseCount + 3 * nonChineseCount, 30);
             button.ForeColor = SystemColors.HotTrack;
             button.Cursor = Cursors.Hand;
             button.FlatStyle = FlatStyle.Flat;
@@ -284,7 +283,7 @@ namespace IS.Forms
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            ResetHeaderLabel("我的团队", new UserTeam(Main.uid));
+            ResetHeaderLabel("我的团队", new UserTeam());
             TeamTimer.Start();
         }
 
@@ -361,7 +360,6 @@ namespace IS.Forms
 
         private void TaskButton_Click(object sender, EventArgs e)
         {
-            ResetHeaderLabel("我的任务", new UserTask(Main.uid));
             TaskTimer.Start();
         }
 
@@ -372,17 +370,12 @@ namespace IS.Forms
 
         private void UserInfoUpdateButton_Click(object sender, EventArgs e)
         {
-            ResetHeaderLabel("修改个人信息", new UserUpdate(Main.uid));
+            ResetHeaderLabel("修改个人信息", new UserUpdate());
         }
 
         private void CreateTeamButton_Click(object sender, EventArgs e)
         {
             ResetHeaderLabel("创建团队", new CreateTeam());
-        }
-
-        private void SearchTeamButton_Click(object sender, EventArgs e)
-        {
-            ResetHeaderLabel("加入团队", new SearchTeam());
         }
     }
 }
