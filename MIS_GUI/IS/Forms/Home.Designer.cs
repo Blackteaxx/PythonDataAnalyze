@@ -92,7 +92,7 @@
             TaskContainer.Controls.Add(UserTaskButton);
             TaskContainer.Controls.Add(TeamTaskButton);
             TaskContainer.Location = new Point(0, 296);
-            TaskContainer.Margin = new Padding(2, 2, 2, 2);
+            TaskContainer.Margin = new Padding(2);
             TaskContainer.MaximumSize = new Size(200, 151);
             TaskContainer.MinimumSize = new Size(200, 49);
             TaskContainer.Name = "TaskContainer";
@@ -192,7 +192,7 @@
             PersonContainer.Controls.Add(PersonButton);
             PersonContainer.Controls.Add(UserInfoUpdateButton);
             PersonContainer.Location = new Point(0, 449);
-            PersonContainer.Margin = new Padding(2, 2, 2, 2);
+            PersonContainer.Margin = new Padding(2);
             PersonContainer.MaximumSize = new Size(200, 98);
             PersonContainer.MinimumSize = new Size(200, 56);
             PersonContainer.Name = "PersonContainer";
@@ -253,7 +253,7 @@
             TeamContainer.Controls.Add(CreateTeamButton);
             TeamContainer.Controls.Add(TeamButton);
             TeamContainer.Location = new Point(0, 60);
-            TeamContainer.Margin = new Padding(2, 2, 2, 2);
+            TeamContainer.Margin = new Padding(2);
             TeamContainer.MaximumSize = new Size(200, 225);
             TeamContainer.MinimumSize = new Size(200, 52);
             TeamContainer.Name = "TeamContainer";
@@ -422,6 +422,7 @@
             ForwardButton.Size = new Size(36, 36);
             ForwardButton.TabIndex = 2;
             ForwardButton.UseVisualStyleBackColor = true;
+            ForwardButton.Click += ForwardButton_Click;
             // 
             // MainPanel
             // 

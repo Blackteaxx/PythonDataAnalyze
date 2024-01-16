@@ -384,5 +384,11 @@ namespace IS.Forms
         {
             ResetHeaderLabel("加入团队", new SearchTeam());
         }
+
+        private void ForwardButton_Click(object sender, EventArgs e)
+        {
+            SetMainPanel(FormNameDict[HeaderLabelList[^2]]);
+            FlushHeader();
+        }
     }
 }
