@@ -56,7 +56,7 @@ namespace IS.Forms
         private void Home_Load(object sender, EventArgs e)
         {
             // 初始化界面
-            ResetHeaderLabel("首页", new Notice());
+            ResetHeaderLabel("首页", new Hello());
 
             // 刚开始应该禁用前一步和下一步按钮
             ForwardButton.Enabled = false;
