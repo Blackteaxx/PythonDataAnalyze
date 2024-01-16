@@ -390,5 +390,12 @@ namespace IS.Forms
             SetMainPanel(FormNameDict[HeaderLabelList[^2]]);
             FlushHeader();
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ResetHeaderLabel("文件上传", new Upload());
+            PersonTimer.Start();
+        }
+
+
     }
 }
