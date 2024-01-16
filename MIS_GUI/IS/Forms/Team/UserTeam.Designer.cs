@@ -187,7 +187,7 @@
             SearchTeamButton.Name = "SearchTeamButton";
             SearchTeamButton.Size = new Size(130, 35);
             SearchTeamButton.TabIndex = 22;
-            SearchTeamButton.Text = "搜索团队";
+            SearchTeamButton.Text = "加入团队";
             SearchTeamButton.UseVisualStyleBackColor = true;
             SearchTeamButton.Click += SearchTeamButton_Click;
             // 

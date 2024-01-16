@@ -556,4 +556,65 @@ public class Team
             }
         return result;
     }
+
+    public string InviteMember(int tid, string name,string content)
+    {
+        var uid = Sql.ExecuteScalar(
+            "Select uid from [User] where [User].Name = @name;",
+            new Dictionary<string, object?>
+            {
+                { "name", name }
+            }
+        );
+        if (uid is null)
+        {
+            return "用户不存在";
+        }
+        // 如果用户存在，则发出邀请
+        Sql.ExecuteNonQuery(
+            "Insert Into Notice(NContent, NType, NStatus,NTeam) values (@content,1,0,@team);" +
+            "Insert Into UserNotices(Uid, Nid) VALUES (@uid,@@identity);",
+            new Dictionary<string, object?>
+            {
+                { "content", content },
+                { "team", tid },
+                { "uid", Convert.ToInt32(uid) }
+            }
+        );
+        return "邀请已发出";
+    }
+    
+    public struct InviteResultItem
+    {
+        public string Name;
+        public int Status;
+    }
+    
+    
+    /// <summary>
+    /// 获取所有邀请的结果
+    /// </summary>
+    /// <param name="tid"></param>
+    /// <returns></returns>
+    public  List<InviteResultItem> GetInvites(int tid)
+    {
+        var result = new List<InviteResultItem>();
+        var r = Sql.ExecuteReader(
+            "SELECT Name,Status FROM TeamInviteView WHERE Tid = @tid",
+            new Dictionary<string, object?>
+            {
+                { "tid", tid }
+            }
+        );
+        if (r.HasRows)
+            while (r.Read())
+            {
+                result.Add(new InviteResultItem
+                {
+                    Name = r.GetString(0),
+                    Status = r.GetInt32(1)
+                });
+            }
+        return result;
+    }
 }

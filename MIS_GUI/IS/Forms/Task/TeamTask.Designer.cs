@@ -64,6 +64,7 @@
             dataGridView1.ScrollBars = ScrollBars.Vertical;
             dataGridView1.Size = new Size(876, 346);
             dataGridView1.TabIndex = 0;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // Column1
             // 

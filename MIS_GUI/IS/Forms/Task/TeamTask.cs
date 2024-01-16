@@ -141,8 +141,8 @@ namespace IS.Forms.Task
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             // 获取我参与的taskid
-            var l = Main.team.GetTasksParticipating(Main.uid,Tid);
-            if(checkBox1.Checked)
+            var l = Main.team.GetTasksParticipating(Main.uid, Tid);
+            if (checkBox1.Checked)
                 for (int i = 0; i < dataGridView1.RowCount; i++)
                 {
                     var tid = Convert.ToInt32(this.dataGridView1.Rows[i].Cells[5].Value);
@@ -160,6 +160,21 @@ namespace IS.Forms.Task
                 {
                     this.dataGridView1.Rows[i].Visible = true;
                 }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return; // 判断是否点击到了表格
+                                                             //点击button按钮事件
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "Column4")
+            {
+                var f = this.Parent.Parent as Home; // parent是panel，因此这里要Parent.Parent
+                                                    // 传入tid和用户身份
+                var t = new TaskInfo(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[5].Value));
+                var teamName = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[0].Value) ?? "";
+                f.AddHeaderLabel(teamName, t);
+                f.SetMainPanel(t);
+            }
         }
     }
 }

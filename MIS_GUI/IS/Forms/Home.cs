@@ -1,5 +1,6 @@
 ﻿using IS.Forms.Task;
 using IS.Forms.Team;
+using IS.Forms.User;
 using System.Text.RegularExpressions;
 using UserInfo;
 
@@ -55,7 +56,7 @@ namespace IS.Forms
         private void Home_Load(object sender, EventArgs e)
         {
             // 初始化界面
-            ResetHeaderLabel("首页", new UserTask(1));
+            ResetHeaderLabel("首页", new Notice());
 
             // 刚开始应该禁用前一步和下一步按钮
             ForwardButton.Enabled = false;
@@ -100,7 +101,7 @@ namespace IS.Forms
                     nonChineseCount++;
                 }
             }
-            button.Size = new Size(50 + 8 * chineseCount + 3 * nonChineseCount, 30);
+            button.Size = new Size(50 + 9 * chineseCount + 3 * nonChineseCount, 30);
             button.ForeColor = SystemColors.HotTrack;
             button.Cursor = Cursors.Hand;
             button.FlatStyle = FlatStyle.Flat;
@@ -360,6 +361,7 @@ namespace IS.Forms
 
         private void TaskButton_Click(object sender, EventArgs e)
         {
+            ResetHeaderLabel("我的任务", new UserTask(Main.uid));
             TaskTimer.Start();
         }
 
@@ -376,6 +378,11 @@ namespace IS.Forms
         private void CreateTeamButton_Click(object sender, EventArgs e)
         {
             ResetHeaderLabel("创建团队", new CreateTeam());
+        }
+
+        private void SearchTeamButton_Click(object sender, EventArgs e)
+        {
+            ResetHeaderLabel("加入团队", new SearchTeam());
         }
     }
 }

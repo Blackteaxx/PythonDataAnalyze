@@ -1,4 +1,6 @@
-﻿namespace IS.Forms.Team;
+﻿using IS.Forms.Task;
+
+namespace IS.Forms.Team;
 
 public partial class UserTeam : Form
 {
@@ -18,6 +20,24 @@ public partial class UserTeam : Form
 
     private void button1_Click(object sender, EventArgs e)
     {
+        var text = this.textBox1.Text.Trim();
+        if (string.IsNullOrEmpty(text))
+        {
+            MessageBox.Show("请输入搜索内容");
+            return;
+        }
+        for (int i = 0; i < dataGridView1.RowCount; i++)
+        {
+            var name = this.dataGridView1.Rows[i].Cells[0].Value.ToString();
+            if (!name.Contains(text))
+            {
+                this.dataGridView1.Rows[i].Visible = false;
+            }
+            else
+            {
+                this.dataGridView1.Rows[i].Visible = true;
+            }
+        }
     }
 
     // 检测滚动条是否出现，根据行数来判断
@@ -51,17 +71,14 @@ public partial class UserTeam : Form
             dataGridView1.Rows[index].Cells[0].Value = item[1];
             dataGridView1.Rows[index].Cells[1].Value = item[2];
             dataGridView1.Rows[index].Cells[2].Value = item[3];
-            dataGridView1.Rows[index].Cells[6].Value = item[0]; // 隐藏的tid列
-            dataGridView1.Rows[index].Cells[7].Value = item[4]; // 隐藏的role列
+            dataGridView1.Rows[index].Cells[5].Value = item[0]; // 隐藏的tid列
+            dataGridView1.Rows[index].Cells[6].Value = item[4]; // 隐藏的role列
             var btn = new DataGridViewButtonCell();
             btn.Value = "查看";
             var btn1 = new DataGridViewButtonCell();
             btn1.Value = "进入";
-            var btn2 = new DataGridViewButtonCell();
-            btn2.Value = "置顶";
             dataGridView1.Rows[index].Cells[3] = btn;
             dataGridView1.Rows[index].Cells[4] = btn1;
-            dataGridView1.Rows[index].Cells[5] = btn2;
         }
 
         // 滚动条检测
@@ -93,17 +110,14 @@ public partial class UserTeam : Form
             dataGridView1.Rows[index].Cells[0].Value = item[1];
             dataGridView1.Rows[index].Cells[1].Value = item[2];
             dataGridView1.Rows[index].Cells[2].Value = item[3];
-            dataGridView1.Rows[index].Cells[6].Value = item[0]; // 隐藏的tid列
-            dataGridView1.Rows[index].Cells[7].Value = item[4]; // 隐藏的role列
+            dataGridView1.Rows[index].Cells[5].Value = item[0]; // 隐藏的tid列
+            dataGridView1.Rows[index].Cells[6].Value = item[4]; // 隐藏的role列
             var btn = new DataGridViewButtonCell();
             btn.Value = "查看";
             var btn1 = new DataGridViewButtonCell();
             btn1.Value = "进入";
-            var btn2 = new DataGridViewButtonCell();
-            btn2.Value = "置顶";
             dataGridView1.Rows[index].Cells[3] = btn;
             dataGridView1.Rows[index].Cells[4] = btn1;
-            dataGridView1.Rows[index].Cells[5] = btn2;
         }
 
         // 滚动条检测
@@ -116,7 +130,7 @@ public partial class UserTeam : Form
     private void UserTeam_Load(object sender, EventArgs e)
     {
         // 先添加列
-        var columns = new List<string> { "名称", "介绍", "人数", "查看", "进入", "置顶", "tid", "role" };
+        var columns = new List<string> { "名称", "介绍", "人数", "查看", "进入", "tid", "role" };
         foreach (var column in columns) dataGridView1.Columns.Add(column, column);
 
         dataGridView1.ScrollBars = ScrollBars.Vertical;
@@ -126,9 +140,8 @@ public partial class UserTeam : Form
         dataGridView1.Columns[0].Width = 120;
         dataGridView1.Columns[1].Width = width - 370 - 20;
         dataGridView1.Columns[2].Width = 50;
-        dataGridView1.Columns[3].Width = 50;
-        dataGridView1.Columns[4].Width = 50;
-        dataGridView1.Columns[5].Width = 100;
+        dataGridView1.Columns[3].Width = 100;
+        dataGridView1.Columns[4].Width = 100;
         dataGridView1.Columns[6].Width = 0;
 
         // 设置为只读
@@ -153,11 +166,19 @@ public partial class UserTeam : Form
         {
             var f = this.Parent.Parent as Home; // parent是panel，因此这里要Parent.Parent
             // 传入tid和用户身份
-            var t = new TeamInfo(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[6].Value),
-                Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[7].Value) ?? "");
+            var t = new TeamInfo(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[5].Value),
+                Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[6].Value) ?? "");
             var teamName = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[0].Value) ?? "";
             f.AddHeaderLabel(teamName, t);
-            f.SetMainPanel(t);
+        }
+        else if(dataGridView1.Columns[e.ColumnIndex].Name == "进入") 
+        {
+            var f = this.Parent.Parent as Home; // parent是panel，因此这里要Parent.Parent
+            // 传入tid和用户身份
+            var t = new TeamTask(Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[5].Value));
+            var teamName = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[0].Value) ?? "";
+            teamName += "任务列表";
+            f.AddHeaderLabel(teamName, t);
         }
     }
 

@@ -6,6 +6,13 @@ namespace IS.Services;
 
 public class User
 {
+    /// <summary>
+    /// 注册新用户
+    /// </summary>
+    /// <param name="loginName"></param>
+    /// <param name="password"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public ReturnValue Register(string loginName, string password, string name)
     {
         try
@@ -59,5 +66,99 @@ public class User
         if (!r.HasRows) return new ReturnValue("登录名或密码错误");
         if (r.Read()) return new ReturnValue(true, r.GetInt32(0));
         return new ReturnValue("登录名或密码错误");
+    }
+    
+    /// <summary>
+    ///  通知结构体
+    /// </summary>
+    public struct NoticeItem
+    {
+        public int Nid { get; set; }
+        public string Content { get; set; }
+        public int Type { get; set; }
+        public int Tid { get; set; }
+    }
+
+    public List<NoticeItem> GetUserNotices(int uid)
+    {
+        var result = new List<NoticeItem>();
+        var reader = Sql.ExecuteReader(
+            "SELECT Nid,NContent,NType,Nteam FROM UserNoticesView WHERE Uid = @uid and NStatus = 0",
+            new Dictionary<string, object?>
+            {
+                { "uid", uid }
+            }
+        );
+        if (reader.HasRows)
+        {
+            while (reader.Read())
+            {
+                result.Add(new NoticeItem
+                {
+                    Nid = reader.GetInt32(0),
+                    Content = reader.GetString(1),
+                    Type = reader.GetInt32(2),
+                    Tid = reader.IsDBNull(3) ? -1 : reader.GetInt32(3)
+                });
+            }
+        }
+        return  result;
+    }
+
+    /// <summary>
+    /// 新增一条通知
+    /// </summary>
+    /// <param name="uid"></param>
+    /// <param name="content"></param>
+    /// <param name="type">0通知，1邀请</param>
+    public void AddNotice(int uid, string content, int type)
+    {
+        Sql.ExecuteNonQuery(
+            "INSERT INTO Notice(NContent,NType,NStatus) VALUES(@content,@type,0);" +
+            "Insert into UserNotices(Nid,Uid) values(@@identity,@Uid);",
+            new Dictionary<string, object?>
+            {
+                { "uid", 1 },
+                { "content", "content" },
+                { "type", 0 }
+            }
+        );
+    }
+
+    /// <summary>
+    /// 新增一条团队邀请
+    /// </summary>
+    /// <param name="uid"></param>
+    /// <param name="content"></param>
+    /// <param name="type">0通知，1邀请</param>
+    /// <param name="tid"></param>
+    public void AddNotice(int uid, string content, int type,int tid)
+    {
+        Sql.ExecuteNonQuery(
+            "INSERT INTO Notice(NContent,NType,NStatus) VALUES(@content,@type,0);" +
+            "Insert into UserNotices(Nid,Uid) values(@@identity,@Uid);",
+            new Dictionary<string, object?>
+            {
+                { "uid", 1 },
+                { "content", "content" },
+                { "type", 0 }
+            }
+        );
+    }
+
+    /// <summary>
+    /// 将处理完的通知设置为已处理
+    /// </summary>
+    /// <param name="nid"></param>
+    public void HandleNotice(int nid,int status)
+    {
+        Sql.ExecuteNonQuery(
+            "UPDATE Notice SET NStatus = @status WHERE Nid = @nid;",
+            new Dictionary<string, object?>
+            {
+                { "nid", nid },
+                { "status", status },
+            }
+        ); 
     }
 }

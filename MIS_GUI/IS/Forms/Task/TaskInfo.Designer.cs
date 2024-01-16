@@ -146,7 +146,7 @@
             // 
             // button3
             // 
-            button3.Location = new Point(282, 338);
+            button3.Location = new Point(381, 338);
             button3.Name = "button3";
             button3.Size = new Size(94, 29);
             button3.TabIndex = 11;
@@ -162,6 +162,7 @@
             button4.TabIndex = 12;
             button4.Text = "退出";
             button4.UseVisualStyleBackColor = true;
+            button4.Visible = false;
             button4.Click += button4_Click;
             // 
             // label6

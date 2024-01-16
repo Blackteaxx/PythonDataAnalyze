@@ -4,7 +4,9 @@ public partial class Main : Form
 {
     // 全局变量区域
     public static int uid = 1;
-    public static Services.Team team = new();
+    public static Services.Team team = new Services.Team();
+    public static Services.Task task = new Services.Task();
+    public static Services.User user = new Services.User();
 
     public static readonly List<string> JoinRight = new()
     {

@@ -69,19 +69,19 @@
             SIderPanel.Controls.Add(TeamContainer);
             SIderPanel.Dock = DockStyle.Left;
             SIderPanel.Location = new Point(0, 0);
-            SIderPanel.Margin = new Padding(4);
             SIderPanel.Name = "SIderPanel";
-            SIderPanel.Size = new Size(244, 663);
+            SIderPanel.Size = new Size(200, 552);
             SIderPanel.TabIndex = 6;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("思源黑体 CN", 15F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            label1.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(51, 9);
+            label1.Location = new Point(42, 8);
+            label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(139, 44);
+            label1.Size = new Size(117, 29);
             label1.TabIndex = 0;
             label1.Text = "功能一览";
             // 
@@ -91,11 +91,12 @@
             TaskContainer.Controls.Add(TaskButton);
             TaskContainer.Controls.Add(UserTaskButton);
             TaskContainer.Controls.Add(TeamTaskButton);
-            TaskContainer.Location = new Point(0, 355);
-            TaskContainer.MaximumSize = new Size(244, 181);
-            TaskContainer.MinimumSize = new Size(244, 59);
+            TaskContainer.Location = new Point(0, 296);
+            TaskContainer.Margin = new Padding(2, 2, 2, 2);
+            TaskContainer.MaximumSize = new Size(200, 151);
+            TaskContainer.MinimumSize = new Size(200, 49);
             TaskContainer.Name = "TaskContainer";
-            TaskContainer.Size = new Size(244, 59);
+            TaskContainer.Size = new Size(200, 49);
             TaskContainer.TabIndex = 1;
             // 
             // CreateTaskButton
@@ -108,15 +109,14 @@
             CreateTaskButton.FlatAppearance.MouseDownBackColor = Color.White;
             CreateTaskButton.FlatAppearance.MouseOverBackColor = Color.White;
             CreateTaskButton.FlatStyle = FlatStyle.Flat;
-            CreateTaskButton.Font = new Font("思源黑体 CN", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            CreateTaskButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             CreateTaskButton.ForeColor = Color.White;
             CreateTaskButton.Image = Properties.Resources.正确;
             CreateTaskButton.ImageAlign = ContentAlignment.MiddleLeft;
-            CreateTaskButton.Location = new Point(-16, 61);
-            CreateTaskButton.Margin = new Padding(4);
+            CreateTaskButton.Location = new Point(-13, 51);
             CreateTaskButton.Name = "CreateTaskButton";
-            CreateTaskButton.Padding = new Padding(30, 0, 0, 0);
-            CreateTaskButton.Size = new Size(272, 41);
+            CreateTaskButton.Padding = new Padding(25, 0, 0, 0);
+            CreateTaskButton.Size = new Size(223, 34);
             CreateTaskButton.TabIndex = 6;
             CreateTaskButton.Text = "创建任务";
             CreateTaskButton.UseVisualStyleBackColor = false;
@@ -131,14 +131,13 @@
             TaskButton.FlatAppearance.MouseDownBackColor = Color.White;
             TaskButton.FlatAppearance.MouseOverBackColor = Color.White;
             TaskButton.FlatStyle = FlatStyle.Popup;
-            TaskButton.Font = new Font("思源黑体 CN", 16F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            TaskButton.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             TaskButton.ForeColor = Color.White;
             TaskButton.ImageAlign = ContentAlignment.MiddleLeft;
-            TaskButton.Location = new Point(-16, -22);
-            TaskButton.Margin = new Padding(4);
+            TaskButton.Location = new Point(-13, -18);
             TaskButton.Name = "TaskButton";
-            TaskButton.Padding = new Padding(30, 0, 0, 0);
-            TaskButton.Size = new Size(272, 93);
+            TaskButton.Padding = new Padding(25, 0, 0, 0);
+            TaskButton.Size = new Size(223, 78);
             TaskButton.TabIndex = 1;
             TaskButton.Text = "任务";
             TaskButton.UseVisualStyleBackColor = false;
@@ -154,15 +153,14 @@
             UserTaskButton.FlatAppearance.MouseDownBackColor = Color.White;
             UserTaskButton.FlatAppearance.MouseOverBackColor = Color.White;
             UserTaskButton.FlatStyle = FlatStyle.Flat;
-            UserTaskButton.Font = new Font("思源黑体 CN", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            UserTaskButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             UserTaskButton.ForeColor = Color.White;
             UserTaskButton.Image = Properties.Resources.正确;
             UserTaskButton.ImageAlign = ContentAlignment.MiddleLeft;
-            UserTaskButton.Location = new Point(-16, 139);
-            UserTaskButton.Margin = new Padding(4);
+            UserTaskButton.Location = new Point(-13, 116);
             UserTaskButton.Name = "UserTaskButton";
-            UserTaskButton.Padding = new Padding(30, 0, 0, 0);
-            UserTaskButton.Size = new Size(272, 41);
+            UserTaskButton.Padding = new Padding(25, 0, 0, 0);
+            UserTaskButton.Size = new Size(223, 34);
             UserTaskButton.TabIndex = 2;
             UserTaskButton.Text = "个人任务";
             UserTaskButton.UseVisualStyleBackColor = false;
@@ -177,15 +175,14 @@
             TeamTaskButton.FlatAppearance.MouseDownBackColor = Color.White;
             TeamTaskButton.FlatAppearance.MouseOverBackColor = Color.White;
             TeamTaskButton.FlatStyle = FlatStyle.Flat;
-            TeamTaskButton.Font = new Font("思源黑体 CN", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            TeamTaskButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             TeamTaskButton.ForeColor = Color.White;
             TeamTaskButton.Image = Properties.Resources.正确;
             TeamTaskButton.ImageAlign = ContentAlignment.MiddleLeft;
-            TeamTaskButton.Location = new Point(-16, 101);
-            TeamTaskButton.Margin = new Padding(4);
+            TeamTaskButton.Location = new Point(-13, 84);
             TeamTaskButton.Name = "TeamTaskButton";
-            TeamTaskButton.Padding = new Padding(30, 0, 0, 0);
-            TeamTaskButton.Size = new Size(272, 41);
+            TeamTaskButton.Padding = new Padding(25, 0, 0, 0);
+            TeamTaskButton.Size = new Size(223, 34);
             TeamTaskButton.TabIndex = 2;
             TeamTaskButton.Text = "团队任务";
             TeamTaskButton.UseVisualStyleBackColor = false;
@@ -194,11 +191,12 @@
             // 
             PersonContainer.Controls.Add(PersonButton);
             PersonContainer.Controls.Add(UserInfoUpdateButton);
-            PersonContainer.Location = new Point(0, 539);
-            PersonContainer.MaximumSize = new Size(244, 117);
-            PersonContainer.MinimumSize = new Size(244, 67);
+            PersonContainer.Location = new Point(0, 449);
+            PersonContainer.Margin = new Padding(2, 2, 2, 2);
+            PersonContainer.MaximumSize = new Size(200, 98);
+            PersonContainer.MinimumSize = new Size(200, 56);
             PersonContainer.Name = "PersonContainer";
-            PersonContainer.Size = new Size(244, 67);
+            PersonContainer.Size = new Size(200, 56);
             PersonContainer.TabIndex = 2;
             // 
             // PersonButton
@@ -211,14 +209,13 @@
             PersonButton.FlatAppearance.MouseDownBackColor = Color.White;
             PersonButton.FlatAppearance.MouseOverBackColor = Color.White;
             PersonButton.FlatStyle = FlatStyle.Popup;
-            PersonButton.Font = new Font("思源黑体 CN", 16F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            PersonButton.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             PersonButton.ForeColor = Color.White;
             PersonButton.ImageAlign = ContentAlignment.MiddleLeft;
-            PersonButton.Location = new Point(-21, -10);
-            PersonButton.Margin = new Padding(4);
+            PersonButton.Location = new Point(-17, -8);
             PersonButton.Name = "PersonButton";
-            PersonButton.Padding = new Padding(30, 0, 0, 0);
-            PersonButton.Size = new Size(272, 93);
+            PersonButton.Padding = new Padding(25, 0, 0, 0);
+            PersonButton.Size = new Size(223, 78);
             PersonButton.TabIndex = 1;
             PersonButton.Text = "个人";
             PersonButton.UseVisualStyleBackColor = false;
@@ -234,15 +231,14 @@
             UserInfoUpdateButton.FlatAppearance.MouseDownBackColor = Color.White;
             UserInfoUpdateButton.FlatAppearance.MouseOverBackColor = Color.White;
             UserInfoUpdateButton.FlatStyle = FlatStyle.Flat;
-            UserInfoUpdateButton.Font = new Font("思源黑体 CN", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            UserInfoUpdateButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             UserInfoUpdateButton.ForeColor = Color.White;
             UserInfoUpdateButton.Image = Properties.Resources.团队40;
             UserInfoUpdateButton.ImageAlign = ContentAlignment.MiddleLeft;
-            UserInfoUpdateButton.Location = new Point(-16, 78);
-            UserInfoUpdateButton.Margin = new Padding(4);
+            UserInfoUpdateButton.Location = new Point(-13, 65);
             UserInfoUpdateButton.Name = "UserInfoUpdateButton";
-            UserInfoUpdateButton.Padding = new Padding(30, 0, 0, 0);
-            UserInfoUpdateButton.Size = new Size(272, 41);
+            UserInfoUpdateButton.Padding = new Padding(25, 0, 0, 0);
+            UserInfoUpdateButton.Size = new Size(223, 34);
             UserInfoUpdateButton.TabIndex = 3;
             UserInfoUpdateButton.Text = "修改个人信息";
             UserInfoUpdateButton.UseVisualStyleBackColor = false;
@@ -256,11 +252,12 @@
             TeamContainer.Controls.Add(SearchTeamButton);
             TeamContainer.Controls.Add(CreateTeamButton);
             TeamContainer.Controls.Add(TeamButton);
-            TeamContainer.Location = new Point(0, 72);
-            TeamContainer.MaximumSize = new Size(244, 270);
-            TeamContainer.MinimumSize = new Size(244, 62);
+            TeamContainer.Location = new Point(0, 60);
+            TeamContainer.Margin = new Padding(2, 2, 2, 2);
+            TeamContainer.MaximumSize = new Size(200, 225);
+            TeamContainer.MinimumSize = new Size(200, 52);
             TeamContainer.Name = "TeamContainer";
-            TeamContainer.Size = new Size(244, 62);
+            TeamContainer.Size = new Size(200, 52);
             TeamContainer.TabIndex = 0;
             // 
             // UserTeamButton
@@ -273,15 +270,14 @@
             UserTeamButton.FlatAppearance.MouseDownBackColor = Color.White;
             UserTeamButton.FlatAppearance.MouseOverBackColor = Color.White;
             UserTeamButton.FlatStyle = FlatStyle.Flat;
-            UserTeamButton.Font = new Font("思源黑体 CN", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            UserTeamButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             UserTeamButton.ForeColor = Color.White;
             UserTeamButton.Image = Properties.Resources.团队40;
             UserTeamButton.ImageAlign = ContentAlignment.MiddleLeft;
-            UserTeamButton.Location = new Point(-17, 227);
-            UserTeamButton.Margin = new Padding(4);
+            UserTeamButton.Location = new Point(-14, 189);
             UserTeamButton.Name = "UserTeamButton";
-            UserTeamButton.Padding = new Padding(30, 0, 0, 0);
-            UserTeamButton.Size = new Size(272, 41);
+            UserTeamButton.Padding = new Padding(25, 0, 0, 0);
+            UserTeamButton.Size = new Size(223, 34);
             UserTeamButton.TabIndex = 5;
             UserTeamButton.Text = "已有团队";
             UserTeamButton.UseVisualStyleBackColor = false;
@@ -296,15 +292,14 @@
             TeamInviteMemberButton.FlatAppearance.MouseDownBackColor = Color.White;
             TeamInviteMemberButton.FlatAppearance.MouseOverBackColor = Color.White;
             TeamInviteMemberButton.FlatStyle = FlatStyle.Flat;
-            TeamInviteMemberButton.Font = new Font("思源黑体 CN", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            TeamInviteMemberButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             TeamInviteMemberButton.ForeColor = Color.White;
             TeamInviteMemberButton.Image = Properties.Resources.团队40;
             TeamInviteMemberButton.ImageAlign = ContentAlignment.MiddleLeft;
-            TeamInviteMemberButton.Location = new Point(-17, 187);
-            TeamInviteMemberButton.Margin = new Padding(4);
+            TeamInviteMemberButton.Location = new Point(-14, 156);
             TeamInviteMemberButton.Name = "TeamInviteMemberButton";
-            TeamInviteMemberButton.Padding = new Padding(30, 0, 0, 0);
-            TeamInviteMemberButton.Size = new Size(272, 41);
+            TeamInviteMemberButton.Padding = new Padding(25, 0, 0, 0);
+            TeamInviteMemberButton.Size = new Size(223, 34);
             TeamInviteMemberButton.TabIndex = 4;
             TeamInviteMemberButton.Text = "邀请成员";
             TeamInviteMemberButton.UseVisualStyleBackColor = false;
@@ -319,15 +314,14 @@
             TeamInfoButton.FlatAppearance.MouseDownBackColor = Color.White;
             TeamInfoButton.FlatAppearance.MouseOverBackColor = Color.White;
             TeamInfoButton.FlatStyle = FlatStyle.Flat;
-            TeamInfoButton.Font = new Font("思源黑体 CN", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            TeamInfoButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             TeamInfoButton.ForeColor = Color.White;
             TeamInfoButton.Image = Properties.Resources.团队40;
             TeamInfoButton.ImageAlign = ContentAlignment.MiddleLeft;
-            TeamInfoButton.Location = new Point(-17, 147);
-            TeamInfoButton.Margin = new Padding(4);
+            TeamInfoButton.Location = new Point(-14, 122);
             TeamInfoButton.Name = "TeamInfoButton";
-            TeamInfoButton.Padding = new Padding(30, 0, 0, 0);
-            TeamInfoButton.Size = new Size(272, 41);
+            TeamInfoButton.Padding = new Padding(25, 0, 0, 0);
+            TeamInfoButton.Size = new Size(223, 34);
             TeamInfoButton.TabIndex = 3;
             TeamInfoButton.Text = "团队信息";
             TeamInfoButton.UseVisualStyleBackColor = false;
@@ -342,18 +336,18 @@
             SearchTeamButton.FlatAppearance.MouseDownBackColor = Color.White;
             SearchTeamButton.FlatAppearance.MouseOverBackColor = Color.White;
             SearchTeamButton.FlatStyle = FlatStyle.Flat;
-            SearchTeamButton.Font = new Font("思源黑体 CN", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            SearchTeamButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             SearchTeamButton.ForeColor = Color.White;
             SearchTeamButton.Image = Properties.Resources.团队40;
             SearchTeamButton.ImageAlign = ContentAlignment.MiddleLeft;
-            SearchTeamButton.Location = new Point(-16, 107);
-            SearchTeamButton.Margin = new Padding(4);
+            SearchTeamButton.Location = new Point(-13, 89);
             SearchTeamButton.Name = "SearchTeamButton";
-            SearchTeamButton.Padding = new Padding(30, 0, 0, 0);
-            SearchTeamButton.Size = new Size(272, 41);
+            SearchTeamButton.Padding = new Padding(25, 0, 0, 0);
+            SearchTeamButton.Size = new Size(223, 34);
             SearchTeamButton.TabIndex = 2;
             SearchTeamButton.Text = "搜索团队";
             SearchTeamButton.UseVisualStyleBackColor = false;
+            SearchTeamButton.Click += SearchTeamButton_Click;
             // 
             // CreateTeamButton
             // 
@@ -365,15 +359,14 @@
             CreateTeamButton.FlatAppearance.MouseDownBackColor = Color.White;
             CreateTeamButton.FlatAppearance.MouseOverBackColor = Color.White;
             CreateTeamButton.FlatStyle = FlatStyle.Flat;
-            CreateTeamButton.Font = new Font("思源黑体 CN", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            CreateTeamButton.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             CreateTeamButton.ForeColor = Color.White;
             CreateTeamButton.Image = Properties.Resources.团队40;
             CreateTeamButton.ImageAlign = ContentAlignment.MiddleLeft;
-            CreateTeamButton.Location = new Point(-16, 66);
-            CreateTeamButton.Margin = new Padding(4);
+            CreateTeamButton.Location = new Point(-13, 55);
             CreateTeamButton.Name = "CreateTeamButton";
-            CreateTeamButton.Padding = new Padding(30, 0, 0, 0);
-            CreateTeamButton.Size = new Size(272, 41);
+            CreateTeamButton.Padding = new Padding(25, 0, 0, 0);
+            CreateTeamButton.Size = new Size(223, 34);
             CreateTeamButton.TabIndex = 1;
             CreateTeamButton.Text = "创建团队";
             CreateTeamButton.UseVisualStyleBackColor = false;
@@ -389,14 +382,13 @@
             TeamButton.FlatAppearance.MouseDownBackColor = Color.White;
             TeamButton.FlatAppearance.MouseOverBackColor = Color.White;
             TeamButton.FlatStyle = FlatStyle.Popup;
-            TeamButton.Font = new Font("思源黑体 CN", 16F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            TeamButton.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             TeamButton.ForeColor = Color.White;
             TeamButton.ImageAlign = ContentAlignment.MiddleLeft;
-            TeamButton.Location = new Point(-16, -17);
-            TeamButton.Margin = new Padding(4);
+            TeamButton.Location = new Point(-13, -14);
             TeamButton.Name = "TeamButton";
-            TeamButton.Padding = new Padding(30, 0, 0, 0);
-            TeamButton.Size = new Size(272, 93);
+            TeamButton.Padding = new Padding(25, 0, 0, 0);
+            TeamButton.Size = new Size(223, 78);
             TeamButton.TabIndex = 0;
             TeamButton.Text = "团队";
             TeamButton.UseVisualStyleBackColor = false;
@@ -407,30 +399,27 @@
             HeaderPanel.Controls.Add(NextButton);
             HeaderPanel.Controls.Add(ForwardButton);
             HeaderPanel.Dock = DockStyle.Top;
-            HeaderPanel.Location = new Point(244, 0);
-            HeaderPanel.Margin = new Padding(4);
+            HeaderPanel.Location = new Point(200, 0);
             HeaderPanel.Name = "HeaderPanel";
-            HeaderPanel.Size = new Size(1100, 48);
+            HeaderPanel.Size = new Size(900, 40);
             HeaderPanel.TabIndex = 9;
             HeaderPanel.Paint += HeaderPanel_Paint;
             // 
             // NextButton
             // 
             NextButton.Image = Properties.Resources.向右;
-            NextButton.Location = new Point(56, 2);
-            NextButton.Margin = new Padding(4);
+            NextButton.Location = new Point(46, 2);
             NextButton.Name = "NextButton";
-            NextButton.Size = new Size(44, 43);
+            NextButton.Size = new Size(36, 36);
             NextButton.TabIndex = 3;
             NextButton.UseVisualStyleBackColor = true;
             // 
             // ForwardButton
             // 
             ForwardButton.Image = Properties.Resources.向左;
-            ForwardButton.Location = new Point(6, 2);
-            ForwardButton.Margin = new Padding(4);
+            ForwardButton.Location = new Point(5, 2);
             ForwardButton.Name = "ForwardButton";
-            ForwardButton.Size = new Size(44, 43);
+            ForwardButton.Size = new Size(36, 36);
             ForwardButton.TabIndex = 2;
             ForwardButton.UseVisualStyleBackColor = true;
             // 
@@ -438,10 +427,10 @@
             // 
             MainPanel.Dock = DockStyle.Fill;
             MainPanel.ForeColor = Color.Black;
-            MainPanel.Location = new Point(244, 48);
+            MainPanel.Location = new Point(200, 40);
             MainPanel.Margin = new Padding(0);
             MainPanel.Name = "MainPanel";
-            MainPanel.Size = new Size(1100, 615);
+            MainPanel.Size = new Size(900, 512);
             MainPanel.TabIndex = 10;
             // 
             // TeamTimer
@@ -461,14 +450,13 @@
             // 
             // Home
             // 
-            AutoScaleDimensions = new SizeF(11F, 24F);
+            AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1344, 663);
+            ClientSize = new Size(1100, 552);
             Controls.Add(MainPanel);
             Controls.Add(HeaderPanel);
             Controls.Add(SIderPanel);
             IsMdiContainer = true;
-            Margin = new Padding(4);
             Name = "Home";
             Text = "Home";
             FormClosed += Home_FormClosed;
