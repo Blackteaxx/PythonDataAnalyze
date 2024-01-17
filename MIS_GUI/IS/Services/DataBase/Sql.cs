@@ -4,12 +4,16 @@ namespace IS.Services.DataBase;
 
 internal class Sql
 {
+
+    // 云上服务器
     /*private static readonly string connectionString =
         "Server = 101.43.94.40,5000; " +
         "Database = web; " +
         "uid = web; pwd = 202!@#QWEasd; " +
         "TrustServerCertificate=true;"; */
     // 设计的时候先用，方便统一数据集
+
+    // 使用本地的数据库
     private static readonly string connectionString =
         "Server = localhost; " +
         "Database = web; " +

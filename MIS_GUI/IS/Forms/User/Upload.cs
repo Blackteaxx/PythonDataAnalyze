@@ -17,11 +17,18 @@ public partial class Upload : Form
     static string uploadrelativePath = "..\\..\\..\\Resource\\yunpan\\";
     string folderPath = Path.GetFullPath(Path.Combine(Application.StartupPath, uploadrelativePath));
 
-
-    private string connectionString = "Server = 101.43.94.40,5000; " +
+    // 云上数据库
+    /*private string connectionString = "Server = 101.43.94.40,5000; " +
     "Database = web; " +
     "uid = web; pwd = 202!@#QWEasd; " +
-    "TrustServerCertificate=true;"; // 数据库连接字符串模板
+    "TrustServerCertificate=true;";*/ // 数据库连接字符串模板
+
+    // 使用本地的数据库
+    private static readonly string connectionString =
+        "Server = localhost; " +
+        "Database = web; " +
+        "uid = IS; pwd = 5151; " +
+        "TrustServerCertificate=true;";
     private string uploader = Main.uid.ToString();//更换为登录时的username;
 
     public Upload()
